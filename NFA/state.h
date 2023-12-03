@@ -5,23 +5,32 @@
 #include <set>
 #include <map>
 #include <bits/stdc++.h>
+#include "..\Parser\token.h"
+
 class State {
     private:
         int id;
         bool isAccepting;
-        std::map<char, std::set</**State*/int>> transitions;
-        int generateId();
+        Token acceptedToken;
+        std::map<char, std::set<int>> transitions;
 
     public:
+        static int counterGlobalId;
+
         State();
         State(bool isAccepting);
         State(int id, bool isAccepting);
         
+        
+        static int generateId();
+
         void setId(int id);
         int getId();
         void setIsAccepting(bool isAccepting);
         bool getIsAccepting();
+        Token getAcceptedToken();
+        void setAcceptedToken(Token t);
         std::map<char, std::set</**State*/int>> getTransitions();
-        void State::addTransition(char letter, int state);
+        void addTransition(char letter, int state);
 };
 #endif  // STATE_H

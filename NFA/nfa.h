@@ -8,22 +8,19 @@
 
 class NFA {
     private:
-        State* startState;
-        State* finalState;
-        std::set<State *> states;
-
+        State startState;
+        std::map<int, State> statesMap;
+        std::map<int, State> createStateMap(std::set<State> states);
     public:
         NFA();
-        NFA(State* start, State* final);
-        NFA(State* start, State* final, std::set<State *> states);
-        
-        State* getStartState();
-        void   setStartState(State* state);
-        State* getFinalState();
-        void   setFinalState(State* state);
-        void   addState(State* state);
-        std::set<State*> getStates();
-        void   setBatchStates(std::set<State*> states);
-        std::pair<int, std::map<char,std::set<int>>> getTransitionTable();   // TODO check whether states r gonna be represented using their id/pointer?
+        // NFA(State* start);
+        NFA(State start, std::map<int,State> states);
+        NFA(State start, std::set<State> states);
+
+        State getStartState();
+        void   setStartState(State state);
+        void   addState(State state);
+        void   setBatchStates(std::map<int,State> states);
+        std::map<int, State> getStatesMap();
 };
 #endif  // NFA_H

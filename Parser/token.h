@@ -1,14 +1,18 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#include <string>
+#include <bits/stdc++.h>
+// #include <string>
+
+
 
 class Token {
 public:
     std::string type;
     std::string value;
 
-    Token(const std::string& type, const std::string& value) : type(type), value(value) {}
+    Token();
+    Token(std::string type,std::string value);
 };
 
 #endif  // TOKEN_H
