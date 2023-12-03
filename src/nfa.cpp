@@ -1,15 +1,14 @@
 #include "nfa.h"
-
 #include <utility>
 
 NFA::NFA() {
     setStartState(new State());
-    // TODO initialize transition map  IMPORTANT
+    setFinalState(new State());
 };
 
-// NFA::NFA(State* startState, State* finalState) {
-//     this.startState = startState;
-// };
+NFA::NFA(State* startState) {
+     this->startState = startState;
+ };
 
 NFA::NFA(State* start, std::map<int,State*> states){
     this->startState = start;
@@ -30,12 +29,19 @@ void NFA::setStartState(State* state) {
     addState(state);
 };
 
+State* NFA::getFinalState() {
+    return this->finalState;
+};
 
+void NFA::setFinalState(State* state) {
+    this->finalState = state;
+    this->finalState->setIsAccepting(true);
+    addState(state);
+};
 
 void NFA::addState(State* state) {
     this->statesMap[state->getId()]=state;
 };
-
 
 void NFA::setBatchStates(const std::map<int,State*>& states) {
     // this->states.insert(states.begin(), states.end());
@@ -49,13 +55,9 @@ std::map<int, State*> NFA::getStatesMap() {
 };
 
 std::map<int, State*> NFA::createStateMap(std::set<State*> states) {
-    std::map<int, State*> statesMap;  // TODO check if stack or heap
+    std::map<int, State*> statesMap;
     for(State* state : states){
         statesMap[state->getId()] = state;
     }
     return statesMap;
 };
-
-//std::pair<int, std::map<char,std::set<int>>> getTransitionTable(){
-  //  return ;
-//};   // TODO 

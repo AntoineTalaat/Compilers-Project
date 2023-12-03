@@ -1,35 +1,21 @@
 #include "nfa_generator.h"
 #include "globals.h"
-
-std::string NFAGenerator::rulesFile="";
+#include "operations_handler.h"
 
 NFAGenerator::NFAGenerator() {
-    NFAGenerator::rulesFile = "";
+    this->rulesFile = "";
 };
 
 NFAGenerator::NFAGenerator(std::string file) {
     NFAGenerator::rulesFile = file;
 };
 
-// NFA* NFAGenerator::getFullNFA() {
-//     if(this->allNFA.empty())    return nullptr;
-//     NFA* final = this->allNFA.front();
-//     for(auto it = std::next(this->allNFA.begin()); it != this->allNFA.end(); ++it) {
-//         final = this->joinNFAs(final, it);
-//     }
+ NFA* NFAGenerator::getFullNFA() {
+     if(this->allNFA.empty())    return nullptr;
+     NFA* final = this->allNFA.front();
+     for(auto it = std::next(this->allNFA.begin()); it != this->allNFA.end(); ++it) {
+         final = OperationsHandler::joinNFAs(final, *it);
+     }
 
-//     return final;
-// };
-
-// NFA* NFAGenerator::joinNFAs(NFA* first, NFA* second) {
-//     NFA* newNfa = new NFA();
-//     State* start = new State();
-//     start->addTransition(EPSILLON, first->getStartState()->getId());
-//     start->addTransition(EPSILLON, second->getStartState()->getId());
-
-//     newNfa->setStartState(start);
-//    // newNfa->setBatchStates(first->getStates());
-//    // newNfa->setBatchStates(second->getStates());
-
-//     return newNfa;
-// }
+     return final;
+ };

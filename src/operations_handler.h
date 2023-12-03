@@ -14,6 +14,7 @@ class OperationsHandler {
         static NFA* kleeneClosureOp(NFA* nfa);
         static NFA* positiveCloruseOp(NFA* nfa);
         static NFA* rangeOp(char from, char to);
+        static NFA* joinNFAs(NFA* first, NFA* second);
 };
 
 #endif  // OPREATIONS_HANDLER_H

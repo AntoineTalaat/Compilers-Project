@@ -6,13 +6,12 @@
 
 class NFAGenerator {
     private:
-     //   std::vector<NFA> allNFA;
-        static std::string  rulesFile;
-        // NFA* joinNFAs(NFA* first, NFA* second);
+        std::vector<NFA*> allNFA;
+        std::string  rulesFile;
+        
     public:
         NFAGenerator();
-
         NFAGenerator(std::string file);
-        // NFA* getFullNFA();
+        NFA* getFullNFA();
 };
-#endif
+#endif  // NFA_GENERATOR

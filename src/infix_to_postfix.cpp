@@ -1,15 +1,12 @@
 #include "infix_to_postfix.h"
 #include <stack>
 
-
-std::string InfixToPostfix::infix = "";
-
 InfixToPostfix::InfixToPostfix() {
-    InfixToPostfix::infix = "";
+    this->infix = "";
 }
 
 InfixToPostfix::InfixToPostfix(std::string infix) {
-    InfixToPostfix::infix = infix;
+    this->infix = infix;
 }
 
 int InfixToPostfix::getPriority(char c) {
