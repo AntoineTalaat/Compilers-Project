@@ -6,6 +6,8 @@ SRC_DIR = .
 # Get all .cpp files in the source directory
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 
+
+
 OBJECTS = $(SOURCES:.cpp=.o)
 EXECUTABLE = main
 

@@ -14,6 +14,7 @@ NFA::NFA(State* startState, State* finalState, std::set<State *> states) {
     this->startState = startState;
     this->finalState = finalState;
     this->states = states;
+    this->statesMap = createStateMap(states);
 };
 
 State* NFA::getStartState() {
@@ -44,6 +45,18 @@ std::set<State*> NFA::getStates() {
 
 void NFA::setBatchStates(std::set<State*> states) {
     this->states.insert(states.begin(), states.end());
+};
+
+std::map<int, State*> NFA::getStatesMap() {
+    return this->statesMap;
+};
+
+std::map<int, State*> NFA::createStateMap(std::set<State*> states) {
+    std::map<int, State*> statesMap;
+    for(State* state : states){
+        statesMap[state->getId()] = state;
+    }
+    return statesMap;
 };
 
 //std::pair<int, std::map<char,std::set<int>>> getTransitionTable(){

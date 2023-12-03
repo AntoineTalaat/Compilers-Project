@@ -9,7 +9,7 @@ class State {
     private:
         int id;
         bool isAccepting;
-        std::map<char, std::set</**State*/int>> transitions;
+        std::map<char, std::set<int>> transitions;
         int generateId();
 
     public:
@@ -22,6 +22,6 @@ class State {
         void setIsAccepting(bool isAccepting);
         bool getIsAccepting();
         std::map<char, std::set</**State*/int>> getTransitions();
-        void State::addTransition(char letter, int state);
+        void addTransition(char letter, int state);
 };
 #endif  // STATE_H
