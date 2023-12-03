@@ -3,4 +3,6 @@
 
 // include all globals here
 
+static const char EPSILLON = '@';
+
 #endif  //  GLOBALS_H

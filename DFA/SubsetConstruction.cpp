@@ -52,8 +52,8 @@ std::set<int> SubsetConstruction::epsClosure(int state) {
 
         std::map<char, std::set<int>> transitions = currentState->getTransitions();
 
-        if(transitions.find('EPSILLON') != transitions.end()) {
-            std::set<int> epsTransitions = transitions.at('EPSILLON');
+        if(transitions.find(EPSILLON) != transitions.end()) {
+            std::set<int> epsTransitions = transitions.at(EPSILLON);
             for(int epsTransition : epsTransitions)
                 stack.push(epsTransition);
         }

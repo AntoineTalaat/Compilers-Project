@@ -3,6 +3,7 @@
 
 #include "../NFA/nfa.h"
 #include "../NFA/state.h"
+#include "../globals.h"
 #include <set>
 
 class SubsetConstruction {
