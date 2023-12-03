@@ -17,7 +17,6 @@ class InputParser {
         static const std::regex keywordRegex;
         static const std::regex punctuationRegex;
         static std::map<std::string, RegularExpression> regularDefinitions;
-        static std::vector<Token> tokens;
         static std::vector<std::string> keywords;
         static std::vector<std::string> punctuationSymbols;
 

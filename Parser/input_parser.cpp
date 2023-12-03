@@ -6,10 +6,10 @@ const std::regex InputParser::keywordRegex = std::regex(R"(\{(\w+)\})");
 const std::regex InputParser::punctuationRegex = std::regex(R"(\[(\w+)\])");
 static std::vector<Token> tokens;
 
-std::map<std::string, RegularExpression> InputParser::regularDefinitions;
+//std::map<std::string, RegularExpression> InputParser::regularDefinitions;
 std::vector<std::string> InputParser::keywords;
 std::vector<std::string> InputParser::punctuationSymbols;
-
+/*
 std::vector<Token> InputParser::parseLexicalRulesFile(std::string filePath, std::vector<Token> *tokens , std::vector<std::string> * priorites, std::set<char> *alphabet) {
     std::string line;
         std::ifstream file(filePath);
@@ -22,6 +22,7 @@ std::vector<Token> InputParser::parseLexicalRulesFile(std::string filePath, std:
         }
         return;
 };
+*/
 
 void InputParser::tokenize(std::string line) {
     std::cout << line;

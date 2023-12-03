@@ -6,7 +6,7 @@
 
 class NFAGenerator {
     private:
-        static std::vector<NFA *> allNFA;
+     //   std::vector<NFA> allNFA;
         static std::string  rulesFile;
         NFA* joinNFAs(NFA* first, NFA* second);
     public:

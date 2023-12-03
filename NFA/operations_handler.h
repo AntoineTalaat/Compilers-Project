@@ -2,8 +2,9 @@
 #define OPERATIONS_HANDLER_H
 
 #include <string>
-#include <nfa.h>
-
+#include "nfa.h"
+#include "../globals.h"
+#include "state.h"
 class OperationsHandler {
     private:
         

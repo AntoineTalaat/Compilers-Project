@@ -1,12 +1,14 @@
 // #include <iostream>
-#include "NFA/state.h"
 #include "NFA/nfa.h"
+#include "NFA/state.h"
+
 #include "DFA/subset_construction.h"
 
 using namespace std;
 int main() { 
-   // cout << "hi";
-    State s1 = new State();
+    cout << "hi";
+    State* s1 = new State();
+    /*
     State s2 = new State();
     State s3 = new State();
     State s4 = new State();
@@ -55,6 +57,6 @@ int main() {
         std::cout << "Dtran[{" << *T.begin() << "}, " << a << "] = {" << *U.begin() << "}\n";
     }
 
-
+*/
     return 0;
 };

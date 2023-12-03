@@ -1,11 +1,10 @@
 #include "state.h"
 
-
 int State::counterGlobalId = 0;
 
 State::State(){
-    this->id = generateId();
-    this->isAccepting = false;
+   // this->id = generateId();
+   // this->isAccepting = false;
 };
 
 State::State(bool isAccepting) {
@@ -13,13 +12,11 @@ State::State(bool isAccepting) {
     this->isAccepting = isAccepting;
 };
 
+
 State::State(int id, bool isAccepting) {
     this->id = id;
     this->isAccepting = isAccepting;
 };
-
-
-
 
 void State::setId(int id) {
     this->id = id;
