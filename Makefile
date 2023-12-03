@@ -1,23 +1,42 @@
-CXX = g++
-CXXFLAGS = -std=c++11 -Wall
+CFLAGS += -I./src
+CFLAGS += -std=c++11
 
-SRC_DIR = .
+SRC_FILES := main.cpp 
+SRC_FILES +=src/nfa.cpp 
+SRC_FILES +=src/dfa.cpp 
+SRC_FILES +=src/infix_to_postfix.cpp
+SRC_FILES +=src/input_parser.cpp 
+SRC_FILES +=src/nfa_generator.cpp 
+SRC_FILES +=src/operations_handler.cpp 
+SRC_FILES +=src/state.cpp
+SRC_FILES +=src/token.cpp
+SRC_FILES +=src/SubsetConstruction.cpp
 
-# Get all .cpp files in the source directory
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+
+build:
+		g++ $(SRC_FILES) -o main $(CFLAGS)
+
+run: build
+		./main
 
 
+# CXX = g++
+# CXXFLAGS = -std=c++11 -Wall
 
-OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = main
+# SRC_DIR = .
+# # Get all .cpp files in the source directory
+# SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 
-all: $(EXECUTABLE)
+# OBJECTS = $(SOURCES:.cpp=.o)
+# EXECUTABLE = main
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+# all: $(EXECUTABLE)
 
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+# $(EXECUTABLE): $(OBJECTS)
+# 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-clean:
-	rm -f $(OBJECTS) $(EXECUTABLE)
+# %.o: %.cpp
+# 	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+# clean:
+# 	rm -f $(OBJECTS) $(EXECUTABLE)

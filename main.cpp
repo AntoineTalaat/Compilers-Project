@@ -1,13 +1,12 @@
 // #include <iostream>
-#include "NFA/nfa.h"
-#include "NFA/state.h"
+#include "nfa.h"
 
-#include "DFA/subset_construction.h"
+#include "subset_construction.h"
 
 using namespace std;
 int main() { 
     cout << "hi";
-    State* s1 = new State();
+    auto* s1 = new State();
     /*
     State s2 = new State();
     State s3 = new State();
