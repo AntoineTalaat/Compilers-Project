@@ -1,8 +1,8 @@
-#include <iostream>
-#include "src/nfa.h"
-#include "src/input_parser.h"
-#include "src/subset_construction.h"
-#include "src/nfa_generator.h"
+// #include <iostream>
+#include "nfa.h"
+#include "input_parser.h"
+#include "subset_construction.h"
+#include "nfa_generator.h"
 
 using namespace std;
 int main(){
