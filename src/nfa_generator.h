@@ -8,9 +8,11 @@ class NFAGenerator {
     private:
      //   std::vector<NFA> allNFA;
         static std::string  rulesFile;
-        NFA* joinNFAs(NFA* first, NFA* second);
+        // NFA* joinNFAs(NFA* first, NFA* second);
     public:
+        NFAGenerator();
+
         NFAGenerator(std::string file);
-        NFA* getFullNFA();
+        // NFA* getFullNFA();
 };
 #endif

@@ -1,12 +1,17 @@
 // #include <iostream>
 #include "nfa.h"
-
+#include "input_parser.h"
 #include "subset_construction.h"
+#include "nfa_generator.h"
 
 using namespace std;
 int main() { 
     cout << "hi";
     auto* s1 = new State();
+    auto* p1 = new InputParser();
+    auto* nfa = new NFAGenerator();
+
+
     /*
     State s2 = new State();
     State s3 = new State();
