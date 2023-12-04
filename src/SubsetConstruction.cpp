@@ -125,6 +125,58 @@ void SubsetConstruction::printDFATransitionhs(std::map<std::pair<std::set<int>, 
     }
 }
 
+std::map< std::pair<State*, char> , State* > SubsetConstruction::getDFA(){
+    std::map< std::pair<State*, char> , State* > DFA;
+    std::map< std::pair<std::set<int>, char> , std::set<int> > Dtran = this->convertNFAToDFA();
+
+    std::map<std::set<int>, State*> statesMap;
+
+    for (const auto& transition : Dtran) {
+        const auto& inputSetOfStates = transition.first.first;
+        char a = transition.first.second;
+        const auto& OutputSetOfStates = transition.second;
+
+        // if inputSetOfStates is in statesMap then get the state else create a new state and add it to the map
+        State* TState;
+        if(statesMap.find(inputSetOfStates) != statesMap.end()) {
+            TState = statesMap.at(inputSetOfStates);
+        } else {
+            TState = new State();
+            // check if the inputSetOfStates contains an accepting state and set the new state is accepting if the inputSetOfStates contains an accepting state
+            for (int state: inputSetOfStates) {
+                if (this->nfa.getStatesMap().at(state)->getIsAccepting()) {
+                    TState->setIsAccepting(true);
+                    //TState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
+                    break;
+                }
+            }
+            statesMap[inputSetOfStates] = TState;
+        }
+
+        // do the same for UState
+        State* UState;
+        if(statesMap.find(OutputSetOfStates) != statesMap.end()) {
+            UState = statesMap.at(OutputSetOfStates);
+        } else {
+            UState = new State();
+            // check if the OutputSetOfStates contains an accepting state and set the new state is accepting if the OutputSetOfStates contains an accepting state
+            for (int state: OutputSetOfStates) {
+                if (this->nfa.getStatesMap().at(state)->getIsAccepting()) {
+                    UState->setIsAccepting(true);
+                    //UState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
+                    break;
+                }
+            }
+            statesMap[OutputSetOfStates] = UState;
+
+        }
+
+
+        DFA[std::make_pair(TState, a)] = UState;
+    }
+
+    return DFA;
+}
 
 std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::convertNFAToDFA()  {
     if(debug)   printMap(this->nfa.getStatesMap());
