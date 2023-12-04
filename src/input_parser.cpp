@@ -1,31 +1,22 @@
 #include "input_parser.h"
 
-const std::regex InputParser::regDefRegex = std::regex(R"((\w+)\s*=\s*(\w+))");
-const std::regex InputParser::regExpRegex = std::regex(R"((\w+)\s*:\s*(\w+))");
-const std::regex InputParser::keywordRegex = std::regex(R"(\{(\w+)\})");
-const std::regex InputParser::punctuationRegex = std::regex(R"(\[(\w+)\])");
+const std::regex InputParser::regDefRegex("\\s*\\w*\\s*=[\\s*[\\w\\W]*]*");
+const std::regex InputParser::regExpRegex("\\s*\\w*\\s*:[\\s*[\\w\\W]*]*");
+const std::regex InputParser::keywordRegex("\\s*\\{[\\s\\a-zA-Z]+\\}\\s*");
+const std::regex InputParser::punctuationRegex("\\s*\\[\\W+\\]\\s*");
 static std::vector<Token> tokens;
 
 //std::map<std::string, RegularExpression> InputParser::regularDefinitions;
 std::vector<std::string> InputParser::keywords;
 std::vector<std::string> InputParser::punctuationSymbols;
-/*
-std::vector<Token> InputParser::parseLexicalRulesFile(std::string filePath, std::vector<Token> *tokens , std::vector<std::string> * priorites, std::set<char> *alphabet) {
-    std::string line;
-        std::ifstream file(filePath);
-        if (file.is_open()) {
-            while (getline(file, line)) {
-                if(line.empty())    continue;
-                tokenize(line);
-            }
-            file.close();
-        }
-        return;
-};
-*/
+
+// InputParser::InputParser() {
+
+// }
+
 
 void InputParser::tokenize(std::string line) {
-    std::cout << line;
+    std::cout << line<<"\n";
     if(regex_match(line, regDefRegex))            parseRegDef(line);
     else if(regex_match(line, regExpRegex))       parseRegExp(line);
     else if(regex_match(line, keywordRegex))      parseKeyword(line);
@@ -34,17 +25,93 @@ void InputParser::tokenize(std::string line) {
         throw std::invalid_argument("received unknownnnnn rule typeeeeee");
     }
 };
-void InputParser::parseRegDef(std::string) {
+void InputParser::parseRegDef(std::string str) {
+    std::cout<<"found reg def" << "\n";
+    str = Utils::trim(str);                                            // trim expression
+    std::vector<std::string> sides = Utils::splitString(str, '=');     // split on =
+    assert(sides.size()==2);                                           // assert 2 sides only
+    std::string lhs=Utils::trim(sides[0]);                             // trim lhs
+    std::string rhs=Utils::trim(sides[1]);                             // trim rhs
+    assert(Utils::splitString(lhs, ' ').size()==1);                    // assert the lhs is one word not separated by more spaces
+    std::vector<std::string> infix = *generateInfix(rhs);
+    std::cout<<"Done Infix"<<"\n";
+    std::vector<std::string> postfix = InfixToPostfix::convert(infix);
 
+}
+
+void InputParser::parseRegExp(std::string str) {
+    std::cout<<"found reg def" << "\n";
+    str = Utils::trim(str);                                            // trim expression
+    std::vector<std::string> sides = Utils::splitString(str, ':');     // split on =
+    assert(sides.size()==2);                                           // assert 2 sides only
+    std::string lhs=Utils::trim(sides[0]);                             // trim lhs
+    std::string rhs=Utils::trim(sides[1]);                             // trim rhs
+    assert(Utils::splitString(lhs, ' ').size()==1);                    // assert the lhs is one word not separated by more spaces
+    std::vector<std::string> infix = *generateInfix(rhs);
+    std::cout<<"Done Infix"<<"\n";
+    std::vector<std::string> postfix = InfixToPostfix::convert(infix);
 };
 
-void InputParser::parseRegExp(std::string) {
-
-};
 void InputParser::parseKeyword(std::string line) {
-  
+    // std::cout<<"found keyword" << "\n";
+
+
 };
    
             
 void InputParser::parsePunctuation(std::string line) {
+    // std::cout<<"found punct" << "\n";
+
+};
+
+
+
+std::vector<std::string>* InputParser::generateInfix(std::string s){
+    int size = s.length();
+    int i=0;
+    std::vector<std::string>* infix = new std::vector<std::string> (); //TODO check if u need pointer
+    std::string word= "";
+    while (i<size)
+    {
+        if(s[i] == ' '){
+            if(!word.empty()){
+                (*infix).push_back(word);
+                // std::cout<< "HHHHHH " << word << "\n";
+                word = "";
+            }
+            i++;
+            continue;
+        } 
+        
+        if(InfixToPostfix::isOperator(s[i]) || s[i]==')' || s[i]=='('){
+                if(!word.empty()){
+                    // std::cout<< "HHHHHH2 " << word << "\n";
+                    (*infix).push_back(word);}
+                word = "";
+                word+= s[i];
+                (*infix).push_back(word);
+                // std::cout<< "HHHHHH3 " << word << "\n";
+                word = "";
+
+
+        }else{
+            if(s[i]=='\\'){
+                if(!word.empty()){
+                    // std::cout<< "HHHHHH4 " << word << "\n";
+                    (*infix).push_back(word);}
+                word = "";
+            }
+            word=word+s[i];
+        }
+        i++;
+    }
+    if(!word.empty()){
+        // std::cout<< "HHHHHH2 " << word << "\n";
+        (*infix).push_back(word);
+    }
+     for (const auto& line : *infix) {
+        std::cout <<line<<" , ";
+    }
+    std::cout<<'\n';
+    return infix;
 };

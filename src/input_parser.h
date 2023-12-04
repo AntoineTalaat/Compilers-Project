@@ -1,12 +1,12 @@
 #ifndef INPUT_PARSER_H
 #define INPUT_PARSER_H
 
-#include <regex>
-#include <string>
-#include <set>
-#include <iostream>
-#include <fstream>
+
+#include <bits/stdc++.h>
+#include <algorithm>
 #include "token.h"
+#include "utils.h"
+#include "infix_to_postfix.h"
 #include "regular_expression.h"
 
 class InputParser {
@@ -24,8 +24,10 @@ class InputParser {
         void parseRegExp(std::string);
         void parseKeyword(std::string);
         void parsePunctuation(std::string);
-        void tokenize(std::string);
     public:
+        // InputParser();
+        void tokenize(std::string);
+        std::vector<std::string>* generateInfix(std::string s);
         std::vector<Token> parseLexicalRulesFile(std::string filePath, std::vector<Token> *tokens , std::vector<std::string> * priorites, std::set<char> *alphabet);
 };
 
