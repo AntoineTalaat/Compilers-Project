@@ -73,4 +73,20 @@ void State::printTransitions() {
             std::cout << s << " ";
         std::cout << std::endl;
     }
-}
+};
+
+std::string State::toString() {
+    std::string s = "";
+
+    s += "transitions:\n";
+    for (const auto& transition : this->getTransitions()) {
+        char a = transition.first;
+        const auto& U = transition.second;
+        s += "    " + std::string(1, a) + " -> {";
+        for (const auto& u : U) {
+            s += std::to_string(u) + ", ";
+        }
+        s += "}\n";
+    }
+    return s;
+};
