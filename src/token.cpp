@@ -1,13 +1,15 @@
 #include "token.h"
 
 Token::Token(){
-    this->type="unknown";
-    this->value="";
+    this->type = "unknown";
+    this->lexeme = "";
+    this->priority = 0;
 }
 
 
-Token::Token(std::string type, std::string value)
+Token::Token(std::string type, std::string lexeme, int priority)
 {
     this->type = type;
-    this->value = value;
+    this->lexeme = lexeme;
+    this->priority = priority;
 }

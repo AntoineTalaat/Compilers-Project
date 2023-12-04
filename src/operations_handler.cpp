@@ -10,7 +10,9 @@ NFA* OperationsHandler::basicNFA(char c) {
     NFA* oneCharNFA = new NFA();
     oneCharNFA->setStartState(start);
     oneCharNFA->setFinalState(final);
-}
+    
+    return oneCharNFA;
+};
 
 
 
@@ -93,6 +95,7 @@ NFA* OperationsHandler::handleBinaryOperator(char op,NFA* first, NFA* second) {
         std::cout<<"Unknown operator received"<<'\n';
         break;
     }
+    return nullptr;
 }
 
 NFA* OperationsHandler::handleUnaryOperator(char op,NFA* first) {
@@ -110,6 +113,7 @@ NFA* OperationsHandler::handleUnaryOperator(char op,NFA* first) {
         std::cout<<"Unknown operator received"<<'\n';
         break;
     }
+    return nullptr;
 }
 
 

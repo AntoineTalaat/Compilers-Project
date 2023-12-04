@@ -20,7 +20,6 @@ class InputParser {
         static std::map<std::string, RegularExpression> regularDefinitions;
         static std::vector<std::string> keywords;
         static std::vector<std::string> punctuationSymbols;
-        static std::map<std::string,NFA*> regularDefinitionNFA;
 
         void parseRegDef(std::string);
         void parseRegExp(std::string);
