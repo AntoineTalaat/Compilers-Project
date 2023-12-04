@@ -36,13 +36,14 @@ void InputParser::parseRegDef(std::string str) {
     std::vector<std::string> infix = *generateInfix(rhs);
     std::cout<<"Done Infix"<<"\n";
     std::vector<std::string> postfix = InfixToPostfix::convert(infix);
-
+    NFA* nfa = NFAGenerator::generateNFAFromPostfix(postfix);
+    regularDefinitionNFA[lhs]=nfa;
 }
 
 void InputParser::parseRegExp(std::string str) {
     std::cout<<"found reg def" << "\n";
     str = Utils::trim(str);                                            // trim expression
-    std::vector<std::string> sides = Utils::splitString(str, ':');     // split on =
+    std::vector<std::string> sides = Utils::splitString(str, ':');     // split on :
     assert(sides.size()==2);                                           // assert 2 sides only
     std::string lhs=Utils::trim(sides[0]);                             // trim lhs
     std::string rhs=Utils::trim(sides[1]);                             // trim rhs
@@ -50,18 +51,35 @@ void InputParser::parseRegExp(std::string str) {
     std::vector<std::string> infix = *generateInfix(rhs);
     std::cout<<"Done Infix"<<"\n";
     std::vector<std::string> postfix = InfixToPostfix::convert(infix);
+    NFA* nfa = NFAGenerator::generateNFAFromPostfix(postfix);
+    // TODO setup the token
 };
 
 void InputParser::parseKeyword(std::string line) {
     // std::cout<<"found keyword" << "\n";
-
+    std::string keywordStr = line.substr(1, line.length() - 2); 
+    keywordStr=Utils::trim(keywordStr);
+    std::vector<std::string> keywords = Utils::splitString(keywordStr,' ');
+    for (const auto& keyword : keywords) {
+        NFA* nfa = NFAGenerator::generateNFAFromString(keyword);
+        // TODO setup the token
+    }
 
 };
    
             
 void InputParser::parsePunctuation(std::string line) {
     // std::cout<<"found punct" << "\n";
-
+    std::string punctStr = line.substr(1, line.length() - 2); 
+    punctStr=Utils::trim(punctStr);
+    std::vector<std::string> puncts = Utils::splitString(punctStr,' ');
+    for (const auto& punct : puncts) {
+        assert(punct.length()==1 || punct.length()==2 && punct[0] =='\\');
+        std::string str = "" ;
+        str += punct[punct.length()-1];
+        NFA* nfa = NFAGenerator::generateNFAFromString(str);
+        // TODO setup the token
+    }
 };
 
 

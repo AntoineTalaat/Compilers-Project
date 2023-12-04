@@ -18,12 +18,14 @@ std::vector<std::string> Utils::splitString(const std::string& input, char delim
     size_t end = input.find(delimiter);
 
     while (end != std::string::npos) {
-        tokens.push_back(input.substr(start, end - start));
+        if(!input.substr(start, end - start).empty());
+            tokens.push_back(input.substr(start, end - start));
         start = end + 1;
         end = input.find(delimiter, start);
     }
 
-    tokens.push_back(input.substr(start, end));
+    if(!input.substr(start, end - start).empty());
+        tokens.push_back(input.substr(start, end));
     return tokens;
 }
 

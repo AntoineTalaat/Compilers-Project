@@ -6,9 +6,10 @@
 #include <algorithm>
 #include "token.h"
 #include "utils.h"
+#include "nfa.h"
 #include "infix_to_postfix.h"
 #include "regular_expression.h"
-
+#include "nfa_generator.h"
 class InputParser {
     private:
         static std::vector<Token*> tokens;
@@ -19,6 +20,7 @@ class InputParser {
         static std::map<std::string, RegularExpression> regularDefinitions;
         static std::vector<std::string> keywords;
         static std::vector<std::string> punctuationSymbols;
+        static std::map<std::string,NFA*> regularDefinitionNFA;
 
         void parseRegDef(std::string);
         void parseRegExp(std::string);
