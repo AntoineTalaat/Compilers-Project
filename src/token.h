@@ -9,10 +9,11 @@
 class Token {
 public:
     std::string type;
-    std::string value;
+    std::string lexeme;
+    int priority;
 
     Token();
-    Token(std::string type,std::string value);
+    Token(std::string type,std::string lexeme, int priority);
 };
 
 #endif  // TOKEN_H

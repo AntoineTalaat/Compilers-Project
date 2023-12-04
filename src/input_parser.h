@@ -20,15 +20,15 @@ class InputParser {
         static std::map<std::string, RegularExpression> regularDefinitions;
         static std::vector<std::string> keywords;
         static std::vector<std::string> punctuationSymbols;
-        static std::map<std::string,NFA*> regularDefinitionNFA;
 
         void parseRegDef(std::string);
-        void parseRegExp(std::string);
-        void parseKeyword(std::string);
-        void parsePunctuation(std::string);
+        void parseRegExp(std::string, int);
+        void parseKeyword(std::string, int);
+        void parsePunctuation(std::string, int);
     public:
         // InputParser();
-        void tokenize(std::string);
+        std::vector<NFA*> allNFAs;
+        void tokenize(std::string, int);
         std::vector<std::string>* generateInfix(std::string s);
         std::vector<Token> parseLexicalRulesFile(std::string filePath, std::vector<Token> *tokens , std::vector<std::string> * priorites, std::set<char> *alphabet);
 };
