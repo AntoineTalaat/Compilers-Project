@@ -16,6 +16,7 @@ class NFA {
     public:
         NFA();
         NFA(State* start);
+        NFA(State* start, State* final);
         NFA(State* start, std::map<int,State*> states);
         NFA(State* start, std::set<State*> states);
 

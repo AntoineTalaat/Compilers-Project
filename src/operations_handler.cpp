@@ -24,7 +24,7 @@ NFA* OperationsHandler::unionOp(NFA* first, NFA* second) {
 
     firstFinal->setIsAccepting(false);
     secondFinal->setIsAccepting(false);
-
+    
     newNfa->setStartState(start);
     newNfa->setFinalState(final);
     newNfa->setBatchStates(first->getStatesMap());
@@ -43,16 +43,11 @@ NFA* OperationsHandler::concatOp(NFA* first, NFA* second) {
     State* secondFinal = second->getFinalState();
 
     firstFinal->setIsAccepting(false);
-    secondFinal->setIsAccepting(false);
-
     firstFinal->addTransition(EPSILLON, secondStart->getId());
-    State* final = new State(true);
-    secondFinal->addTransition(EPSILLON, final->getId());
 
-    newNfa->setFinalState(final);
+    newNfa->setFinalState(secondFinal);
     newNfa->setBatchStates(first->getStatesMap());
     newNfa->setBatchStates(second->getStatesMap());
-    // deallocate first and second
     return newNfa;
 };
 
@@ -82,10 +77,11 @@ NFA* OperationsHandler::positiveCloruseOp(NFA* nfa) {
 };
 
 NFA* OperationsHandler::rangeOp(char from, char to) {
-    NFA* nfa = new NFA();
-    
+    NFA* nfa = new NFA(new State(), new State());
+    State* s1 = nfa->getStartState();
+    State* s2 = nfa->getFinalState();
     for(char c = from; c <= to; c++) {
-        NFA* newNfa = new NFA();
+        NFA* newNfa = new NFA(new State(), new State());
         newNfa->getStartState()->addTransition(c, newNfa->getFinalState()->getId());
         nfa->getStartState()->addTransition(EPSILLON, newNfa->getStartState()->getId());
         newNfa->getFinalState()->addTransition(EPSILLON, nfa->getFinalState()->getId());
@@ -95,7 +91,7 @@ NFA* OperationsHandler::rangeOp(char from, char to) {
 };
 
  NFA* OperationsHandler::joinNFAs(NFA* first, NFA* second) {
-    NFA* newNfa = new NFA();
+    NFA* newNfa = new NFA(new State());
     newNfa->getStartState()->addTransition(EPSILLON, first->getStartState()->getId());
     newNfa->getStartState()->addTransition(EPSILLON, second->getStartState()->getId());
 

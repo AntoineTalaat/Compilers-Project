@@ -64,3 +64,13 @@ void State::addTransition(char letter, int state) {
 int State::generateId() {
     return State::counterGlobalId++;              
 }
+
+void State::printTransitions() {
+    std::map<char, std::set<int>> transitions = this->getTransitions();
+    for(auto tr : transitions) {
+        std::cout << "Input: " << tr.first << " moves to States# ";
+        for (auto &s : tr.second)
+            std::cout << s << " ";
+        std::cout << std::endl;
+    }
+}
