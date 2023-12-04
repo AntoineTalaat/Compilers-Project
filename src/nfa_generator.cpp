@@ -24,39 +24,65 @@ NFA* NFAGenerator::getFullNFA() {
 };
 
 NFA* NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
+    for (const auto& regdef : Globals::regularDefinitionNFA) {
+        std::cout <<"HEREEEEE " <<regdef.first << ": ";
+        std::cout << regdef.second<< std::endl;
+    }
+    std::cout<<"\nSTARTING "<< '\n';
+
     std::stack<NFA*> stk;   
     for (const auto& string : postfix) {
-        if(!InfixToPostfix::isOperatorString(string)){
+
+        std::cout<<"\nhandling string:_" << string <<"_ " << stk.size() <<'\n';
+        // if(!InfixToPostfix::isOperatorString(string)){
             // either named regular definition, or letters 
-            if(regularDefinitionNFA.find(string)!=regularDefinitionNFA.end()){
-                // retrieve the nfa from the map
-                stk.push(regularDefinitionNFA[string]);
-            }else if(InfixToPostfix::isOperatorString(string)){
-                NFA* first = stk.top();
+        if(Globals::regularDefinitionNFA.find(string)!=Globals::regularDefinitionNFA.end()){
+            // retrieve the nfa from the map
+            std::cout<<"push known regdef " << string <<'\n';
+            stk.push(Globals::regularDefinitionNFA[string]);
+        }else if(InfixToPostfix::isOperatorString(string)){
+            NFA* first = stk.top();
+            std::cout<<"pop1 " << string <<'\n';
+            stk.pop();
+            if(InfixToPostfix::isBinaryOperatorString(string)){
+                NFA* second = stk.top();
+                std::cout<<"pop2 " << string <<'\n';
                 stk.pop();
-                if(InfixToPostfix::isBinaryOperatorString(string)){
-                    NFA* second = stk.top();
-                    stk.pop();
-                    NFA* generated = OperationsHandler::handleBinaryOperator(string[0],first,second);
-                    stk.push(generated);
-                } else {
-                    NFA* generated = OperationsHandler::handleUnaryOperator(string[0],first);
-                    stk.push(generated);
-                }
-            } else if(string.length() == 1 || string.length()==2 && string[0]=='\\'){
-                //either one letter,
-                // or letter after backslash
-                NFA* appended = OperationsHandler::basicNFA(string[string.length()-1]);
-                stk.push(appended);
-            }else{
-                //stacked letters
-                // IMPORTANT 
-                std::cout<<"got a postfix string: " << string <<"\n";
-                NFA* appended = generateNFAFromString(string);
-                stk.push(appended);
+                std::cout<<"after pop2 " << string <<'\n';
+
+                NFA* generated = OperationsHandler::handleBinaryOperator(string[0],second,first);
+                std::cout<<"after binary " << string <<'\n';
+
+                stk.push(generated);
+                std::cout<<"push " << string <<'\n';
+
+            } else {
+                NFA* generated = OperationsHandler::handleUnaryOperator(string[0],first);
+                std::cout<<"push " << string <<'\n';
+
+                stk.push(generated);
             }
+        } else if(string.length() == 1 || string.length()==2 && string[0]=='\\'){
+            //either one letter,
+            // or letter after backslash
+
+            NFA* appended = OperationsHandler::basicNFA(string[string.length()-1]);
+            std::cout<<"push " << string <<'\n';
+
+            stk.push(appended);
+        }else{
+            //stacked letters
+            // IMPORTANT 
+            std::cout<<"got a MIX string: " << string <<"\n";
+            NFA* appended = generateNFAFromString(string);
+            std::cout<<"push " << string <<'\n';
+
+            stk.push(appended);
         }
+        // }
     }
+    std::cout<<"Final "<<stk.size()<< '\n'<<'\n';
+
     assert(stk.size()==1);
     return stk.top();
     

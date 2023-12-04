@@ -22,7 +22,6 @@ void InputParser::tokenize(std::string line) {
 };
 
 void InputParser::parseRegDef(std::string str) {
-    std::cout<<"found reg def" << "\n";
     str = Utils::trim(str);                                            // trim expression
     std::vector<std::string> sides = Utils::splitString(str, '=');     // split on =
     assert(sides.size()==2);                                           // assert 2 sides only
@@ -30,15 +29,17 @@ void InputParser::parseRegDef(std::string str) {
     std::string rhs=Utils::trim(sides[1]);                             // trim rhs
     assert(Utils::splitString(lhs, ' ').size()==1);                    // assert the lhs is one word not separated by more spaces
     std::vector<std::string> infix = *generateInfix(rhs);
-    std::cout<<"Done Infix"<<"\n";
     std::vector<std::string> postfix = InfixToPostfix::convert(infix);
     NFA* nfa = NFAGenerator::generateNFAFromPostfix(postfix);
-    regularDefinitionNFA[lhs]=nfa;
+    Globals::regularDefinitionNFA[lhs]=nfa;
+    std::cout<<"ADDED TO NFA MAP " << lhs<< ">>>"<< rhs <<'\n';
+    Globals::regularDefinitionNFA[lhs]=nfa;
+
+    std::cout<<"MAP " << (Globals::regularDefinitionNFA.find(lhs)!=Globals::regularDefinitionNFA.end()) <<'\n';
     allNFAs.push_back(nfa);
 };
 
 void InputParser::parseRegExp(std::string str) {
-    std::cout<<"found reg def" << "\n";
     str = Utils::trim(str);                                            // trim expression
     std::vector<std::string> sides = Utils::splitString(str, ':');     // split on :
     assert(sides.size()==2);                                           // assert 2 sides only
@@ -46,7 +47,6 @@ void InputParser::parseRegExp(std::string str) {
     std::string rhs=Utils::trim(sides[1]);                             // trim rhs
     assert(Utils::splitString(lhs, ' ').size()==1);                    // assert the lhs is one word not separated by more spaces
     std::vector<std::string> infix = *generateInfix(rhs);
-    std::cout<<"Done Infix"<<"\n";
     std::vector<std::string> postfix = InfixToPostfix::convert(infix);
     NFA* nfa = NFAGenerator::generateNFAFromPostfix(postfix);
     

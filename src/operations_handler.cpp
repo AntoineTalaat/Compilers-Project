@@ -50,20 +50,41 @@ NFA* OperationsHandler::unionOp(NFA* first, NFA* second) {
 };
 
 NFA* OperationsHandler::concatOp(NFA* first, NFA* second) {
+ 
+
+    std::cout<<"a " <<'\n';
     NFA* newNfa = new NFA();
 
+    std::cout<<"b " <<'\n';
+
     State* firstStart = first->getStartState();
+    std::cout<<"c " <<'\n';
+
     State* firstFinal = first->getFinalState();
+    std::cout<<"d " <<'\n';
 
     State* secondStart = second->getStartState();
+    std::cout<<"e " <<'\n';
+
     State* secondFinal = second->getFinalState();
+    std::cout<<"f " <<'\n';
 
     firstFinal->setIsAccepting(false);
+    std::cout<<"g " <<'\n';
+    std::cout<<"g2 " << secondStart->getId() <<'\n';
+
     firstFinal->addTransition(EPSILLON, secondStart->getId());
+    std::cout<<"h " <<'\n';
 
     newNfa->setFinalState(secondFinal);
+    std::cout<<"i " <<'\n';
+
     newNfa->setBatchStates(first->getStatesMap());
+    std::cout<<"j " <<'\n';
+
     newNfa->setBatchStates(second->getStatesMap());
+    std::cout<<"k " <<'\n';
+
     return newNfa;
 };
 
@@ -82,6 +103,7 @@ NFA* OperationsHandler::handleBinaryOperator(char op,NFA* first, NFA* second) {
     switch (op)
     {
     case '&':
+        std::cout<<"before & "  <<'\n';
         return OperationsHandler::concatOp(first,second);
         break;
     case '-':
@@ -156,11 +178,11 @@ NFA* OperationsHandler::rangeOp(NFA* from, NFA* to) {
 
 
     assert(from->getStartState()->getTransitions().size() == 1);
-    assert(from->getFinalState()->getTransitions().size() == 1);
+    assert(to->getStartState()->getTransitions().size() == 1);
 
     // Get the entry from the map
     std::pair<char, std::set<int>> entryFirst = *from->getStartState()->getTransitions().begin();
-    std::pair<char, std::set<int>> entryLast  = *from->getStartState()->getTransitions().begin();
+    std::pair<char, std::set<int>> entryLast  = *to->getStartState()->getTransitions().begin();
 
     assert(entryFirst.second.size()==1);
     assert( entryLast.second.size()==1);;
