@@ -32,9 +32,7 @@ class State {
         void setAcceptedToken(Token t);
         std::map<char, std::set</**State*/int>> getTransitions();
         void addTransition(char letter, int state);
+        void printTransitions();
         std::string toString();
-
-
-
 };
 #endif  // STATE_H

@@ -2,21 +2,24 @@
 #include <utility>
 
 NFA::NFA() {
-    setStartState(new State());
-    setFinalState(new State());
 };
 
 NFA::NFA(State* startState) {
-     this->startState = startState;
+     this->setStartState(startState);
  };
 
+NFA::NFA(State* startState, State* finalState) {
+     this->setStartState(startState);
+     this->setFinalState(finalState);
+};
+
 NFA::NFA(State* start, std::map<int,State*> states){
-    this->startState = start;
+    this->setStartState(start);
     this->setBatchStates(std::move(states));
 }
 
 NFA::NFA(State* startState, std::set<State*> states) {
-    this->startState = startState;
+    this->setStartState(startState);
     this->statesMap = createStateMap(std::move(states));
 };
 
