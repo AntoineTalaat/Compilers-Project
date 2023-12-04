@@ -125,6 +125,12 @@ void SubsetConstruction::printDFATransitionhs(std::map<std::pair<std::set<int>, 
     }
 }
 
+//State* SubsetConstruction::getNewState (std::set <int> inputSetOfStates){
+//
+//
+//    return TState;
+//}
+
 std::map< std::pair<State*, char> , State* > SubsetConstruction::getDFA(){
     std::map< std::pair<State*, char> , State* > DFA;
     std::map< std::pair<std::set<int>, char> , std::set<int> > Dtran = this->convertNFAToDFA();
@@ -132,47 +138,92 @@ std::map< std::pair<State*, char> , State* > SubsetConstruction::getDFA(){
     std::map<std::set<int>, State*> statesMap;
 
     for (const auto& transition : Dtran) {
+
         const auto& inputSetOfStates = transition.first.first;
         char a = transition.first.second;
         const auto& OutputSetOfStates = transition.second;
 
+//        std::cout << "input set of states: ";
+//        this->printSet(inputSetOfStates);
+//        std::cout << std::endl;
+//        std::cout << "input char: " << a << std::endl;
+//        std::cout << "output set of states: ";
+//        this->printSet(OutputSetOfStates);
+//        std::cout << std::endl;
+
+
         // if inputSetOfStates is in statesMap then get the state else create a new state and add it to the map
-        State* TState;
+        State* TState ;
+        State* UState;
+
         if(statesMap.find(inputSetOfStates) != statesMap.end()) {
+//            std::cout << "input set of states is in statesMap\n";
             TState = statesMap.at(inputSetOfStates);
+//            std::cout << "TState: " << TState->toString() << std::endl;
         } else {
-            TState = new State();
+//            std::cout << "input set of states is not in statesMap\n";
+            TState = new State(new Token("", "", INT16_MAX));
+//            TState->getAcceptedToken()->priority = ;
+            TState->setIsAccepting(false);
+
+
             // check if the inputSetOfStates contains an accepting state and set the new state is accepting if the inputSetOfStates contains an accepting state
             for (int state: inputSetOfStates) {
+//                std::cout << "state " << state << " in input \n";
                 if (this->nfa.getStatesMap().at(state)->getIsAccepting()) {
-                    std::cout << "state " << state << " is accepting\n";
+//                    std::cout << "state " << state << " is accepting\n";
                     TState->setIsAccepting(true);
-                    //TState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
-                    break;
+
+                    if(this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority < TState->getAcceptedToken()->priority){
+//                        std::cout << "current Priority: " << TState->getAcceptedToken()->priority << std::endl;
+//                        std::cout << "new Priority: " << this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority << std::endl;
+
+
+                        TState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
+                        //TState->getAcceptedToken()->priority = this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority;
+                    }
                 }
             }
+
+//            std::cout << "TState: " << TState->toString() << std::endl;
             statesMap[inputSetOfStates] = TState;
         }
 
-        // do the same for UState
-        State* UState;
+
         if(statesMap.find(OutputSetOfStates) != statesMap.end()) {
+//            std::cout << "output set of states is in statesMap\n";
             UState = statesMap.at(OutputSetOfStates);
+//            std::cout << "UState: " << UState->toString() << std::endl;
         } else {
-            UState = new State();
-            // check if the OutputSetOfStates contains an accepting state and set the new state is accepting if the OutputSetOfStates contains an accepting state
+//            std::cout << "output set of states is not in statesMap\n";
+            UState = new State(new Token("", "", INT16_MAX));
+//
+            UState->setIsAccepting(false);
+//            std::cout << "Ustate intialized\n";
+
+            // check if the inputSetOfStates contains an accepting state and set the new state is accepting if the inputSetOfStates contains an accepting state
             for (int state: OutputSetOfStates) {
+//                std::cout << "state " << state << " in output \n";
                 if (this->nfa.getStatesMap().at(state)->getIsAccepting()) {
-                    std::cout << "state " << state << " is accepting\n";
+//                    std::cout << "state " << state << " is accepting\n";
                     UState->setIsAccepting(true);
-                    //UState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
-                    break;
+
+                    if(this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority < UState->getAcceptedToken()->priority){
+//                        std::cout << "current Priority: " << UState->getAcceptedToken()->priority << std::endl;
+//                        std::cout << "new Priority: " << this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority << std::endl;
+
+
+                        UState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
+                       // UState->getAcceptedToken()->priority = this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority;
+
+//                        std::cout << "UState: " << UState->getAcceptedToken()->priority << std::endl;
+                    }
                 }
             }
+
+//            std::cout << "UState: " << UState->toString() << std::endl;
             statesMap[OutputSetOfStates] = UState;
-
         }
-
 
         DFA[std::make_pair(TState, a)] = UState;
     }

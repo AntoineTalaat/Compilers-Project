@@ -29,5 +29,6 @@ class SubsetConstruction {
         void setAlphabet(std::set <char> alphabet);
         std::map< std::pair<State*, char> , State* > getDFA();
 
+    
 };
 #endif  // SubsetConstruction_H
