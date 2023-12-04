@@ -1,8 +1,8 @@
-// #include <iostream>
+#include <iostream>
 #include "src/nfa.h"
-#include "src/input_parser.h"
 #include "src/subset_construction.h"
-#include "src/nfa_generator.h"
+#include "input_parser.h"
+
 
 using namespace std;
 int main(){
@@ -34,9 +34,17 @@ int main(){
     // s7->addTransition(EPSILLON, s2->getId());
     // s7->addTransition(EPSILLON, s8->getId());
 
+
     // s8->addTransition('a', s9->getId());
     // s9->addTransition('b', s10->getId());
     // s10->addTransition('b', s11->getId());
+
+//    s8->addTransition('a', s9->getId());
+//    s9->addTransition('b', s10->getId());
+//    s10->addTransition('b', s11->getId());
+//    s11->setIsAccepting(true);
+//    std::cout << s11->getId() << std::endl;
+
 
     // map<int, State *> m;
     // m[s1->getId()] = s1;
@@ -53,9 +61,24 @@ int main(){
 
     // NFA *nfa = new NFA(s1 ,m);
 
+
     // SubsetConstruction *s = new SubsetConstruction(*nfa);
     // s->setAlphabet({'a', 'b' , EPSILLON});
     // std::map<std::pair<std::set<int>, char>, std::set<int>> Dtrans = s->convertNFAToDFA();
+
+//    SubsetConstruction *s = new SubsetConstruction(*nfa);
+//    s->setAlphabet({'a', 'b' , EPSILLON});
+//    std::map<std::pair<State*, char>, State*> Dtrans = s->getDFA();
+//
+//    std::cout << "Dtran:\n";
+//    for (const auto& transition : Dtrans) {
+//        const auto& T = transition.first.first;
+//        char a = transition.first.second;
+//        const auto& U = transition.second;
+//        std::cout << "Dtran[{" << T->getId() << ", " << T->getIsAccepting() << "}, " << a << "] = {" <<
+//                                    U->getId() << ", " << U->getIsAccepting()<< "}\n";
+//    }
+
 
 
     string file = "rules.txt";

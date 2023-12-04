@@ -29,8 +29,6 @@ int State::getId() {
     return this->id;
 };
 
-
-
 void State::setIsAccepting(bool isAccepting) {
     this->isAccepting = isAccepting;
 };
@@ -38,11 +36,11 @@ bool State::getIsAccepting() {
     return this->isAccepting;
 };
 
-void State::setAcceptedToken(Token t) {
+void State::setAcceptedToken(Token* t) {
     setIsAccepting(true);
     this->acceptedToken = t;
 };
-Token State::getAcceptedToken() {
+Token* State::getAcceptedToken() {
     return this->acceptedToken;
 };
 

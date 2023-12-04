@@ -11,7 +11,7 @@ class State {
     private:
         int id;
         bool isAccepting;
-        Token acceptedToken;
+        Token* acceptedToken;
         std::map<char, std::set<int>> transitions;
 
     public:
@@ -28,8 +28,8 @@ class State {
         int getId();
         void setIsAccepting(bool isAccepting);
         bool getIsAccepting();
-        Token getAcceptedToken();
-        void setAcceptedToken(Token t);
+        Token* getAcceptedToken();
+        void setAcceptedToken(Token* t);
         std::map<char, std::set</**State*/int>> getTransitions();
         void addTransition(char letter, int state);
         void printTransitions();

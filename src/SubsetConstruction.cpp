@@ -145,6 +145,7 @@ std::map< std::pair<State*, char> , State* > SubsetConstruction::getDFA(){
             // check if the inputSetOfStates contains an accepting state and set the new state is accepting if the inputSetOfStates contains an accepting state
             for (int state: inputSetOfStates) {
                 if (this->nfa.getStatesMap().at(state)->getIsAccepting()) {
+                    std::cout << "state " << state << " is accepting\n";
                     TState->setIsAccepting(true);
                     //TState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
                     break;
@@ -162,6 +163,7 @@ std::map< std::pair<State*, char> , State* > SubsetConstruction::getDFA(){
             // check if the OutputSetOfStates contains an accepting state and set the new state is accepting if the OutputSetOfStates contains an accepting state
             for (int state: OutputSetOfStates) {
                 if (this->nfa.getStatesMap().at(state)->getIsAccepting()) {
+                    std::cout << "state " << state << " is accepting\n";
                     UState->setIsAccepting(true);
                     //UState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
                     break;

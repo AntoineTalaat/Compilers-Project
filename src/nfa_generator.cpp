@@ -13,10 +13,10 @@ NFAGenerator::NFAGenerator(std::string file) {
     // NFAGenerator::rulesFile = file;
 };
 
-NFA* NFAGenerator::getFullNFA() {
-    if(this->allNFA.empty())    return nullptr;
-    NFA* final = this->allNFA.front();
-    for(auto it = std::next(this->allNFA.begin()); it != this->allNFA.end(); ++it) {
+NFA* NFAGenerator::getFullNFA(std::vector<NFA*> allNFAs) {
+    if(allNFAs.empty())    return nullptr;
+    NFA* final = allNFAs.front();
+    for(auto it = std::next(allNFAs.begin()); it != allNFAs.end(); ++it) {
         final = OperationsHandler::joinNFAs(final, *it);
     }
 
