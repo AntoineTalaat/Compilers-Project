@@ -4,11 +4,13 @@ int State::counterGlobalId = 0;
 
 State::State(){
     this->id = generateId();
+    std::cout<<"ASSIGNED STATE TO ID "<<this->id ;
     this->isAccepting = false;
 };
 
 State::State(bool isAccepting) {
     this->id = generateId();
+    std::cout<<"ASSIGNEDD STATE TO ID "<<this->id ;
     this->isAccepting = isAccepting;
 };
 
@@ -21,6 +23,8 @@ State::State(Token* t) {
 
 State::State(int id, bool isAccepting) {
     this->id = id;
+    std::cout<<"ASSIGNEDDD STATE TO ID "<<this->id ;
+
     this->isAccepting = isAccepting;
 };
 
