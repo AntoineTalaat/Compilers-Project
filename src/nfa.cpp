@@ -24,16 +24,16 @@ NFA::NFA(State  startState, std::set<State > states) {
 };
 
 State  NFA::getStartState() {
-    return this->startState;
+    return this->statesMap[this->startStateID];
 };
 
 void NFA::setStartState(State  state) {
-    this->startState = state;
+    this->startStateID = state.getId();
     addState(state);
 };
 
 State  NFA::getFinalState() {
-    return this->finalState;
+    return this->statesMap[this->finalStateID];
 };
 
 // NFA  NFA::clone() {
@@ -43,8 +43,8 @@ State  NFA::getFinalState() {
 // };
 
 void NFA::setFinalState(State  state) {
-    this->finalState = state;
-    this->finalState.setIsAccepting(true);
+    this->finalStateID = state.getId();
+    //this->finalState.setIsAccepting(true);
     addState(state);
 };
 

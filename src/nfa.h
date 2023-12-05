@@ -6,8 +6,8 @@
 
 class NFA {
     private:
-        State startState;
-        State finalState;
+        int startStateID;
+        int finalStateID;
         std::map<int, State> statesMap;
         std::map<int, State> createStateMap(std::set<State> states);
 
