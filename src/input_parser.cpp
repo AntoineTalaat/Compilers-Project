@@ -36,7 +36,7 @@ void InputParser::parseRegDef(std::string str) {
     Globals::regularDefinitionNFA[lhs]=nfa;
 
     // std::cout<<"MAP " << (Globals::regularDefinitionNFA.find(lhs)!=Globals::regularDefinitionNFA.end()) <<'\n';
-    allNFAs.push_back(nfa);
+    // allNFAs.push_back(nfa);
 };
 
 void InputParser::parseRegExp(std::string str, int priority) {

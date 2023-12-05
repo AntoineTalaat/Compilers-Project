@@ -47,15 +47,13 @@ int main(){
         State T = transition.first.first;
         char a = transition.first.second;
         State U = transition.second;
-        std::cout << "Dtran[{" << T.getId() << ", " << T.getIsAccepting() << "," <<T.getAcceptedToken()->type<<
+        std::cout << "Dtran[{" << T.getId() << ", " << T.getIsAccepting() <<
                                                 "}, " << a << "] = {" <<
-                                    U.getId() << ", " << U.getIsAccepting()<<  "," << U.getAcceptedToken()->type << ","
-                                    << U.getAcceptedToken()->priority<<"}\n";
+                                    U.getId() << ", " << U.getIsAccepting()
+                                    <<"}\n";
 
-        std::cout << "Dtran[{" << T.getId() << ", " << T.getIsAccepting() << "," << T.getAcceptedToken()->type<<
-                                        "}, " << a << "] = {" <<
-                            U.getId() << ", " << U.getIsAccepting()<<  "," << U.getAcceptedToken()->type << ","
-                            << U.getAcceptedToken()->priority<<"}\n";
+        // std::cout << "Dtran[{" << T.getId() << ", " << T.getIsAccepting() << "] = {" <<
+        //                     U.getId() << ", " << U.getIsAccepting()  << "}\n";
     }
 
 
