@@ -15,7 +15,7 @@ class OperationsHandler {
         static NFA* rangeOp(char from, char to);
         static NFA* rangeOp(NFA* from, NFA* to);
         static NFA* joinNFAs(NFA* first, NFA* second);
-        static NFA* basicNFA(char c);
+        static NFA* basicNFA(char c);  
         static NFA* handleBinaryOperator(char op,NFA* first, NFA* second);
         static NFA* handleUnaryOperator(char op,NFA* first);
 };

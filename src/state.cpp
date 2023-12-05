@@ -4,23 +4,29 @@ int State::counterGlobalId = 0;
 
 State::State(){
     this->id = generateId();
-    std::cout<<"ASSIGNED STATE TO ID "<<this->id ;
+    // std::cout<<"ASSIGNED STATE TO ID "<<this->id <<'\n';
     this->isAccepting = false;
 };
 
 State::State(bool isAccepting) {
     this->id = generateId();
-    std::cout<<"ASSIGNEDD STATE TO ID "<<this->id ;
+    // std::cout<<"ASSIGNEDD STATE TO ID "<<this->id <<'\n';
     this->isAccepting = isAccepting;
 };
+
 
 
 State::State(int id, bool isAccepting) {
     this->id = id;
-    std::cout<<"ASSIGNEDDD STATE TO ID "<<this->id ;
+    // std::cout<<"ASSIGNEDDD STATE TO ID "<<this->id<<'\n' ;
 
     this->isAccepting = isAccepting;
 };
+
+// State* State::clone(){
+
+// }
+
 
 void State::setId(int id) {
     this->id = id;
@@ -52,13 +58,19 @@ std::map<char, std::set<int/*State**/>> State::getTransitions() {
 
 void State::addTransition(char letter, int state) {
     auto it = this->transitions.find(letter);
+    // std::cout<<"x " <<'\n';
 
     if (it == this->transitions.end()) {
         // If the key doesn't exist, insert a new key-value pair
+
         this->transitions.emplace(letter, std::set<int>{state});
+        // std::cout<<"y " <<'\n';
+
     } else {
         // If the key already exists, insert the state into the existing set
         it->second.insert(state);
+        // std::cout<<"z " <<'\n';
+
     }
 }
 

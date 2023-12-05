@@ -90,8 +90,8 @@ int main(){
     std::vector<std::string> lines = Utils::splitString(content, delimiter);
 
     for (const auto& line : lines) {
-        cout<<"\nLINE " <<line<<endl;
-        ip.tokenize(line);
+        cout<<"\nLINE " <<line << "__" <<endl;
+        ip.tokenize(line,0);
         cout<<endl;
     }
     return 0;

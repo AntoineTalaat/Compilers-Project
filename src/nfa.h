@@ -19,7 +19,7 @@ class NFA {
         NFA(State* start, State* final);
         NFA(State* start, std::map<int,State*> states);
         NFA(State* start, std::set<State*> states);
-
+        
         State* getStartState();
         void   setStartState(State* state);
         State* getFinalState();
@@ -27,5 +27,6 @@ class NFA {
         void   addState(State* state);
         void   setBatchStates(const std::map<int,State*>& states);
         std::map<int, State*> getStatesMap();
+        NFA*   clone();
 };
 #endif  // NFA_H

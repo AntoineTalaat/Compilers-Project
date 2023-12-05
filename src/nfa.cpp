@@ -36,6 +36,12 @@ State* NFA::getFinalState() {
     return this->finalState;
 };
 
+// NFA* NFA::clone() {
+//     NFA* newNFA= new NFA();
+
+//     return newNFA;
+// };
+
 void NFA::setFinalState(State* state) {
     this->finalState = state;
     this->finalState->setIsAccepting(true);

@@ -25,12 +25,12 @@ NFA* NFAGenerator::getFullNFA(std::vector<NFA*> allNFAs) {
 
 NFA* NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
     for (const auto& regdef : Globals::regularDefinitionNFA) {
-        std::cout <<"HEREEEEE " <<regdef.first << ": ";
+        std::cout <<"HERE " <<regdef.first << ": ";
         std::cout << regdef.second<< std::endl;
     }
     std::cout<<"\nSTARTING "<< '\n';
 
-    std::stack<NFA*> stk;   
+    std::stack<NFA*> stk = *new std::stack<NFA*>();   
     for (const auto& string : postfix) {
 
         std::cout<<"\nhandling string:_" << string <<"_ " << stk.size() <<'\n';
@@ -38,7 +38,7 @@ NFA* NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
             // either named regular definition, or letters 
         if(Globals::regularDefinitionNFA.find(string)!=Globals::regularDefinitionNFA.end()){
             // retrieve the nfa from the map
-            std::cout<<"push known regdef " << string <<'\n';
+            std::cout<<"push known regdef nfa " << string <<'\n';
             stk.push(Globals::regularDefinitionNFA[string]);
         }else if(InfixToPostfix::isOperatorString(string)){
             NFA* first = stk.top();
@@ -54,11 +54,11 @@ NFA* NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
                 std::cout<<"after binary " << string <<'\n';
 
                 stk.push(generated);
-                std::cout<<"push " << string <<'\n';
+                std::cout<<"pushed binary operator nfa by " << string <<'\n';
 
             } else {
                 NFA* generated = OperationsHandler::handleUnaryOperator(string[0],first);
-                std::cout<<"push " << string <<'\n';
+                std::cout<<"pushed unary operator nfa by " << string <<'\n';
 
                 stk.push(generated);
             }
@@ -67,15 +67,15 @@ NFA* NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
             // or letter after backslash
 
             NFA* appended = OperationsHandler::basicNFA(string[string.length()-1]);
-            std::cout<<"push " << string <<'\n';
+            std::cout<<"push one char nfa " << string <<'\n';
 
             stk.push(appended);
         }else{
             //stacked letters
             // IMPORTANT 
-            std::cout<<"got a MIX string: " << string <<"\n";
+            // std::cout<<"got a MIX string: " << string <<"\n";
             NFA* appended = generateNFAFromString(string);
-            std::cout<<"push " << string <<'\n';
+            std::cout<<"push concatenated string nfa " << string <<'\n';
 
             stk.push(appended);
         }

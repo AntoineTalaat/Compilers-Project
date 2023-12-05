@@ -11,6 +11,7 @@ SRC_FILES +=src/operations_handler.cpp
 SRC_FILES +=src/state.cpp
 SRC_FILES +=src/token.cpp
 SRC_FILES +=src/utils.cpp
+SRC_FILES +=src/globals.cpp
 SRC_FILES +=src/SubsetConstruction.cpp
 
 

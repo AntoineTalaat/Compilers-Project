@@ -35,12 +35,12 @@ void InputParser::parseRegDef(std::string str) {
     std::cout<<"ADDED TO NFA MAP " << lhs<< ">>>"<< rhs <<'\n';
     Globals::regularDefinitionNFA[lhs]=nfa;
 
-    std::cout<<"MAP " << (Globals::regularDefinitionNFA.find(lhs)!=Globals::regularDefinitionNFA.end()) <<'\n';
+    // std::cout<<"MAP " << (Globals::regularDefinitionNFA.find(lhs)!=Globals::regularDefinitionNFA.end()) <<'\n';
     allNFAs.push_back(nfa);
 };
 
 void InputParser::parseRegExp(std::string str, int priority) {
-    std::cout<<"found reg def" << "\n";
+    // std::cout<<"found reg def" << "\n";
     str = Utils::trim(str);                                            // trim expression
     std::vector<std::string> sides = Utils::splitString(str, ':');     // split on :
     assert(sides.size()==2);                                           // assert 2 sides only
@@ -121,10 +121,17 @@ std::vector<std::string>* InputParser::generateInfix(std::string s){
             if(s[i]=='\\') {
                 if(!word.empty()) {
                     // std::cout<< "HHHHHH4 " << word << "\n";
-                    (*infix).push_back(word);}
+                    (*infix).push_back(word);
+                }
                 word = "";
+                word=word+s[i]; // 
+                i++;
+                assert(i!=s.length());
+                word=word+s[i]; // 
+            }else{
+                word=word+s[i];
+
             }
-            word=word+s[i];
         }
         i++;
     }
@@ -132,7 +139,8 @@ std::vector<std::string>* InputParser::generateInfix(std::string s){
         // std::cout<< "HHHHHH2 " << word << "\n";
         (*infix).push_back(word);
     }
-     for(const auto& line : *infix) {
+    std::cout<<"Infix: ";
+    for(const auto& line : *infix) {
         std::cout <<line<<" , ";
     }
     std::cout<<'\n';
