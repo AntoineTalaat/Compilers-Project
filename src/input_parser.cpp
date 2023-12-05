@@ -8,7 +8,7 @@ const std::regex InputParser::punctuationRegex("\\s*\\[\\W+\\]\\s*");
 static std::vector<Token> tokens;
 std::vector<std::string> InputParser::keywords;
 std::vector<std::string> InputParser::punctuationSymbols;
-std::vector<NFA*> allNFAs;
+std::vector<NFA> allNFAs;
 
 void InputParser::tokenize(std::string line, int priority) {
     std::cout << line<<"\n";
@@ -28,9 +28,9 @@ void InputParser::parseRegDef(std::string str) {
     std::string lhs=Utils::trim(sides[0]);                             // trim lhs
     std::string rhs=Utils::trim(sides[1]);                             // trim rhs
     assert(Utils::splitString(lhs, ' ').size()==1);                    // assert the lhs is one word not separated by more spaces
-    std::vector<std::string> infix = *generateInfix(rhs);
+    std::vector<std::string> infix = generateInfix(rhs);
     std::vector<std::string> postfix = InfixToPostfix::convert(infix);
-    NFA* nfa = NFAGenerator::generateNFAFromPostfix(postfix);
+    NFA nfa = NFAGenerator::generateNFAFromPostfix(postfix);
     Globals::regularDefinitionNFA[lhs]=nfa;
     std::cout<<"ADDED TO NFA MAP " << lhs<< ">>>"<< rhs <<'\n';
     Globals::regularDefinitionNFA[lhs]=nfa;
@@ -47,13 +47,13 @@ void InputParser::parseRegExp(std::string str, int priority) {
     std::string lhs=Utils::trim(sides[0]);                             // trim lhs
     std::string rhs=Utils::trim(sides[1]);                             // trim rhs
     assert(Utils::splitString(lhs, ' ').size()==1);                    // assert the lhs is one word not separated by more spaces
-    std::vector<std::string> infix = *generateInfix(rhs);
+    std::vector<std::string> infix = generateInfix(rhs);
     std::vector<std::string> postfix = InfixToPostfix::convert(infix);
-    NFA* nfa = NFAGenerator::generateNFAFromPostfix(postfix);
+    NFA nfa = NFAGenerator::generateNFAFromPostfix(postfix);
     
     // TODO setup the token
     Token* tk = new Token(lhs, "", priority);
-    nfa->getFinalState()->setAcceptedToken(tk);
+    nfa.getFinalState().setAcceptedToken(tk);
     allNFAs.push_back(nfa);
 };
 
@@ -63,11 +63,11 @@ void InputParser::parseKeyword(std::string line, int priority) {
     keywordStr=Utils::trim(keywordStr);
     std::vector<std::string> keywords = Utils::splitString(keywordStr,' ');
     for (const auto& keyword : keywords) {
-        NFA* nfa = NFAGenerator::generateNFAFromString(keyword);
+        NFA nfa = NFAGenerator::generateNFAFromString(keyword);
         allNFAs.push_back(nfa);
         // TODO setup the token
         Token* tk = new Token(keyword, "", priority);
-        nfa->getFinalState()->setAcceptedToken(tk);
+        nfa.getFinalState().setAcceptedToken(tk);
         allNFAs.push_back(nfa);
     }
 
@@ -82,24 +82,24 @@ void InputParser::parsePunctuation(std::string line, int priority) {
         assert(punct.length()==1 || punct.length()==2 && punct[0] =='\\');
         std::string str = "" ;
         str += punct[punct.length()-1];
-        NFA* nfa = NFAGenerator::generateNFAFromString(str);
+        NFA nfa = NFAGenerator::generateNFAFromString(str);
         allNFAs.push_back(nfa);
         // TODO setup the token
         Token* tk = new Token(punct, "", priority);
-        nfa->getFinalState()->setAcceptedToken(tk);
+        nfa.getFinalState().setAcceptedToken(tk);
         allNFAs.push_back(nfa);
     }
 };
 
-std::vector<std::string>* InputParser::generateInfix(std::string s){
+std::vector<std::string> InputParser::generateInfix(std::string s){
     int size = s.length();
     int i=0;
-    std::vector<std::string>* infix = new std::vector<std::string> (); //TODO check if u need pointer
+    std::vector<std::string> infix; //TODO check if u need pointer
     std::string word= "";
     while (i<size) {
         if(s[i] == ' ') {
             if(!word.empty()) {
-                (*infix).push_back(word);
+                (infix).push_back(word);
                 // std::cout<< "HHHHHH " << word << "\n";
                 word = "";
             }
@@ -110,10 +110,10 @@ std::vector<std::string>* InputParser::generateInfix(std::string s){
         if(InfixToPostfix::isOperator(s[i]) || s[i]==')' || s[i]=='(') {
                 if(!word.empty()) {
                     // std::cout<< "HHHHHH2 " << word << "\n";
-                    (*infix).push_back(word);}
+                    (infix).push_back(word);}
                 word = "";
                 word+= s[i];
-                (*infix).push_back(word);
+                (infix).push_back(word);
                 // std::cout<< "HHHHHH3 " << word << "\n";
                 word = "";
         }
@@ -121,7 +121,7 @@ std::vector<std::string>* InputParser::generateInfix(std::string s){
             if(s[i]=='\\') {
                 if(!word.empty()) {
                     // std::cout<< "HHHHHH4 " << word << "\n";
-                    (*infix).push_back(word);
+                    (infix).push_back(word);
                 }
                 word = "";
                 word=word+s[i]; // 
@@ -137,10 +137,10 @@ std::vector<std::string>* InputParser::generateInfix(std::string s){
     }
     if(!word.empty()) {
         // std::cout<< "HHHHHH2 " << word << "\n";
-        (*infix).push_back(word);
+        (infix).push_back(word);
     }
     std::cout<<"Infix: ";
-    for(const auto& line : *infix) {
+    for(const auto& line : infix) {
         std::cout <<line<<" , ";
     }
     std::cout<<'\n';

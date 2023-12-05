@@ -2,105 +2,74 @@
 
 
 
-NFA* OperationsHandler::basicNFA(char c) {
-    State* start = new State();
-    State* final = new State();
-    start->addTransition(c,final->getId());
+NFA OperationsHandler::basicNFA(char c) {
+    State start;
+    State final;
+    start.addTransition(c,final.getId());
     
-    NFA* oneCharNFA = new NFA();
-    oneCharNFA->setStartState(start);
-    oneCharNFA->setFinalState(final);
+    NFA oneCharNFA;
+    oneCharNFA.setStartState(start);
+    oneCharNFA.setFinalState(final);
     
     return oneCharNFA;
 };
 
 
 
-NFA* OperationsHandler::unionOp(NFA* first, NFA* second) {
-    NFA* newNfa = new NFA();
-    // std::cout<<"a " <<'\n';
-    State* firstStart = first->getStartState();
-    // std::cout<<"b " <<'\n';
-    State* firstFinal = first->getFinalState();
-    // std::cout<<"c " <<'\n';
-    State* secondStart = second->getStartState();
-        // std::cout<<"d " <<'\n';
-    State* secondFinal = second->getFinalState();
-    // std::cout<<"e " <<'\n';
-    State* start = new State();     // set new start state for both NFAs
-    // first->setStartState(start);
-        // std::cout<<"f " <<'\n';
-    // second->setStartState(start);
-    // std::cout<<"g " <<'\n';
-    start->addTransition(EPSILLON, firstStart->getId());
-        std::cout<<"h " << secondStart <<'\n';
-
-    start->addTransition(EPSILLON, secondStart->getId());
+NFA OperationsHandler::unionOp(NFA first, NFA second) {
+    NFA newNfa;
+    State firstStart = first.getStartState();
+    State firstFinal = first.getFinalState();
+    State secondStart = second.getStartState();
+    State secondFinal = second.getFinalState();
+    State start ;     // set new start state for both NFAs
+    start.addTransition(EPSILLON, firstStart.getId());
+    std::cout<<"h "  <<'\n';
+    start.addTransition(EPSILLON, secondStart.getId());
     std::cout<<"i " <<'\n';
 
-    State* final = new State(true); // set new final state for both NFAs
-        // std::cout<<"j " <<'\n';
-    first->setFinalState(final);
-        // std::cout<<"k " <<'\n';
-    second->setFinalState(final);
-    // std::cout<<"l " <<'\n';
-    firstFinal->addTransition(EPSILLON, final->getId());
-    // std::cout<<"m " <<'\n';
-    secondFinal->addTransition(EPSILLON, final->getId());
-    // std::cout<<"n " <<'\n';
-    firstFinal->setIsAccepting(false);
-        // std::cout<<"o " <<'\n';
-    secondFinal->setIsAccepting(false);
-        // std::cout<<"p " <<'\n';
-    newNfa->setStartState(start);
-        // std::cout<<"q " <<'\n';
-
-    newNfa->setFinalState(final);
-        // std::cout<<"r " <<'\n';
-    newNfa->setBatchStates(first->getStatesMap());
-        // std::cout<<"s " <<'\n';
-    newNfa->setBatchStates(second->getStatesMap());
+    State final; // set new final state for both NFAs
+    first.setFinalState(final);
+    second.setFinalState(final);
+    firstFinal.addTransition(EPSILLON, final.getId());
+    secondFinal.addTransition(EPSILLON, final.getId());
+    firstFinal.setIsAccepting(false);
+    secondFinal.setIsAccepting(false);
+    newNfa.setStartState(start);
+    newNfa.setFinalState(final);
+    newNfa.setBatchStates(first.getStatesMap());
+    newNfa.setBatchStates(second.getStatesMap());
 
     return newNfa;
 };
 
-NFA* OperationsHandler::concatOp(NFA* first, NFA* second) {
-    NFA* newNfa = new NFA();
-    State* firstStart = first->getStartState();
-    // std::cout<<"c " <<'\n';
-    State* firstFinal = first->getFinalState();
-    // std::cout<<"d " <<'\n';
-    State* secondStart = second->getStartState();
-    // std::cout<<"e " <<'\n';
-    State* secondFinal = second->getFinalState();
-    // std::cout<<"f " <<'\n';
+NFA  OperationsHandler::concatOp(NFA  first, NFA  second) {
+    NFA newNfa;
+    State  firstStart = first.getStartState();
+    State  firstFinal = first.getFinalState();
+    State  secondStart = second.getStartState();
+    State  secondFinal = second.getFinalState();
 
-    firstFinal->setIsAccepting(false);
+    firstFinal.setIsAccepting(false);
     std::cout<<"g " <<'\n';
-    std::cout<<"g2 " << secondStart->getId() <<'\n';
+    std::cout<<"g2 " << secondStart.getId() <<'\n';
 
-    firstFinal->addTransition(EPSILLON, secondStart->getId());
+    firstFinal.addTransition(EPSILLON, secondStart.getId());
     std::cout<<"h " <<'\n';
 
-
-    newNfa->setStartState(firstStart);
-
-    newNfa->setFinalState(secondFinal);
+    newNfa.setStartState(firstStart);
+    newNfa.setFinalState(secondFinal);
     std::cout<<"i " <<'\n';
 
-    newNfa->setBatchStates(first->getStatesMap());
-    // std::cout<<"j " <<'\n';
-
-    newNfa->setBatchStates(second->getStatesMap());
-    // std::cout<<"k " <<'\n';
+    newNfa.setBatchStates(first.getStatesMap());
+    newNfa.setBatchStates(second.getStatesMap());
 
     return newNfa;
 };
 
-NFA* OperationsHandler::kleeneClosureOp(NFA* nfa) {
+NFA  OperationsHandler::kleeneClosureOp(NFA  nfa) {
     nfa = positiveClosureOp(nfa);
-    nfa->getStartState()->addTransition(EPSILLON, nfa->getFinalState()->getId());
-    
+    nfa.getStartState().addTransition(EPSILLON, nfa.getFinalState().getId());
     return nfa;
 };
 
@@ -108,82 +77,98 @@ NFA* OperationsHandler::kleeneClosureOp(NFA* nfa) {
 
 
 
-NFA* OperationsHandler::positiveClosureOp(NFA* nfa) {
-    State* start = new State();
-    State* final = new State(true);
+NFA  OperationsHandler::positiveClosureOp(NFA  nfa) {
+    State  start;
+    State  final;
 
-    State* oldStart = nfa->getStartState();
-    State* oldFinal = nfa->getFinalState();
-    oldFinal->setIsAccepting(false);
-
+    State  oldStart = nfa.getStartState();
+    State  oldFinal = nfa.getFinalState();
+    oldFinal.setIsAccepting(false);
     // nfa 
 //                            <<<<<<<<<<<<<<< 
     //                oldStart >>   stuff >>  oldFinalx    
     //    start   >>                                     >>    final
+    start.addTransition(EPSILLON, oldStart.getId());
+    oldFinal.addTransition(EPSILLON, oldStart.getId());
+    oldFinal.addTransition(EPSILLON, final.getId());
 
-
-    start->addTransition(EPSILLON, oldStart->getId());
-    oldFinal->addTransition(EPSILLON, oldStart->getId());
-    oldFinal->addTransition(EPSILLON, final->getId());
-
-    nfa->setStartState(start);
-    nfa->setFinalState(final);
+    nfa.setStartState(start);
+    nfa.setFinalState(final);
 
     return nfa;
 };
 
-NFA* OperationsHandler::rangeOp(char from, char to) {
-    NFA* nfa = new NFA(new State(), new State());
-    State* s1 = nfa->getStartState();
-    State* s2 = nfa->getFinalState();
+NFA  OperationsHandler::rangeOp(char from, char to) {
+    State newStart;
+    State newEnd;
+    NFA  nfa;
+    nfa.setStartState(newStart);
+    nfa.setFinalState(newEnd);
+
+    State  s1 = nfa.getStartState();
+    State  s2 = nfa.getFinalState();
     for(char c = from; c <= to; c++) {
-        NFA* newNfa = new NFA(new State(), new State());
-        newNfa->getStartState()->addTransition(c, newNfa->getFinalState()->getId());
-        nfa->getStartState()->addTransition(EPSILLON, newNfa->getStartState()->getId());
-        newNfa->getFinalState()->addTransition(EPSILLON, nfa->getFinalState()->getId());
-        nfa->setBatchStates(newNfa->getStatesMap());
+        State s;
+        State e;
+        NFA newNfa;
+        newNfa.setStartState(s);
+        newNfa.setFinalState(e);
+        newNfa.getStartState().addTransition(c, newNfa.getFinalState().getId());
+        nfa.getStartState().addTransition(EPSILLON, newNfa.getStartState().getId());
+        newNfa.getFinalState().addTransition(EPSILLON, nfa.getFinalState().getId());
+        nfa.setBatchStates(newNfa.getStatesMap());
     }
     return nfa;
 };
 
-NFA* OperationsHandler::rangeOp(NFA* from, NFA* to) {
-    NFA* nfa = new NFA(new State(), new State());
-    State* s1 = nfa->getStartState();
-    State* s2 = nfa->getFinalState();
+NFA  OperationsHandler::rangeOp(NFA from, NFA to) {
+    State s;
+    State e;
+    NFA nfa;
+    nfa.setStartState(s);
+    nfa.setFinalState(e);
+    State  s1 = nfa.getStartState();
+    State  s2 = nfa.getFinalState();
 
 
-    assert(from->getStartState()->getTransitions().size() == 1);
-    assert(to->getStartState()->getTransitions().size() == 1);
+    assert(from.getStartState().getTransitions().size() == 1);
+    assert(to.getStartState().getTransitions().size() == 1);
 
     // Get the entry from the map
-    std::pair<char, std::set<int>> entryFirst = *from->getStartState()->getTransitions().begin();
-    std::pair<char, std::set<int>> entryLast  = *to->getStartState()->getTransitions().begin();
+    std::pair<char, std::set<int>> entryFirst =  *from.getStartState().getTransitions().begin();
+    std::pair<char, std::set<int>> entryLast  =  *to.getStartState().getTransitions().begin();
 
     assert(entryFirst.second.size()==1);
     assert( entryLast.second.size()==1);;
 
     for(char c = entryFirst.first; c <= entryLast.first; c++) {
-        NFA* newNfa = new NFA(new State(), new State());
-        newNfa->getStartState()->addTransition(c, newNfa->getFinalState()->getId());
-        nfa->getStartState()->addTransition(c, nfa->getFinalState()->getId());
-        newNfa->getFinalState()->addTransition(EPSILLON, nfa->getFinalState()->getId());
-        nfa->setBatchStates(newNfa->getStatesMap());
+        State ns;
+        State ne;
+        NFA newNfa;
+        newNfa.setStartState(ns);
+        newNfa.setFinalState(ne);
+        newNfa.getStartState().addTransition(c, newNfa.getFinalState().getId());
+        nfa.getStartState().addTransition(c, nfa.getFinalState().getId());
+        newNfa.getFinalState().addTransition(EPSILLON, nfa.getFinalState().getId());
+        nfa.setBatchStates(newNfa.getStatesMap());
     }
     return nfa;
 };
 
- NFA* OperationsHandler::joinNFAs(NFA* first, NFA* second) {
-    NFA* newNfa = new NFA(new State());
-    newNfa->getStartState()->addTransition(EPSILLON, first->getStartState()->getId());
-    newNfa->getStartState()->addTransition(EPSILLON, second->getStartState()->getId());
+ NFA  OperationsHandler::joinNFAs(NFA  first, NFA  second) {
+    State start;
+    NFA  newNfa;
+    newNfa.setStartState(start);
+    newNfa.getStartState().addTransition(EPSILLON, first.getStartState().getId());
+    newNfa.getStartState().addTransition(EPSILLON, second.getStartState().getId());
 
-    newNfa->setBatchStates(first->getStatesMap());
-    newNfa->setBatchStates(second->getStatesMap());
+    newNfa.setBatchStates(first.getStatesMap());
+    newNfa.setBatchStates(second.getStatesMap());
 
     return newNfa;
  };
 
-NFA* OperationsHandler::handleBinaryOperator(char op,NFA* first, NFA* second) {
+NFA  OperationsHandler::handleBinaryOperator(char op,NFA  first, NFA  second) {
     switch (op)
     {
     case '&':
@@ -199,26 +184,24 @@ NFA* OperationsHandler::handleBinaryOperator(char op,NFA* first, NFA* second) {
     
     default:
         std::cout<<"Unknown operator received"<<'\n';
+        throw std::invalid_argument("received unknown operator");
         break;
     }
-    return nullptr;
 }
 
-NFA* OperationsHandler::handleUnaryOperator(char op,NFA* first) {
+NFA  OperationsHandler::handleUnaryOperator(char op,NFA  first) {
     switch (op)
     {
     case '+':
         return OperationsHandler::positiveClosureOp(first);
         break;
-    case '*':
+    case ' ':
         return OperationsHandler::kleeneClosureOp(first);
         break;
-
-    
     default:
         std::cout<<"Unknown operator received"<<'\n';
+        return first;
         break;
     }
-    return nullptr;
 }
 

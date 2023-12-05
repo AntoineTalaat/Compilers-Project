@@ -1,9 +1,6 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include <string>
-#include <set>
-#include <map>
 #include <bits/stdc++.h>
 #include "token.h"
 
@@ -26,7 +23,9 @@ class State {
         static int generateId();
 
         void setId(int id);
-        int getId();
+        int getId() const;
+        bool operator<(const State& other) const;
+        bool operator==(const State& other) const;
         void setIsAccepting(bool isAccepting);
         bool getIsAccepting();
         Token* getAcceptedToken();
@@ -36,4 +35,10 @@ class State {
         void printTransitions();
         std::string toString();
 };
+namespace std {
+    template <>
+    struct hash<State> {
+        std::size_t operator()(const State& s) const;
+    };
+}
 #endif  // STATE_H

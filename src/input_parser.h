@@ -27,10 +27,10 @@ class InputParser {
         void parsePunctuation(std::string, int);
     public:
         // InputParser();
-        std::vector<NFA*> allNFAs;
+        std::vector<NFA> allNFAs;
         void tokenize(std::string, int);
-        std::vector<std::string>* generateInfix(std::string s);
-        std::vector<Token> parseLexicalRulesFile(std::string filePath, std::vector<Token> *tokens , std::vector<std::string> * priorites, std::set<char> *alphabet);
+        std::vector<std::string> generateInfix(std::string s);
+        // std::vector<Token> parseLexicalRulesFile(std::string filePath, std::vector<Token> *tokens , std::vector<std::string> * priorites, std::set<char> *alphabet);
 };
 
 #endif  // INPUT_PARSER_H

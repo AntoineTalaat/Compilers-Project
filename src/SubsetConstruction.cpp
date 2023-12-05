@@ -28,8 +28,8 @@ void SubsetConstruction::setAlphabet(std::set <char> alphabet) {
 std::set<int> SubsetConstruction::move(std::set<int> states, char letter) {
     std::set<int> move;
     for(int state : states) {
-        State* currentState = this->nfa.getStatesMap().at(state);
-        std::map<char, std::set<int>> transitions = currentState->getTransitions();
+        State currentState = this->nfa.getStatesMap().at(state);
+        std::map<char, std::set<int>> transitions = currentState.getTransitions();
         if(transitions.find(letter) != transitions.end()) {
             std::set<int> letterTransitions = transitions.at(letter);
             move.insert(letterTransitions.begin(), letterTransitions.end());
@@ -46,7 +46,7 @@ std::set<int> SubsetConstruction::epsClosure(int state) {
 
     while(!stack.empty()) {
         int currentStateID = stack.top();
-        State* currentState = this->nfa.getStatesMap().at(currentStateID);
+        State currentState = this->nfa.getStatesMap().at(currentStateID);
         stack.pop();
 
         if(visited.find(currentStateID) != visited.end())
@@ -54,7 +54,7 @@ std::set<int> SubsetConstruction::epsClosure(int state) {
         visited.insert(currentStateID);
         epsClosure.insert(currentStateID);
 
-        std::map<char, std::set<int>> transitions = currentState->getTransitions();
+        std::map<char, std::set<int>> transitions = currentState.getTransitions();
 
         if(transitions.find(EPSILLON) != transitions.end()) {
             std::set<int> epsTransitions = transitions.at(EPSILLON);
@@ -98,11 +98,11 @@ std::string SubsetConstruction::setToString(std::set<int> s) {
     return result;
 }
 
-void SubsetConstruction::printMap(std::map<int, State*> statesMap){
+void SubsetConstruction::printMap(std::map<int, State> statesMap){
     std::cout << "States:\n";
-    for (const auto& state : statesMap) {
+    for (auto& state : statesMap) {
         std::cout << state.first << ": ";
-        std::cout << state.second->toString()<< std::endl;
+        std::cout << (state.second.toString())<< std::endl;
     }
 }
 
@@ -131,11 +131,11 @@ void SubsetConstruction::printDFATransitionhs(std::map<std::pair<std::set<int>, 
 //    return TState;
 //}
 
-std::map< std::pair<State*, char> , State* > SubsetConstruction::getDFA(){
-    std::map< std::pair<State*, char> , State* > DFA;
+std::map< std::pair<State, char> , State > SubsetConstruction::getDFA(){
+    std::map< std::pair<State, char> , State > DFA;
     std::map< std::pair<std::set<int>, char> , std::set<int> > Dtran = this->convertNFAToDFA();
 
-    std::map<std::set<int>, State*> statesMap;
+    std::map<std::set<int>, State> statesMap;
 
     for (const auto& transition : Dtran) {
 
@@ -153,8 +153,8 @@ std::map< std::pair<State*, char> , State* > SubsetConstruction::getDFA(){
 
 
         // if inputSetOfStates is in statesMap then get the state else create a new state and add it to the map
-        State* TState ;
-        State* UState;
+        State TState ;
+        State UState;
 
         if(statesMap.find(inputSetOfStates) != statesMap.end()) {
 //            std::cout << "input set of states is in statesMap\n";
@@ -164,22 +164,22 @@ std::map< std::pair<State*, char> , State* > SubsetConstruction::getDFA(){
 //            std::cout << "input set of states is not in statesMap\n";
             TState = new State(new Token("", "", INT16_MAX));
 //            TState->getAcceptedToken()->priority = ;
-            TState->setIsAccepting(false);
+            TState.setIsAccepting(false);
 
 
             // check if the inputSetOfStates contains an accepting state and set the new state is accepting if the inputSetOfStates contains an accepting state
             for (int state: inputSetOfStates) {
 //                std::cout << "state " << state << " in input \n";
-                if (this->nfa.getStatesMap().at(state)->getIsAccepting()) {
+                if (this->nfa.getStatesMap().at(state).getIsAccepting()) {
 //                    std::cout << "state " << state << " is accepting\n";
-                    TState->setIsAccepting(true);
+                    TState.setIsAccepting(true);
 
-                    if(this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority < TState->getAcceptedToken()->priority){
+                    if(this->nfa.getStatesMap().at(state).getAcceptedToken()->priority < TState.getAcceptedToken()->priority){
 //                        std::cout << "current Priority: " << TState->getAcceptedToken()->priority << std::endl;
 //                        std::cout << "new Priority: " << this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority << std::endl;
 
 
-                        TState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
+                        TState.setAcceptedToken(this->nfa.getStatesMap().at(state).getAcceptedToken());
                         //TState->getAcceptedToken()->priority = this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority;
                     }
                 }
@@ -198,22 +198,22 @@ std::map< std::pair<State*, char> , State* > SubsetConstruction::getDFA(){
 //            std::cout << "output set of states is not in statesMap\n";
             UState = new State(new Token("", "", INT16_MAX));
 //
-            UState->setIsAccepting(false);
+            UState.setIsAccepting(false);
 //            std::cout << "Ustate intialized\n";
 
             // check if the inputSetOfStates contains an accepting state and set the new state is accepting if the inputSetOfStates contains an accepting state
             for (int state: OutputSetOfStates) {
 //                std::cout << "state " << state << " in output \n";
-                if (this->nfa.getStatesMap().at(state)->getIsAccepting()) {
+                if (this->nfa.getStatesMap().at(state).getIsAccepting()) {
 //                    std::cout << "state " << state << " is accepting\n";
-                    UState->setIsAccepting(true);
+                    UState.setIsAccepting(true);
 
-                    if(this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority < UState->getAcceptedToken()->priority){
+                    if(this->nfa.getStatesMap().at(state).getAcceptedToken()->priority < UState.getAcceptedToken()->priority){
 //                        std::cout << "current Priority: " << UState->getAcceptedToken()->priority << std::endl;
 //                        std::cout << "new Priority: " << this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority << std::endl;
 
 
-                        UState->setAcceptedToken(this->nfa.getStatesMap().at(state)->getAcceptedToken());
+                        UState.setAcceptedToken(this->nfa.getStatesMap().at(state).getAcceptedToken());
                        // UState->getAcceptedToken()->priority = this->nfa.getStatesMap().at(state)->getAcceptedToken()->priority;
 
 //                        std::cout << "UState: " << UState->getAcceptedToken()->priority << std::endl;
@@ -241,7 +241,7 @@ std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::c
     std::map<std::pair<std::set<int>, char>, std::set<int>> Dtran;
 
     // Step 1: Initialize with epsilon closure of the start state
-    int startStateID = this->nfa.getStartState()->getId();
+    int startStateID = this->nfa.getStartState().getId();
     if(debug) std::cout << "start state id: " << startStateID << std::endl;
 
     std::set<int> startEpsClosure = epsClosure(startStateID);

@@ -17,7 +17,7 @@ class SubsetConstruction {
         std::set <int> move(std::set <int> states, char letter);
         std::map<std::pair<std::set<int>, char>, std::set<int>> convertNFAToDFA();
 
-        void printMap(std::map<int, State*> statesMap);
+        void printMap(std::map<int, State> statesMap);
         void printSet(std::set<int> states);
         void printmarkedMap(std::map<std::set<int>, bool> marked);
         void printDFATransitionhs(std::map<std::pair<std::set<int>, char>, std::set<int>> Dtran);
@@ -27,7 +27,7 @@ class SubsetConstruction {
 
         SubsetConstruction(NFA nfa);
         void setAlphabet(std::set <char> alphabet);
-        std::map< std::pair<State*, char> , State* > getDFA();
+        std::map< std::pair<State, char> , State> getDFA();
 
     
 };

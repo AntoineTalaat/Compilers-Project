@@ -12,6 +12,7 @@ State::State(bool isAccepting) {
     this->id = generateId();
     // std::cout<<"ASSIGNEDD STATE TO ID "<<this->id <<'\n';
     this->isAccepting = isAccepting;
+    if(!isAccepting) this->acceptedToken=nullptr;
 };
 
 State::State(Token* t) {
@@ -37,9 +38,28 @@ State::State(int id, bool isAccepting) {
 void State::setId(int id) {
     this->id = id;
 };
-int State::getId() {
-    return this->id;
-};
+int State::getId() const {
+    return id;
+}
+
+// Comparison operator for std::set
+bool State::operator<(const State& other) const {
+    return id < other.id;
+}
+
+// Equality operator for std::set
+bool State::operator==(const State& other) const {
+    return id == other.id;
+}
+
+// Hash function for std::unordered_set
+namespace std {
+    std::size_t hash<State>::operator()(const State& s) const {
+        // Use a simple hash function for illustration purposes
+        return hash<int>()(s.getId());
+    }
+}
+
 
 void State::setIsAccepting(bool isAccepting) {
     this->isAccepting = isAccepting;
@@ -110,3 +130,4 @@ std::string State::toString() {
     }
     return s;
 };
+
