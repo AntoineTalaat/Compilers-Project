@@ -14,6 +14,12 @@ State::State(bool isAccepting) {
     this->isAccepting = isAccepting;
 };
 
+State::State(Token* t) {
+    this->id = generateId();
+    this->isAccepting = false;
+    this->acceptedToken = t;
+};
+
 
 
 State::State(int id, bool isAccepting) {

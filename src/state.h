@@ -20,6 +20,7 @@ class State {
         State();
         State(bool isAccepting);
         State(int id, bool isAccepting);
+        State(Token* t);
         
         
         static int generateId();
