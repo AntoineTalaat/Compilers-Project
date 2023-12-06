@@ -7,7 +7,7 @@
 #include <iostream>
 
 bool debug = false;
-
+bool first = true;
 
 
 
@@ -127,14 +127,30 @@ void SubsetConstruction::printDFATransitionhs(std::map<std::pair<std::set<int>, 
     }
 }
 
+void SubsetConstruction::setStartStateID(int startState){
+    this->startStateID = startState;
+}
+void SubsetConstruction::setDeadStateID(int deadState){
+    this->deadStateID = deadState;
+}
+int SubsetConstruction::getStartStateID(){
+    return this->startStateID;
+}
+int SubsetConstruction::getDeadStateID() {
+    return this->deadStateID;
+}
+
 
 std::map <int , State> SubsetConstruction::getDFA(){
 
     State dead = new State();
     dead.setIsAccepting(false);
 
+
     std::map<int , State> DFA;
     DFA[dead.getId()] = dead;
+
+    this->setDeadStateID(dead.getId());
 
     std::map< std::pair<std::set<int>, char> , std::set<int> > Dtran = this->convertNFAToDFA();
     std::map<std::set<int>, int> visitedStates;
@@ -198,6 +214,10 @@ std::map <int , State> SubsetConstruction::getDFA(){
                 }
             }
 
+            if(first){
+                this->setStartStateID(fromStateID);
+                first = false;
+            }
             visitedStates[inputSetOfStates] = fromStateID;
             DFA[fromStateID] = fromState;
 

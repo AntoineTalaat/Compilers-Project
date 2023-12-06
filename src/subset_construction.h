@@ -11,7 +11,8 @@ class SubsetConstruction {
         NFA nfa;
         std::set <char> alphabet;
 
-
+        int startStateID ;
+        int deadStateID ;
         std::set <int> epsClosure(int state);
         std::set <int> getEpsClosure(std::set <int> states);
         std::set <int> move(std::set <int> states, char letter);
@@ -26,6 +27,10 @@ class SubsetConstruction {
     public:
 
         SubsetConstruction(NFA nfa);
+        void setStartStateID(int startState);
+        void setDeadStateID(int deadState);
+        int getStartStateID();
+        int getDeadStateID();
         void setAlphabet(std::set <char> alphabet);
         std::map< int , State> getDFA();
 };
