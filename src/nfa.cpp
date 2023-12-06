@@ -23,7 +23,7 @@ NFA::NFA(State  startState, std::set<State > states) {
     this->statesMap = createStateMap(std::move(states));
 };
 
-State  NFA::getStartState() {
+State&  NFA::getStartState() {
     return this->statesMap[this->startStateID];
 };
 
@@ -32,7 +32,7 @@ void NFA::setStartState(State  state) {
     addState(state);
 };
 
-State  NFA::getFinalState() {
+State&  NFA::getFinalState() {
     return this->statesMap[this->finalStateID];
 };
 

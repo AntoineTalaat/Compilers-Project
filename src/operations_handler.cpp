@@ -18,15 +18,15 @@ NFA OperationsHandler::basicNFA(char c) {
 
 NFA OperationsHandler::unionOp(NFA first, NFA second) {
     NFA newNfa;
-    State firstStart = first.getStartState();
-    State firstFinal = first.getFinalState();
-    State secondStart = second.getStartState();
-    State secondFinal = second.getFinalState();
+    State& firstStart = first.getStartState();
+    State& firstFinal = first.getFinalState();
+    State& secondStart = second.getStartState();
+    State& secondFinal = second.getFinalState();
     State start ;     // set new start state for both NFAs
     start.addTransition(EPSILLON, firstStart.getId());
-    std::cout<<"h "  <<'\n';
+    // std::cout<<"h "  <<'\n';
     start.addTransition(EPSILLON, secondStart.getId());
-    std::cout<<"i " <<'\n';
+    // std::cout<<"i " <<'\n';
 
     State final; // set new final state for both NFAs
     first.setFinalState(final);
@@ -45,21 +45,16 @@ NFA OperationsHandler::unionOp(NFA first, NFA second) {
 
 NFA  OperationsHandler::concatOp(NFA  first, NFA  second) {
     NFA newNfa;
-    State  firstStart = first.getStartState();
-    State  firstFinal = first.getFinalState();
-    State  secondStart = second.getStartState();
-    State  secondFinal = second.getFinalState();
+    State&  firstStart = first.getStartState();
+    State&  firstFinal = first.getFinalState();
+    State&  secondStart = second.getStartState();
+    State&  secondFinal = second.getFinalState();
 
     firstFinal.setIsAccepting(false);
-    std::cout<<"g " <<'\n';
-    std::cout<<"g2 " << secondStart.getId() <<'\n';
-
     firstFinal.addTransition(EPSILLON, secondStart.getId());
-    std::cout<<"h " <<'\n';
 
     newNfa.setStartState(firstStart);
     newNfa.setFinalState(secondFinal);
-    std::cout<<"i " <<'\n';
 
     newNfa.setBatchStates(first.getStatesMap());
     newNfa.setBatchStates(second.getStatesMap());
@@ -69,7 +64,7 @@ NFA  OperationsHandler::concatOp(NFA  first, NFA  second) {
 
 NFA  OperationsHandler::kleeneClosureOp(NFA  nfa) {
     nfa = positiveClosureOp(nfa);
-    nfa.getStartState().addTransition(EPSILLON, nfa.getFinalState().getId());
+    (nfa.getStartState()).addTransition(EPSILLON, nfa.getFinalState().getId());
     return nfa;
 };
 
@@ -81,8 +76,8 @@ NFA  OperationsHandler::positiveClosureOp(NFA  nfa) {
     State  start;
     State  final;
 
-    State  oldStart = nfa.getStartState();
-    State  oldFinal = nfa.getFinalState();
+    State&  oldStart = nfa.getStartState();
+    State&  oldFinal = nfa.getFinalState();
     oldFinal.setIsAccepting(false);
     // nfa 
 //                            <<<<<<<<<<<<<<< 
@@ -105,8 +100,8 @@ NFA  OperationsHandler::rangeOp(char from, char to) {
     nfa.setStartState(newStart);
     nfa.setFinalState(newEnd);
 
-    State  s1 = nfa.getStartState();
-    State  s2 = nfa.getFinalState();
+    State&  s1 = nfa.getStartState();
+    State&  s2 = nfa.getFinalState();
     for(char c = from; c <= to; c++) {
         State s;
         State e;
@@ -183,7 +178,7 @@ NFA  OperationsHandler::handleBinaryOperator(char op,NFA  first, NFA  second) {
         break;
     
     default:
-        std::cout<<"Unknown operator received"<<'\n';
+        std::cout<<"Unknown operator received ::: "<< op<<'\n';
         throw std::invalid_argument("received unknown operator");
         break;
     }
@@ -195,12 +190,12 @@ NFA  OperationsHandler::handleUnaryOperator(char op,NFA  first) {
     case '+':
         return OperationsHandler::positiveClosureOp(first);
         break;
-    case ' ':
+    case '*':
         return OperationsHandler::kleeneClosureOp(first);
         break;
     default:
-        std::cout<<"Unknown operator received"<<'\n';
-        return first;
+        std::cout<<"Unknown operator received ::: "<< op<<'\n';
+        throw std::invalid_argument("received unknown operator");
         break;
     }
 }

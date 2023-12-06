@@ -18,9 +18,9 @@ class NFA {
         NFA(State start, std::map<int,State> states);
         NFA(State start, std::set<State> states);
         
-        State getStartState();
+        State& getStartState();
         void   setStartState(State state);
-        State getFinalState();
+        State& getFinalState();
         void   setFinalState(State state);
         void   addState(State state);
         void   setBatchStates(const std::map<int,State>& states);

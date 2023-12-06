@@ -11,7 +11,7 @@ std::vector<std::string> InputParser::punctuationSymbols;
 std::vector<NFA> allNFAs;
 
 void InputParser::tokenize(std::string line, int priority) {
-    std::cout << line<<"\n";
+    std::cout <<">>> "<< line<<  " at " << allNFAs.size()<<"\n";
     if(regex_match(line, regDefRegex))            parseRegDef(line);
     else if(regex_match(line, regExpRegex))       parseRegExp(line, priority);
     else if(regex_match(line, keywordRegex))      parseKeyword(line, priority);
@@ -32,7 +32,7 @@ void InputParser::parseRegDef(std::string str) {
     std::vector<std::string> postfix = InfixToPostfix::convert(infix);
     NFA nfa = NFAGenerator::generateNFAFromPostfix(postfix);
     Globals::regularDefinitionNFA[lhs]=nfa;
-    std::cout<<"ADDED TO NFA MAP " << lhs<< ">>>"<< rhs <<'\n';
+    // std::cout<<"ADDED TO NFA MAP " << lhs<< ">>>"<< rhs <<'\n';
     Globals::regularDefinitionNFA[lhs]=nfa;
 
     // std::cout<<"MAP " << (Globals::regularDefinitionNFA.find(lhs)!=Globals::regularDefinitionNFA.end()) <<'\n';
@@ -64,11 +64,11 @@ void InputParser::parseKeyword(std::string line, int priority) {
     std::vector<std::string> keywords = Utils::splitString(keywordStr,' ');
     for (const auto& keyword : keywords) {
         NFA nfa = NFAGenerator::generateNFAFromString(keyword);
-        allNFAs.push_back(nfa);
         // TODO setup the token
         Token* tk = new Token(keyword, "", priority);
         nfa.getFinalState().setAcceptedToken(tk);
         allNFAs.push_back(nfa);
+        std::cout<<"KEYWORDS "<< keyword<< " "<<nfa.getFinalState().getIsAccepting()<<" "<< allNFAs[allNFAs.size()-1].getFinalState().getIsAccepting()<<'\n';
     }
 
 };
@@ -83,7 +83,6 @@ void InputParser::parsePunctuation(std::string line, int priority) {
         std::string str = "" ;
         str += punct[punct.length()-1];
         NFA nfa = NFAGenerator::generateNFAFromString(str);
-        allNFAs.push_back(nfa);
         // TODO setup the token
         Token* tk = new Token(punct, "", priority);
         nfa.getFinalState().setAcceptedToken(tk);
