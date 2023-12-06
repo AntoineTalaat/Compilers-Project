@@ -8,8 +8,12 @@
 
 bool debug = false;
 
+
+
+
 SubsetConstruction::SubsetConstruction(NFA nfa) {
     this->nfa = nfa;
+
 //    this->printMap(this->nfa.getStatesMap());
  //   std::cout << "-------------------------------------------------";
 }
@@ -17,10 +21,8 @@ SubsetConstruction::SubsetConstruction(NFA nfa) {
 
 
 void SubsetConstruction::setAlphabet(std::set <char> alphabet) {
-
     alphabet.erase(EPSILLON);
     this->alphabet = std::move(alphabet);
-
 }
 
 
@@ -116,7 +118,7 @@ void SubsetConstruction::printmarkedMap(std::map<std::set<int>, bool> marked){
 
 
 void SubsetConstruction::printDFATransitionhs(std::map<std::pair<std::set<int>, char>, std::set<int>> Dtran){
-    std::cout << "Dtran:\n";
+    std::cout << "Nfa states " << std::endl ;
     for (const auto& transition : Dtran) {
         const auto& T = transition.first.first;
         char a = transition.first.second;
@@ -125,14 +127,123 @@ void SubsetConstruction::printDFATransitionhs(std::map<std::pair<std::set<int>, 
     }
 }
 
-//State* SubsetConstruction::getNewState (std::set <int> inputSetOfStates){
-//
-//
-//    return TState;
-//}
 
+std::map <int , State> SubsetConstruction::getDFA(){
+
+    State dead = new State();
+    dead.setIsAccepting(false);
+
+    std::map<int , State> DFA;
+    DFA[dead.getId()] = dead;
+
+    std::map< std::pair<std::set<int>, char> , std::set<int> > Dtran = this->convertNFAToDFA();
+    std::map<std::set<int>, int> visitedStates;
+
+    for(auto& transition : Dtran){
+
+        const auto& inputSetOfStates = transition.first.first;
+        char a = transition.first.second;
+        const auto& OutputSetOfStates = transition.second;
+
+
+        if(debug){
+            std::cout << "Input Set " ;
+            printSet(inputSetOfStates);
+            std::cout << " token " << a <<" ";
+            std::cout << "Output Set " ;
+            printSet(OutputSetOfStates);
+            std::cout << std::endl;
+        }
+
+
+
+        int fromStateID ;
+        State fromState;
+        int toStateID ;
+        State toState;
+
+
+        if(visitedStates.find(inputSetOfStates) != visitedStates.end()) {
+            if(debug)  std::cout << "We worked in this input state before\n";
+            fromStateID = visitedStates.at(inputSetOfStates);
+        }else{
+            if(debug) std::cout << "We didn't work in this input state before\n";
+            Token* t = new Token("", "", INT16_MAX);
+            fromState = new State() ;
+            fromState.setAcceptedToken(t);
+
+            fromStateID = fromState.getId();
+            fromState.setIsAccepting(false);
+
+            // check if the inputSetOfStates contains an accepting state and set the new state is accepting if the inputSetOfStates contains an accepting state
+            for (int state: inputSetOfStates) {
+                if(debug) std::cout << "state " << state << " in input \n";
+                if (this->nfa.getStatesMap().at(state).getIsAccepting()) {
+                    if(debug){
+                        std::cout << "state " <<state << std::endl;
+                        std::cout << "token "<< this->nfa.getStatesMap().at(state).getAcceptedToken()->type << " " <<
+                                  this->nfa.getStatesMap().at(state).getAcceptedToken()->priority << std::endl;
+                    }
+
+
+                    fromState.setIsAccepting(true);
+
+                  //  std::cout << "new priority " << fromState.getAcceptedToken()->priority;
+
+                    if(this->nfa.getStatesMap().at(state).getAcceptedToken()->priority < fromState.getAcceptedToken()->priority){
+
+                        fromState.setAcceptedToken(this->nfa.getStatesMap().at(state).getAcceptedToken());
+
+                    }
+                }
+            }
+
+            visitedStates[inputSetOfStates] = fromStateID;
+            DFA[fromStateID] = fromState;
+
+        }
+
+        if(visitedStates.find(OutputSetOfStates) != visitedStates.end()) {
+            if(debug)   std::cout << "We worked in this output state before\n";
+            toStateID = visitedStates.at(OutputSetOfStates);
+        }else{
+            if(OutputSetOfStates.size() == 0){
+                if(debug)   std::cout << "go to dead state\n";
+                toStateID = dead.getId();
+
+            }else{
+                if(debug)  std::cout << "We didn't work in this output state before\n";
+                Token* t = new Token("", "", INT16_MAX);
+                toState = new State() ;
+                toState.setAcceptedToken(t);
+                toStateID = toState.getId();
+                toState.setIsAccepting(false);
+
+                // check if the output contains an accepting state and set the new state is accepting if the inputSetOfStates contains an accepting state
+                for (int state: OutputSetOfStates) {
+                    if (this->nfa.getStatesMap().at(state).getIsAccepting()) {
+                        toState.setIsAccepting(true);
+                        if(this->nfa.getStatesMap().at(state).getAcceptedToken()->priority < toState.getAcceptedToken()->priority){
+                            toState.setAcceptedToken(this->nfa.getStatesMap().at(state).getAcceptedToken());
+                        }
+                    }
+                }
+                visitedStates[OutputSetOfStates] = toStateID;
+                DFA[toStateID] = toState;
+            }
+        }
+
+        //   std::cout << "from state id " << fromStateID << std::endl;
+        DFA[fromStateID].addTransition(a, toStateID);
+    }
+
+    return DFA;
+}
+
+/*
 std::map< std::pair<State, char> , State > SubsetConstruction::getDFA(){
     std::map< std::pair<State, char> , State > DFA;
+
     std::map< std::pair<std::set<int>, char> , std::set<int> > Dtran = this->convertNFAToDFA();
 
     std::map<std::set<int>, State> statesMap;
@@ -231,9 +342,9 @@ std::map< std::pair<State, char> , State > SubsetConstruction::getDFA(){
     return DFA;
 }
 
+ */
+
 std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::convertNFAToDFA()  {
-    if(debug)   printMap(this->nfa.getStatesMap());
-    if(debug)   std::cout << "-------------------------------------------------";
 
     std::queue<std::set<int>> DstatesQueue;
     std::set<std::set<int>> Dstates;
@@ -268,26 +379,31 @@ std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::c
             if(debug) this->printSet(T);
 
             std::set<int> goTo = move(T, a);
-            std::set<int> U = getEpsClosure(goTo);
+            if(goTo.size()>0){
+                std::set<int> U = getEpsClosure(goTo);
 
-            if(debug)std::cout << "go to states : ";
-            if(debug) this->printSet(U);
+                if(debug)std::cout << "go to states : ";
+                if(debug) this->printSet(U);
 
-            // Step 4: Check if U is not in Dstates
-            if (Dstates.find(U) == Dstates.end()) {
-                if(debug) std::cout << "U is not in Dstates" << std::endl;
-                // Add U as an unmarked state to Dstates
-                DstatesQueue.push(U);
-                Dstates.insert(U);
+                // Step 4: Check if U is not in Dstates
+                if (Dstates.find(U) == Dstates.end() ) {
+                    if(debug) std::cout << "U is not in Dstates" << std::endl;
+                    // Add U as an unmarked state to Dstates
+                    DstatesQueue.push(U);
+                    Dstates.insert(U);
+                }
+
+                if(debug) std::cout << "-------------------------------------------------\n";
+                // Step 5: Set Dtran[T, a] = U
+                Dtran[std::make_pair(T, a)] = U;
+            }else{
+                Dtran[std::make_pair(T, a)] = goTo;
             }
 
-            if(debug) std::cout << "-------------------------------------------------\n";
-            // Step 5: Set Dtran[T, a] = U
-            Dtran[std::make_pair(T, a)] = U;
         }
     }
 
-    this->printDFATransitionhs(Dtran);
+  //  this->printDFATransitionhs(Dtran);
 
     return Dtran;
 }
