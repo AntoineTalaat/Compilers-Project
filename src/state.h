@@ -10,7 +10,6 @@ class State {
         bool isAccepting;
         Token* acceptedToken;
         std::map<char, std::set<int>> transitions;
-
     public:
         static int counterGlobalId;
 

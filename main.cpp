@@ -69,7 +69,7 @@ int main(){
        State T = transition.first.first;
        char a = transition.first.second;
        State U = transition.second;
-       std::cout << "Dtran[{" << T.getId() << ", " << T.getIsAccepting() <<
+       std::cout << "Dtranss[{" << T.getId() << ", " << T.getIsAccepting() <<
                                                "}, " << a << "] = {" <<
                                    U.getId() << ", " << U.getIsAccepting()
                                    <<"}\n";
