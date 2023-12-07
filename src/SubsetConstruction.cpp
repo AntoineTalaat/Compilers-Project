@@ -101,10 +101,14 @@ std::set <int> SubsetConstruction::getEpsClosure(const std::set <int> states){
 
 std::map <int , State> SubsetConstruction::getDFA(){
     State dead = new State();
+    for(char c : this->alphabet){
+        dead.addTransition(c, dead.getId());
+    }
     dead.setIsAccepting(false);
 
     std::map<int , State> DFA;
     DFA[dead.getId()] = dead;
+
 
     this->setDeadStateID(dead.getId());
 
