@@ -278,15 +278,23 @@ std::map<int, State> SubsetConstruction::minimizeDFA(std::map<int, State>& DFA) 
     std::vector<std::set<int>> IIfinal;
 
     // Separate accepting and non-accepting states into two groups
-    std::set<int> acceptingStates, nonAcceptingStates;
-    for ( auto& state : DFA) {
+    std::map<Token*, std::set<int>> acceptingStateGroups;  // Use a map to group accepting states by token
+    std::set<int> nonAcceptingStates;
+
+    for (auto& state : DFA) {
         if (state.second.getIsAccepting()) {
-            acceptingStates.insert(state.first);
+            Token* stateToken = state.second.getAcceptedToken();
+            acceptingStateGroups[stateToken].insert(state.first);
         } else {
             nonAcceptingStates.insert(state.first);
         }
     }
-    II.push_back(acceptingStates);
+
+    // Add accepting state groups to II
+    for (const auto& group : acceptingStateGroups) {
+        II.push_back(group.second);
+    }
+
     II.push_back(nonAcceptingStates);
 
     while (true) {
