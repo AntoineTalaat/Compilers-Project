@@ -13,6 +13,8 @@ class SubsetConstruction {
 
         int startStateID ;
         int deadStateID ;
+
+        std::set<int> startStateEpsClosure;
         std::set <int> epsClosure(int state);
         std::set <int> getEpsClosure(std::set <int> states);
         std::set <int> move(std::set <int> states, char letter);
@@ -25,6 +27,7 @@ class SubsetConstruction {
         std::string setToString(std::set<int> s);
 
     public:
+
 
         SubsetConstruction(NFA nfa);
         void setStartStateID(int startState);
