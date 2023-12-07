@@ -156,11 +156,9 @@ std::map <int , State> SubsetConstruction::getDFA(){
     std::map<std::set<int>, int> visitedStates;
 
     for(auto& transition : Dtran){
-
         const auto& inputSetOfStates = transition.first.first;
         char a = transition.first.second;
         const auto& OutputSetOfStates = transition.second;
-
 
         if(debug){
             std::cout << "Input Set " ;
@@ -170,8 +168,6 @@ std::map <int , State> SubsetConstruction::getDFA(){
             printSet(OutputSetOfStates);
             std::cout << std::endl;
         }
-
-
 
         int fromStateID ;
         State fromState;

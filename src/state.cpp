@@ -115,6 +115,18 @@ void State::printTransitions() {
     }
 };
 
+void State::printTransitions(int nextStateNumLowerBound) {
+    std::map<char, std::set<int>> transitions = this->getTransitions();
+    for(auto tr : transitions) {
+        if(tr.second.size() >= nextStateNumLowerBound){
+            std::cout << "Input: " << tr.first << " moves to States# ";
+            for (auto &s : tr.second)
+                std::cout << s << " ";
+            std::cout << std::endl;
+        }
+    }
+};
+
 std::string State::toString() {
     std::string s = "";
 

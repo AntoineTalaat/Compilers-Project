@@ -13,6 +13,8 @@ SRC_FILES +=src/token.cpp
 SRC_FILES +=src/utils.cpp
 SRC_FILES +=src/globals.cpp
 SRC_FILES +=src/SubsetConstruction.cpp
+SRC_FILES +=src/lexical_analyzer.cpp
+
 
 
 build:
