@@ -428,8 +428,112 @@ std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::c
     return Dtran;
 }
 
+std::map<int, State> SubsetConstruction::minimizeDFA(std::map<int, State>& DFA) {
+    std::vector<std::set<int>> II;
+    std::vector<std::set<int>> IInew;
+    std::vector<std::set<int>> IIfinal;
+
+    // Separate accepting and non-accepting states into two groups
+    std::set<int> acceptingStates, nonAcceptingStates;
+    for ( auto& state : DFA) {
+        if (state.second.getIsAccepting()) {
+            acceptingStates.insert(state.first);
+        } else {
+            nonAcceptingStates.insert(state.first);
+        }
+    }
+    II.push_back(acceptingStates);
+    II.push_back(nonAcceptingStates);
+
+    while (true) {
+        IInew = II;
+
+        for (const auto& group : II) {
+            std::vector<std::set<int>> subgroups;
+            for (int state : group) {
+                auto representative = std::find_if(subgroups.begin(), subgroups.end(),
+                    [state, &DFA](const std::set<int>& subgroup) {
+                        return std::all_of(subgroup.begin(), subgroup.end(),
+                            [state, &DFA](int otherState) {
+                                return DFA[state].getTransitions() == DFA[otherState].getTransitions();
+                            });
+                    });
+
+                if (representative == subgroups.end()) {
+                    subgroups.push_back({ state });
+                } else {
+                    representative->insert(state);
+                }
+            }
+    //                   std::cout << "Subgroups: ";
+    // for (const auto& subgroup : subgroups) {
+    //     std::cout << "{";
+    //     for (int state : subgroup) {
+    //         std::cout << state << " ";
+    //     }
+    //     std::cout << "} ";
+    // }
+    // std::cout << std::endl;
 
 
+            auto it = std::find(IInew.begin(), IInew.end(), group);
+            IInew.erase(it);
+            IInew.insert(IInew.end(), subgroups.begin(), subgroups.end());
+        }
+
+        if (IInew == II) {
+            IIfinal = II;
+            break;
+        }
+
+        II = IInew;
+    }
+
+    // Construct the minimized DFA
+    std::map<int, State> minimizedDFA;
+    std::map<int, std::set<int>> stateMapping;
+    for (const auto& group : IIfinal) {
+        // Choose a representative for the group
+        int representative = *group.begin();
+        //  std::cout << "Representative for Group: " << representative << std::endl;
+        minimizedDFA[representative] = DFA[representative];
+
+        // If the group contains an accepting state, mark the representative as accepting in the minimized DFA
+        if (std::any_of(group.begin(), group.end(), [&DFA](int state) { return DFA[state].getIsAccepting(); })) {
+            minimizedDFA[representative].setIsAccepting(true);
+        }
+        stateMapping[representative] = group;
+    }
+//  std::cout << "State Mapping: " << std::endl;
+// for (const auto& entry : stateMapping) {
+//     std::cout << entry.first << " : { ";
+//     for (int state : entry.second) {
+//         std::cout << state << " ";
+//     }
+//     std::cout << "}" << std::endl;
+// }
+    
+for (auto& entry : minimizedDFA) {
+    int representative = entry.first;
+    auto& state = entry.second;
+
+    for (auto& transition : state.getTransitions()) {
+        char inputSymbol = transition.first;
+        int nextState = *transition.second.begin();
+
+        // Find the representative of the group containing nextState
+        for (const auto& mapping : stateMapping) {
+            if (mapping.second.count(nextState) > 0) {
+                nextState = mapping.first;
+                break;
+            }
+        }
+
+        // Set the transition for the character using the representative state
+        state.setTransitionForCharacter(inputSymbol, { nextState });
+    }
+}
 
 
-
+    return minimizedDFA;
+}

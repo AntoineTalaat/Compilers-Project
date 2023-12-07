@@ -24,6 +24,7 @@ class SubsetConstruction {
         void printDFATransitionhs(std::map<std::pair<std::set<int>, char>, std::set<int>> Dtran);
         std::string setToString(std::set<int> s);
 
+
     public:
 
         SubsetConstruction(NFA nfa);
@@ -33,5 +34,6 @@ class SubsetConstruction {
         int getDeadStateID();
         void setAlphabet(std::set <char> alphabet);
         std::map< int , State> getDFA();
+        std::map<int, State> minimizeDFA(std::map<int, State> &DFA);
 };
 #endif  // SubsetConstruction_H

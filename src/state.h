@@ -33,6 +33,8 @@ class State {
         void addTransition(char letter, int state);
         void printTransitions();
         std::string toString();
+
+        void setTransitionForCharacter(char letter, const std::set<int>& states);
 };
 namespace std {
     template <>

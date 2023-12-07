@@ -1,7 +1,7 @@
 #include <iostream>
 #include "src/nfa.h"
 #include "src/subset_construction.h"
-#include "input_parser.h"
+#include "src/input_parser.h"
 
 
 using namespace std;
@@ -80,7 +80,8 @@ int main(){
 //       std::cout << "-------------------------"<< std::endl;
 //   }
 
-
+    std::map< int , State> minimizedDFA = s.minimizeDFA(DFA);
+   std::cout << "MinimizedDFA states size = " << minimizedDFA.size() << std::endl;
    return 0;
 
 }
