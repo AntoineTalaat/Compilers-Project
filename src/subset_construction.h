@@ -24,6 +24,7 @@ class SubsetConstruction {
 
 
 
+
     public:
 
 
@@ -35,5 +36,6 @@ class SubsetConstruction {
         void setAlphabet(std::set <char> alphabet);
         std::set<char> getAlphabet();
         std::map< int , State> getDFA();
+        std::map<int, State> minimizeDFA(std::map<int, State> &DFA);
 };
 #endif  // SubsetConstruction_H

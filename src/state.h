@@ -34,6 +34,8 @@ class State {
         void printTransitions();
         void printTransitions(int nextStateNumLowerBound);
         std::string toString();
+
+        void setTransitionForCharacter(char letter, const std::set<int>& states);
 };
 namespace std {
     template <>

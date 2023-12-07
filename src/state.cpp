@@ -82,6 +82,9 @@ std::map<char, std::set<int/*State**/>> State::getTransitions() {
     return this->transitions;
 };
 
+void State::setTransitionForCharacter(char letter, const std::set<int>& states) {
+        transitions[letter] = states;
+    }
 void State::addTransition(char letter, int state) {
     auto it = this->transitions.find(letter);
     // std::cout<<"x " <<'\n';

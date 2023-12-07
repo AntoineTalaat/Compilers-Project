@@ -78,13 +78,8 @@ int main(){
     //       std::cout << "-------------------------"<< std::endl;
     //   }
 
-    // int startStateID = s.getStartStateID();
-    // int deadStateID = s.getDeadStateID();
-    // string input = Utils::readFile("input.txt");
-    // vector<Token> tokens = LexicalAnalyzer::getTokens(input,startStateID,deadStateID,DFA);
-    // for ( auto& token : tokens) {
-    //     std::cout << "token: " << token.type << " ( " << token.lexeme<< " ) " << std::endl;
-    // }
-    // return 0;
+    std::map< int , State> minimizedDFA = s.minimizeDFA(DFA);
+   std::cout << "MinimizedDFA states size = " << minimizedDFA.size() << std::endl;
+   return 0;
 
 }
