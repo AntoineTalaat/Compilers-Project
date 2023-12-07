@@ -23,7 +23,7 @@ int main(){
     NFA n = NFAGenerator::getFullNFA(ip.allNFAs) ;
 
     std::cout <<"NFA states size = " << n.getStatesMap().size() << std::endl;
-    std::cout <<"NFA:" << std::endl;
+    // std::cout <<"NFA:" << std::endl;
     Utils::printMap(n.getStatesMap());
 
     SubsetConstruction s(n);
@@ -31,13 +31,13 @@ int main(){
     std::map< int , State> DFA = s.getDFA();
     std::cout <<"DFA states size = " << DFA.size() << std::endl;
     std::cout <<"DFA:" << std::endl;
-    Utils::printMap(s.getDFA());
+    Utils::printMap(DFA);
 
 
     int startStateID = s.getStartStateID();
     int deadStateID = s.getDeadStateID();
-    // string input = Utils::readFile("input.txt");
-    string input = Utils::readFile("test.txt");
+    string input = Utils::readFile("input.txt");
+    // string input = Utils::readFile("test.txt");
 //    string input = Utils::readFile("D:\\Engineer\\Level 4\\semester 9\\compilers\\project\\Lexical-Analyzer-Generator\\test.txt");
     vector<Token> tokens = LexicalAnalyzer::getTokens(input,startStateID,deadStateID,DFA);
     for ( auto& token : tokens) {
