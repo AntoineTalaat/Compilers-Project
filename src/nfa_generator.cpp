@@ -54,7 +54,12 @@ NFA NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
                 stk.push(generated);
             }
         } else if(string.length() == 1 || string.length()==2 && string[0]=='\\'){
-            NFA  appended = OperationsHandler::basicNFA(string[string.length()-1]);
+            
+            NFA  appended;
+            if(string.length()==2 && string[1]=='L')
+                appended = OperationsHandler::basicNFA(EPSILLON);
+            else 
+                appended = OperationsHandler::basicNFA(string[string.length()-1]);
             // std::cout<<"push one char nfa " << string <<'\n';
             stk.push(appended);
         }else{
