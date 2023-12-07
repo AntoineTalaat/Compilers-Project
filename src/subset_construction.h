@@ -4,6 +4,7 @@
 #include "nfa.h"
 #include "globals.h"
 #include <set>
+#include "utils.h"
 
 class SubsetConstruction {
 
@@ -13,18 +14,15 @@ class SubsetConstruction {
 
         int startStateID ;
         int deadStateID ;
-
         std::set<int> startStateEpsClosure;
+
+
         std::set <int> epsClosure(int state);
         std::set <int> getEpsClosure(std::set <int> states);
         std::set <int> move(std::set <int> states, char letter);
         std::map<std::pair<std::set<int>, char>, std::set<int>> convertNFAToDFA();
 
-        void printMap(std::map<int, State> statesMap);
-        void printSet(std::set<int> states);
-        void printmarkedMap(std::map<std::set<int>, bool> marked);
-        void printDFATransitionhs(std::map<std::pair<std::set<int>, char>, std::set<int>> Dtran);
-        std::string setToString(std::set<int> s);
+
 
     public:
 
@@ -35,6 +33,7 @@ class SubsetConstruction {
         int getStartStateID();
         int getDeadStateID();
         void setAlphabet(std::set <char> alphabet);
+        std::set<char> getAlphabet();
         std::map< int , State> getDFA();
 };
 #endif  // SubsetConstruction_H

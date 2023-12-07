@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "nfa.h"
 
 std::string Utils::readFile(const std::string& filename) {
     std::ifstream inputFile(filename);
@@ -11,6 +12,7 @@ std::string Utils::readFile(const std::string& filename) {
     inputFile.close();
     return buffer.str();
 }
+
 
 std::vector<std::string> Utils::splitString(const std::string& input, char delimiter) {
     std::vector<std::string> tokens;
@@ -43,3 +45,51 @@ std::string Utils::trim(std::string str){
     return str;
 }
 
+void Utils::printSet(std::set<int> s , NFA nfa) {
+    std::cout << "{";
+    for (auto it = s.begin(); it != s.end(); ++it) {
+
+        std::cout << *it << " " << nfa.getStatesMap()[*it].getIsAccepting() << std::endl  ;
+        
+        if(nfa.getStatesMap()[*it].getIsAccepting()){
+            std::cout << " " << nfa.getStatesMap()[*it].getAcceptedToken()->type << " " << 
+            nfa.getStatesMap()[*it].getAcceptedToken()->priority;
+        }
+
+    }
+    std::cout << "}";
+}
+
+void Utils::printMap(std::map<int, State> statesMap){
+    std::cout << "States:\n";
+    for (auto& state : statesMap) {
+        std::cout << state.first << ": ";
+        std::cout << (state.second.toString())<< std::endl;
+    }
+}
+
+
+std::string Utils::setToString(std::set<int> s) {
+
+    std::string result = "{";
+    for (auto it = s.begin(); it != s.end(); ++it) {
+        result += std::to_string(*it);
+        if (std::next(it) != s.end()) {
+            result += ", ";
+        }
+    }
+    result += "}";
+    return result;
+}
+
+
+
+void Utils::printDFATransitionhs(std::map<std::pair<std::set<int>, char>, std::set<int>> Dtran){
+    std::cout << "Nfa states " << std::endl ;
+    for (const auto& transition : Dtran) {
+        const auto& T = transition.first.first;
+        char a = transition.first.second;
+        const auto& U = transition.second;
+        std::cout << "Dtran[{" << setToString(T)<< "}, " << a << "] = {" << setToString(U)<< "}\n";
+    }
+}
