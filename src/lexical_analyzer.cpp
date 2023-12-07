@@ -2,15 +2,6 @@
 
 std::vector<Token> LexicalAnalyzer::getTokens(std::string input, int startStateID,int deadStateID,
                                               std::map<int, State> dfaMap){
-    // std::cout <<  dfaMap[startStateID].getIsAccepting()<< " "<<  dfaMap[startStateID].getAcceptedToken()->type <<"\n" ;
-    // std::cout <<  startStateID <<" "<<  deadStateID <<"\n" ;
-
-    //    for ( auto& x : dfaMap) {
-    //        std::cout << "state: " << x.first << ", " << x.second.getIsAccepting();
-    //        if(x.second.getIsAccepting())
-    //             std::cout<< " " << x.second.getAcceptedToken()->type <<" " <<  x.second.getAcceptedToken()->lexeme;
-    //        std::cout<<'\n';
-    //    }
     int currentStateID = startStateID;
     std::vector<Token> acceptedTokens;
     int i=0;
@@ -26,10 +17,9 @@ std::vector<Token> LexicalAnalyzer::getTokens(std::string input, int startStateI
         if(nextStateID == deadStateID){
             // std::cout<<"next state is dead state \n";
             assert((dfaMap[startStateID].getTransitions()[input[i]]).size()<=1);
-
             int otherPossibleStateID = (dfaMap[currentStateID].getTransitions()[input[i]].size()<1)?deadStateID:*dfaMap[startStateID].getTransitions()[input[i]].begin();   
             if(otherPossibleStateID == deadStateID){
-                if(input[i]!= ' ' || '\n')
+                if(input[i]!= ' ' && input[i] != '\n')
                     std::cout<<"Error, encountered wrong input, ignoring: " << input[i]<< " at position: "<< i <<"\n";
                 i++;
             }
