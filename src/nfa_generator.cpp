@@ -74,5 +74,6 @@ NFA NFAGenerator::generateNFAFromString(std::string s) {
         NFA  next = OperationsHandler::basicNFA(s[i]);
         first = OperationsHandler::concatOp(first,next);
     }
+    
     return first;
 }

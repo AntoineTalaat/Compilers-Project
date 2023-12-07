@@ -32,6 +32,7 @@ class State {
         std::map<char, std::set</**State*/int>> getTransitions();
         void addTransition(char letter, int state);
         void printTransitions();
+        void printTransitions(int nextStateNumLowerBound);
         std::string toString();
 
         void setTransitionForCharacter(char letter, const std::set<int>& states);

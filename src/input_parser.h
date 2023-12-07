@@ -23,8 +23,8 @@ class InputParser {
 
         void parseRegDef(std::string);
         void parseRegExp(std::string, int);
-        void parseKeyword(std::string, int);
-        void parsePunctuation(std::string, int);
+        void parseKeyword(std::string);
+        void parsePunctuation(std::string);
     public:
         // InputParser();
         std::vector<NFA> allNFAs;

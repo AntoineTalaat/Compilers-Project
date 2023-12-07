@@ -14,8 +14,8 @@ void InputParser::tokenize(std::string line, int priority) {
     std::cout <<">>> "<< line<<  " at " << allNFAs.size()<<"\n";
     if(regex_match(line, regDefRegex))            parseRegDef(line);
     else if(regex_match(line, regExpRegex))       parseRegExp(line, priority);
-    else if(regex_match(line, keywordRegex))      parseKeyword(line, priority);
-    else if(regex_match(line, punctuationRegex))  parsePunctuation(line, priority);
+    else if(regex_match(line, keywordRegex))      parseKeyword(line);
+    else if(regex_match(line, punctuationRegex))  parsePunctuation(line);
     else { 
         throw std::invalid_argument("received unknownnnnn rule typeeeeee");
     }
@@ -33,7 +33,7 @@ void InputParser::parseRegDef(std::string str) {
     NFA nfa = NFAGenerator::generateNFAFromPostfix(postfix);
     Globals::regularDefinitionNFA[lhs]=nfa;
     // std::cout<<"ADDED TO NFA MAP " << lhs<< ">>>"<< rhs <<'\n';
-    Globals::regularDefinitionNFA[lhs]=nfa;
+    // Globals::regularDefinitionNFA[lhs]=nfa;
 
     // std::cout<<"MAP " << (Globals::regularDefinitionNFA.find(lhs)!=Globals::regularDefinitionNFA.end()) <<'\n';
     // allNFAs.push_back(nfa);
@@ -50,14 +50,17 @@ void InputParser::parseRegExp(std::string str, int priority) {
     std::vector<std::string> infix = generateInfix(rhs);
     std::vector<std::string> postfix = InfixToPostfix::convert(infix);
     NFA nfa = NFAGenerator::generateNFAFromPostfix(postfix);
-    
+    Globals::regularDefinitionNFA[lhs]=nfa;
+
     // TODO setup the token
     Token* tk = new Token(lhs, "", priority);
     nfa.getFinalState().setAcceptedToken(tk);
     allNFAs.push_back(nfa);
 };
 
-void InputParser::parseKeyword(std::string line, int priority) {
+void InputParser::parseKeyword(std::string line) {
+    int priority = -1;
+
     // std::cout<<"found keyword" << "\n";
     std::string keywordStr = line.substr(1, line.length() - 2); 
     keywordStr=Utils::trim(keywordStr);
@@ -65,7 +68,7 @@ void InputParser::parseKeyword(std::string line, int priority) {
     for (const auto& keyword : keywords) {
         NFA nfa = NFAGenerator::generateNFAFromString(keyword);
         // TODO setup the token
-        Token* tk = new Token(keyword, "", priority);
+        Token* tk = new Token("keyword", keyword, priority);
         nfa.getFinalState().setAcceptedToken(tk);
         allNFAs.push_back(nfa);
         std::cout<<"KEYWORDS "<< keyword<< " "<<nfa.getFinalState().getIsAccepting()<<" "<< allNFAs[allNFAs.size()-1].getFinalState().getIsAccepting()<<'\n';
@@ -73,7 +76,8 @@ void InputParser::parseKeyword(std::string line, int priority) {
 
 };
 
-void InputParser::parsePunctuation(std::string line, int priority) {
+void InputParser::parsePunctuation(std::string line) {
+    int priority = -1;
     // std::cout<<"found punct" << "\n";
     std::string punctStr = line.substr(1, line.length() - 2); 
     punctStr=Utils::trim(punctStr);
@@ -84,7 +88,7 @@ void InputParser::parsePunctuation(std::string line, int priority) {
         str += punct[punct.length()-1];
         NFA nfa = NFAGenerator::generateNFAFromString(str);
         // TODO setup the token
-        Token* tk = new Token(punct, "", priority);
+        Token* tk = new Token("punct", punct, priority);
         nfa.getFinalState().setAcceptedToken(tk);
         allNFAs.push_back(nfa);
     }
