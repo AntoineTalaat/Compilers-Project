@@ -6,11 +6,10 @@ NFA OperationsHandler::basicNFA(char c) {
     State start;
     State final;
     start.addTransition(c,final.getId());
-    
     NFA oneCharNFA;
     oneCharNFA.setStartState(start);
     oneCharNFA.setFinalState(final);
-    
+    Globals::alphabet.insert(c);
     return oneCharNFA;
 };
 
@@ -164,6 +163,7 @@ NFA  OperationsHandler::rangeOp(NFA from, NFA to) {
  };
 
 NFA  OperationsHandler::handleBinaryOperator(char op,NFA  first, NFA  second) {
+    char from, to;
     switch (op)
     {
     case '&':
@@ -171,6 +171,10 @@ NFA  OperationsHandler::handleBinaryOperator(char op,NFA  first, NFA  second) {
         return OperationsHandler::concatOp(first,second);
         break;
     case '-':
+        from = first.getStartState().getTransitions().begin()->first;
+        to = second.getStartState().getTransitions().begin()->first;
+        for(char c = from; c <= to; c++) {
+            Globals::alphabet.insert(c);}
         return OperationsHandler::rangeOp(first,second);
         break;
     case '|':

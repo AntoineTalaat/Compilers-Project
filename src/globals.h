@@ -6,10 +6,11 @@
 
 // include all globals here
 
-static const char EPSILLON = (char)0;
+static const char EPSILLON = '@';
 class Globals{
     public:
         static std::map<std::string,NFA> regularDefinitionNFA;
+        static std::set<char> alphabet;
 };
 
 #endif  //  GLOBALS_H

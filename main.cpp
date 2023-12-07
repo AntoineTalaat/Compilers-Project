@@ -11,7 +11,7 @@ int main(){
     string content = Utils::readFile(file);
     InputParser ip;
     char delimiter = '\n';
-
+    Globals::alphabet.insert(EPSILLON);
     std::vector<std::string> lines = Utils::splitString(content, delimiter);
 
     for (int i=0;i<lines.size();i++){
@@ -27,25 +27,7 @@ int main(){
     Utils::printMap(n.getStatesMap());
 
     SubsetConstruction s(n);
-    s.setAlphabet({
-                          'E',
-                          '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                          '.', EPSILLON});
-
-//    s.setAlphabet({
-//        'a', 'b', 'c', 'd', 'e', 'f',
-//        'g', 'h', 'i', 'j', 'k', 'l',
-//        'm', 'n', 'o', 'p', 'q', 'r',
-//        's', 't', 'u', 'v', 'w', 'x',
-//        'y', 'z',
-//        'A', 'B', 'C', 'D', 'E', 'F',
-//        'G', 'H', 'I', 'J', 'K', 'L',
-//        'M', 'N', 'O', 'P', 'Q', 'R',
-//        'S', 'T', 'U', 'V', 'W', 'X',
-//        'Y', 'Z',
-//        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-//        '>','=','<','!',';', ',', '(', ')', '{', '}',
-//        '+', '-', '*', '/', '.', EPSILLON});
+    s.setAlphabet(Globals::alphabet);
     std::map< int , State> DFA = s.getDFA();
     std::cout <<"DFA states size = " << DFA.size() << std::endl;
     std::cout <<"DFA:" << std::endl;

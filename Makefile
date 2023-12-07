@@ -15,32 +15,17 @@ SRC_FILES +=src/globals.cpp
 SRC_FILES +=src/SubsetConstruction.cpp
 SRC_FILES +=src/lexical_analyzer.cpp
 
+EXECUTABLE = main
 
+all: $(EXECUTABLE)
 
-build:
-		g++ $(SRC_FILES) -o main $(CFLAGS)
+$(EXECUTABLE): $(SRC_FILES)
+	g++ $(SRC_FILES) -o $(EXECUTABLE) $(CFLAGS)
 
-run: build
-		./main
+.PHONY: run
+run: $(EXECUTABLE)
+	./$(EXECUTABLE)
 
-
-# CXX = g++
-# CXXFLAGS = -std=c++11 -Wall
-
-# SRC_DIR = .
-# # Get all .cpp files in the source directory
-# SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
-
-# OBJECTS = $(SOURCES:.cpp=.o)
-# EXECUTABLE = main
-
-# all: $(EXECUTABLE)
-
-# $(EXECUTABLE): $(OBJECTS)
-# 	$(CXX) $(CXXFLAGS) -o $@ $^
-
-# %.o: %.cpp
-# 	$(CXX) $(CXXFLAGS) -c -o $@ $<
-
-# clean:
-# 	rm -f $(OBJECTS) $(EXECUTABLE)
+.PHONY: clean
+clean:
+	rm -f $(EXECUTABLE)
