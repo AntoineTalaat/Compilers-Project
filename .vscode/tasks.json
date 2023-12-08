@@ -41,6 +41,7 @@
               "${workspaceFolder}\\src\\utils.cpp",
               "${workspaceFolder}\\src\\globals.cpp",
               "${workspaceFolder}\\src\\SubsetConstruction.cpp",
+              "${workspaceFolder}\\src\\lexical_analyzer.cpp",
               "-o",
               "${workspaceFolder}\\main.exe",
               "-I.\\src"

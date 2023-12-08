@@ -7,7 +7,7 @@
 #include <iostream>
 
 
-Utils utils;
+// Utils utils;
 bool debug = false;
 bool first = true;
 
@@ -19,7 +19,6 @@ SubsetConstruction::SubsetConstruction(NFA nfa) {
 
 
 void SubsetConstruction::setAlphabet(std::set <char> alphabet) {
-    alphabet.erase(EPSILLON);
     this->alphabet = std::move(alphabet);
 }
 
@@ -101,6 +100,8 @@ std::set <int> SubsetConstruction::getEpsClosure(const std::set <int> states){
 
 std::map <int , State> SubsetConstruction::getDFA(){
     State dead = new State();
+    this->alphabet.erase(EPSILLON);
+
     for(char c : this->alphabet){
         dead.addTransition(c, dead.getId());
     }
@@ -109,17 +110,23 @@ std::map <int , State> SubsetConstruction::getDFA(){
     std::map<int , State> DFA;
     DFA[dead.getId()] = dead;
 
-
     this->setDeadStateID(dead.getId());
 
-    std::map< std::pair<std::set<int>, char> , std::set<int> > Dtran = this->convertNFAToDFA();
+    std::map<std::pair<std::set<int>, char> , std::set<int> > Dtran = this->convertNFAToDFA();
     std::map<std::set<int>, int> visitedStates;
+
+    // for(auto& transition : Dtran){
+    //     if(transition.first.first!=this->startStateEpsClosure){
+    //         continue;
+    //     }
+
+    // }
+
 
     for(auto& transition : Dtran){
         const auto& inputSetOfStates = transition.first.first;
         char a = transition.first.second;
         const auto& OutputSetOfStates = transition.second;
-
 
         int fromStateID ;
         State fromState;
@@ -211,7 +218,6 @@ std::map <int , State> SubsetConstruction::getDFA(){
 
 
 std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::convertNFAToDFA()  {
-
     std::queue<std::set<int>> DstatesQueue;
     std::set<std::set<int>> Dstates;
     std::map<std::set<int>, bool> marked;
@@ -224,6 +230,7 @@ std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::c
     DstatesQueue.push(startEpsClosure);
     Dstates.insert(startEpsClosure);
 
+    
 
     if(debug){
         std::cout << "start state id: " << startStateID << std::endl;
@@ -267,7 +274,7 @@ std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::c
         }
     }
 
-    if(debug) utils.printDFATransitionhs(Dtran);
+    if(debug) Utils::printDFATransitionhs(Dtran);
 
     return Dtran;
 }
