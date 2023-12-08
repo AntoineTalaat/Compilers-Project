@@ -13,6 +13,7 @@ class Utils{
         static std::string setToString(std::set<int> s);
         static void printDFATransitionhs(std::map<std::pair<std::set<int>, char>, std::set<int>> Dtran);
         static void printMap(std::map<int, State> statesMap);
+        static void printMapFile(std::map<int, State> statesMap);
 
         static void printStringVector(std::vector<std::string> v);
 

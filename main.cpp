@@ -38,9 +38,8 @@ int main(){
     string input = Utils::readFile("test.txt");
     vector<Token> tokens = LexicalAnalyzer::getTokens(input,startStateID,deadStateID,minimalDFA);
     for ( auto& token : tokens) {
-        std::cout << "token: " << token.type << " ( " << token.lexeme<< " ) " << std::endl;
+        std::cout <<  token.type << std::endl;
     }
-
     return 0;
 
 }

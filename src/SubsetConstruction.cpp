@@ -5,6 +5,7 @@
 #include "nfa.h"
 #include "subset_construction.h"
 #include <iostream>
+#include <fstream>
 
 
 // Utils utils;
@@ -273,7 +274,7 @@ std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::c
             }
         }
     }
-
+    std::cout << "HI YARA" << std::endl;
     if(debug) Utils::printDFATransitionhs(Dtran);
 
     return Dtran;
@@ -371,11 +372,10 @@ for (auto& entry : minimizedDFA) {
             }
         }
 
-       
         state.setTransitionForCharacter(inputSymbol, { nextState });
     }
 }
-
-
+    Utils::printMapFile(minimizedDFA);
     return minimizedDFA;
-}
+};
+
