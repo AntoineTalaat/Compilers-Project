@@ -28,10 +28,10 @@ int main(){
     std::map< int , State> DFA = s.getDFA();
     
     std::cout <<"DFA states size = " << DFA.size() << std::endl;
+    
+    map<int,State> minimalDFA = s.minimizeDFA(DFA);
     int startStateID = s.getStartStateID();
     int deadStateID = s.getDeadStateID();
-    map<int,State> minimalDFA = s.minimizeDFA(DFA);
-    
     std::cout <<"minimal DFA states size = " << minimalDFA.size() << std::endl;
 
     // string input = Utils::readFile("input.txt");
