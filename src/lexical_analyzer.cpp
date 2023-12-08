@@ -10,7 +10,6 @@ std::vector<Token> LexicalAnalyzer::getTokens(std::string input, int startStateI
     std::string lexeme = "";
     while (i<input.size())
     {
-        std::cout<<" inspecting (" << input[i]<<")\n";
         assert((dfaMap[currentStateID].getTransitions()[input[i]]).size()<=1);
         const int nextStateID =((dfaMap[currentStateID].getTransitions()[input[i]]).size()<1)? deadStateID:*dfaMap[currentStateID].getTransitions()[input[i]].begin();
         // std::cout<<"after move id "<< nextStateID <<'\n';

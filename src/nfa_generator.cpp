@@ -26,7 +26,7 @@ NFA NFAGenerator::getFullNFA(std::vector<NFA> allNFAs) {
 };
 
 NFA NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
-    Utils::printStringVector(postfix);
+    // Utils::printStringVector(postfix);
     // std::cout<<"\nSTARTING "<< '\n';
     std::stack<NFA> stk;   
     for (const auto& string : postfix) {
@@ -36,18 +36,16 @@ NFA NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
             stk.push(Globals::regularDefinitionNFA[string]);
         }else if(InfixToPostfix::isOperatorString(string)){
             NFA  first = NFA::deepCopy(stk.top());
-            std::cout<<"pop1 due to " << string <<'\n';
-            std::cout<<"start " << first.getStartState().getId() <<" " << first.getFinalState().getId()<<'\n';
-
-            Utils::printMap(first.getStatesMap());
+            // std::cout<<"pop1 due to " << string <<'\n';
+            // std::cout<<"start " << first.getStartState().getId() <<" " << first.getFinalState().getId()<<'\n';
 
             stk.pop();
             if(InfixToPostfix::isBinaryOperatorString(string)){
                 NFA  second = NFA::deepCopy(stk.top());
-                std::cout<<"start " << second.getStartState().getId() <<" " << second.getFinalState().getId()<<'\n';
+                // std::cout<<"start " << second.getStartState().getId() <<" " << second.getFinalState().getId()<<'\n';
 
-                std::cout<<"pop2 due to " << string <<'\n';
-                Utils::printMap(second.getStatesMap());
+                // std::cout<<"pop2 due to " << string <<'\n';
+                // Utils::printMap(second.getStatesMap());
                 stk.pop();
                 NFA  generated = OperationsHandler::handleBinaryOperator(string[0],second,first);
                 stk.push(generated);

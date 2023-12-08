@@ -40,9 +40,6 @@ void InputParser::parseRegDef(std::string str)
     std::vector<std::string> postfix = InfixToPostfix::convert(infix);
     NFA nfa = NFAGenerator::generateNFAFromPostfix(postfix);
     Globals::regularDefinitionNFA[lhs] = nfa;
-
-    // std::cout<<"MAP " << (Globals::regularDefinitionNFA.find(lhs)!=Globals::regularDefinitionNFA.end()) <<'\n';
-    // allNFAs.push_back(nfa);
 };
 
 void InputParser::parseRegExp(std::string str, int priority)
