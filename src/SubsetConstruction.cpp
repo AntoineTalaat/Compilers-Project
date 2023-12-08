@@ -274,7 +274,7 @@ std::map< std::pair<std::set<int>, char> , std::set<int> > SubsetConstruction::c
             }
         }
     }
-    std::cout << "HI YARA" << std::endl;
+    // std::cout << "HI YARA" << std::endl;
     if(debug) Utils::printDFATransitionhs(Dtran);
 
     return Dtran;
