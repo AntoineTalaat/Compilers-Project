@@ -26,33 +26,20 @@ NFA NFAGenerator::getFullNFA(std::vector<NFA> allNFAs) {
 };
 
 NFA NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
-    // Utils::printStringVector(postfix);
-    // std::cout<<"\nSTARTING "<< '\n';
     std::stack<NFA> stk;   
     for (const auto& string : postfix) {
-        // std::cout<<"\nhandling string:_" << string <<"_ " << stk.size() <<'\n';
         if(Globals::regularDefinitionNFA.find(string)!=Globals::regularDefinitionNFA.end()){
-            // std::cout<<"push known regdef nfa " << string <<'\n';
             stk.push(Globals::regularDefinitionNFA[string]);
         }else if(InfixToPostfix::isOperatorString(string)){
             NFA  first = NFA::deepCopy(stk.top());
-            // std::cout<<"pop1 due to " << string <<'\n';
-            // std::cout<<"start " << first.getStartState().getId() <<" " << first.getFinalState().getId()<<'\n';
-
             stk.pop();
             if(InfixToPostfix::isBinaryOperatorString(string)){
                 NFA  second = NFA::deepCopy(stk.top());
-                // std::cout<<"start " << second.getStartState().getId() <<" " << second.getFinalState().getId()<<'\n';
-
-                // std::cout<<"pop2 due to " << string <<'\n';
-                // Utils::printMap(second.getStatesMap());
                 stk.pop();
                 NFA  generated = OperationsHandler::handleBinaryOperator(string[0],second,first);
                 stk.push(generated);
-                // std::cout<<"pushed binary operator nfa by " << string <<'\n';
             } else {
                 NFA  generated = OperationsHandler::handleUnaryOperator(string[0],first);
-                // std::cout<<"pushed unary operator nfa by " << string <<'\n';
                 stk.push(generated);
             }
         } else if(string.length() == 1 || string.length()==2 && string[0]=='\\'){
@@ -61,15 +48,12 @@ NFA NFAGenerator::generateNFAFromPostfix(std::vector<std::string> postfix) {
                 appended = OperationsHandler::basicNFA(EPSILLON);
             else 
                 appended = OperationsHandler::basicNFA(string[string.length()-1]);
-            // std::cout<<"push one char nfa " << string <<'\n';
             stk.push(appended);
         }else{
             NFA appended = generateNFAFromString(string);
-            // std::cout<<"push concatenated string nfa " << string <<'\n';
             stk.push(appended);
         }
     }
-    // std::cout<<"Final "<<stk.size()<< '\n'<<'\n';
     assert(stk.size()==1);
     return stk.top();
 };

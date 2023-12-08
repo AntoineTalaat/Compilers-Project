@@ -25,10 +25,7 @@ NFA OperationsHandler::unionOp(NFA first, NFA second) {
     State& secondFinal = second.getFinalState();
     State start ;     // set new start state for both NFAs
     start.addTransition(EPSILLON, firstStart.getId());
-    // std::cout<<"h "  <<'\n';
     start.addTransition(EPSILLON, secondStart.getId());
-    // std::cout<<"i " <<'\n';
-
     State final; // set new final state for both NFAs
     first.setFinalState(final);
     second.setFinalState(final);
@@ -161,7 +158,6 @@ NFA  OperationsHandler::handleBinaryOperator(char op,NFA  first, NFA  second) {
     switch (op)
     {
     case '&':
-        // std::cout<<"before & "  <<'\n';
         return OperationsHandler::concatOp(first,second);
         break;
     case '-':

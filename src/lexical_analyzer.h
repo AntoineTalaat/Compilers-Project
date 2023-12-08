@@ -8,7 +8,6 @@
 class LexicalAnalyzer {
     private:
     public:
-    static std::vector<Token> getTokens(std::string input,NFA dfa );  // to be replaced with DFA class
     static std::vector<Token> getTokens(std::string input, int startStateID,int deadStateID, std::map< int , State> dfaMap);
     
 };

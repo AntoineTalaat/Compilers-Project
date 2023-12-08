@@ -8,6 +8,7 @@ using namespace std;
 int main(){
     string file = "rules.txt";
 //    string file = "D:\\Engineer\\Level 4\\semester 9\\compilers\\project\\Lexical-Analyzer-Generator\\rules.txt";
+
     string content = Utils::readFile(file);
     InputParser ip;
     char delimiter = '\n';
@@ -16,7 +17,6 @@ int main(){
 
     for (int i=0;i<lines.size();i++){
         ip.tokenize(lines[i],i);
-        cout<<endl;
     }
     int i=0;
     std::vector<NFA> allNFAs = ip.allNFAs;
@@ -28,16 +28,19 @@ int main(){
     std::map< int , State> DFA = s.getDFA();
     
     std::cout <<"DFA states size = " << DFA.size() << std::endl;
-
     int startStateID = s.getStartStateID();
     int deadStateID = s.getDeadStateID();
-    string input = Utils::readFile("input.txt");
-    // string input = Utils::readFile("test.txt");
-//    string input = Utils::readFile("D:\\Engineer\\Level 4\\semester 9\\compilers\\project\\Lexical-Analyzer-Generator\\test.txt");
-    vector<Token> tokens = LexicalAnalyzer::getTokens(input,startStateID,deadStateID,DFA);
+    map<int,State> minimalDFA = s.minimizeDFA(DFA);
+    
+    std::cout <<"minimal DFA states size = " << minimalDFA.size() << std::endl;
+
+    // string input = Utils::readFile("input.txt");
+    string input = Utils::readFile("test.txt");
+    vector<Token> tokens = LexicalAnalyzer::getTokens(input,startStateID,deadStateID,minimalDFA);
     for ( auto& token : tokens) {
         std::cout << "token: " << token.type << " ( " << token.lexeme<< " ) " << std::endl;
     }
-   return 0;
+
+    return 0;
 
 }
