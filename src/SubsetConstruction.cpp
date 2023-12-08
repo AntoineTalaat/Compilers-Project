@@ -285,15 +285,23 @@ std::map<int, State> SubsetConstruction::minimizeDFA(std::map<int, State>& DFA) 
     std::vector<std::set<int>> IIfinal;
 
     // Separate accepting and non-accepting states into two groups
-    std::set<int> acceptingStates, nonAcceptingStates;
-    for ( auto& state : DFA) {
+    std::map<Token*, std::set<int>> acceptingStateGroups;  
+    std::set<int> nonAcceptingStates;
+
+    for (auto& state : DFA) {
         if (state.second.getIsAccepting()) {
-            acceptingStates.insert(state.first);
+            Token* stateToken = state.second.getAcceptedToken();
+            acceptingStateGroups[stateToken].insert(state.first);
         } else {
             nonAcceptingStates.insert(state.first);
         }
     }
-    II.push_back(acceptingStates);
+
+    // Add accepting state groups to II
+    for (const auto& group : acceptingStateGroups) {
+        II.push_back(group.second);
+    }
+
     II.push_back(nonAcceptingStates);
 
     while (true) {
@@ -316,16 +324,7 @@ std::map<int, State> SubsetConstruction::minimizeDFA(std::map<int, State>& DFA) 
                     representative->insert(state);
                 }
             }
-    //                   std::cout << "Subgroups: ";
-    // for (const auto& subgroup : subgroups) {
-    //     std::cout << "{";
-    //     for (int state : subgroup) {
-    //         std::cout << state << " ";
-    //     }
-    //     std::cout << "} ";
-    // }
-    // std::cout << std::endl;
-
+  
 
             auto it = std::find(IInew.begin(), IInew.end(), group);
             IInew.erase(it);
@@ -340,13 +339,12 @@ std::map<int, State> SubsetConstruction::minimizeDFA(std::map<int, State>& DFA) 
         II = IInew;
     }
 
-    // Construct the minimized DFA
     std::map<int, State> minimizedDFA;
     std::map<int, std::set<int>> stateMapping;
     for (const auto& group : IIfinal) {
         // Choose a representative for the group
         int representative = *group.begin();
-        //  std::cout << "Representative for Group: " << representative << std::endl;
+     
         minimizedDFA[representative] = DFA[representative];
 
         // If the group contains an accepting state, mark the representative as accepting in the minimized DFA
@@ -355,14 +353,7 @@ std::map<int, State> SubsetConstruction::minimizeDFA(std::map<int, State>& DFA) 
         }
         stateMapping[representative] = group;
     }
-//  std::cout << "State Mapping: " << std::endl;
-// for (const auto& entry : stateMapping) {
-//     std::cout << entry.first << " : { ";
-//     for (int state : entry.second) {
-//         std::cout << state << " ";
-//     }
-//     std::cout << "}" << std::endl;
-// }
+
     
 for (auto& entry : minimizedDFA) {
     int representative = entry.first;
@@ -380,7 +371,7 @@ for (auto& entry : minimizedDFA) {
             }
         }
 
-        // Set the transition for the character using the representative state
+       
         state.setTransitionForCharacter(inputSymbol, { nextState });
     }
 }
