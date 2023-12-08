@@ -130,6 +130,11 @@ void State::printTransitions(int nextStateNumLowerBound) {
     }
 };
 
+
+
+
+
+
 std::string State::toString() {
     std::string s = "";
 

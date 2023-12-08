@@ -17,6 +17,8 @@ NFA OperationsHandler::basicNFA(char c) {
 
 NFA OperationsHandler::unionOp(NFA first, NFA second) {
     NFA newNfa;
+
+
     State& firstStart = first.getStartState();
     State& firstFinal = first.getFinalState();
     State& secondStart = second.getStartState();
@@ -119,16 +121,14 @@ NFA  OperationsHandler::rangeOp(NFA from, NFA to) {
     State s;
     State e;
     NFA nfa;
-    nfa.setStartState(s);
-    nfa.setFinalState(e);
-    State  s1 = nfa.getStartState();
-    State  s2 = nfa.getFinalState();
+    // State  s1 = nfa.getStartState();
+    // State  s2 = nfa.getFinalState();
 
 
     assert(from.getStartState().getTransitions().size() == 1);
     assert(to.getStartState().getTransitions().size() == 1);
 
-    // Get the entry from the map
+    // // Get the entry from the map
     std::pair<char, std::set<int>> entryFirst =  *from.getStartState().getTransitions().begin();
     std::pair<char, std::set<int>> entryLast  =  *to.getStartState().getTransitions().begin();
 
@@ -136,16 +136,10 @@ NFA  OperationsHandler::rangeOp(NFA from, NFA to) {
     assert( entryLast.second.size()==1);;
 
     for(char c = entryFirst.first; c <= entryLast.first; c++) {
-        State ns;
-        State ne;
-        NFA newNfa;
-        newNfa.setStartState(ns);
-        newNfa.setFinalState(ne);
-        newNfa.getStartState().addTransition(c, newNfa.getFinalState().getId());
-        nfa.getStartState().addTransition(c, nfa.getFinalState().getId());
-        newNfa.getFinalState().addTransition(EPSILLON, nfa.getFinalState().getId());
-        nfa.setBatchStates(newNfa.getStatesMap());
+        s.addTransition(c, e.getId());
     }
+    nfa.setStartState(s);
+    nfa.setFinalState(e);
     return nfa;
 };
 

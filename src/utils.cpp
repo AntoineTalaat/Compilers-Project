@@ -69,6 +69,14 @@ void Utils::printMap(std::map<int, State> statesMap){
 }
 
 
+void Utils::printStringVector(std::vector<std::string> v){
+    for (const auto& str : v) {
+        std::cout << str << ", ";
+    }
+    std::cout<<"\n";
+}
+
+
 std::string Utils::setToString(std::set<int> s) {
 
     std::string result = "{";

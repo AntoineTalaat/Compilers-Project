@@ -8,6 +8,27 @@ NFA::NFA(State  startState) {
      this->setStartState(startState);
  };
 
+NFA NFA::deepCopy(NFA nfa){
+    std::map<int,State> toNewState;
+    NFA newNFA;
+    for (auto& state : nfa.getStatesMap()) {
+        State s;
+        toNewState[state.first]= s;
+    }
+    newNFA.setStartState(toNewState[nfa.getStartState().getId()]);
+    newNFA.setFinalState(toNewState[nfa.getFinalState().getId()]);
+    
+    for (auto& state : nfa.getStatesMap()) {
+        for (auto& transition : state.second.getTransitions()) {
+            for (auto& state2ID : transition.second){
+                toNewState[state.first].addTransition(transition.first,toNewState[state2ID].getId());
+            }
+
+        }
+        newNFA.addState(toNewState[state.first]);
+    }
+    return newNFA;
+}
 NFA::NFA(State startState, State  finalState) {
      this->setStartState(startState);
      this->setFinalState(finalState);

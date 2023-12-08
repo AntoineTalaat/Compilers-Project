@@ -24,16 +24,15 @@ int main(){
 
     std::cout <<"NFA states size = " << n.getStatesMap().size() << std::endl;
     // std::cout <<"NFA:" << std::endl;
-    Utils::printMap(n.getStatesMap());
+    // Utils::printMap(n.getStatesMap());
 
     SubsetConstruction s(n);
     s.setAlphabet(Globals::alphabet);
     std::map< int , State> DFA = s.getDFA();
     
     std::cout <<"DFA states size = " << DFA.size() << std::endl;
-
-    std::cout <<"DFA:" << std::endl;
-    Utils::printMap(DFA);
+    // std::cout <<"DFA:" << std::endl;
+    // Utils::printMap(DFA);
     int x=0;
 
 
