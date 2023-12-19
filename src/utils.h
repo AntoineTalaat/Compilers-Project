@@ -14,7 +14,7 @@ class Utils{
         static void printDFATransitionhs(std::map<std::pair<std::set<int>, char>, std::set<int>> Dtran);
         static void printMap(std::map<int, State> statesMap);
         static void printMapFile(std::map<int, State> statesMap);
-
+        static void printProductions(std::map<std::string,std::vector<std::vector<std::string>>> productions);
         static void printStringVector(std::vector<std::string> v);
 
 };

@@ -1,4 +1,5 @@
 #include "syntax_parser.h"
+const std::regex PRODUCTION_RULE_REGEX(R"(^ *[A-Z_]+ *::= *('[a-z]'|[A-Z_]| |\x5C[L]|\\|)+$)");
 
 
 SyntaxParser::SyntaxParser(string rulesStr){
@@ -10,10 +11,11 @@ SyntaxParser::SyntaxParser(string rulesStr){
 }
 
 void SyntaxParser::parseSyntacticRule(string rule){
+    // assert(std::regex_match(rule, PRODUCTION_RULE_REGEX));
     size_t indexOfEqual = rule.find("::=");
     assert(indexOfEqual != std::string::npos);
     std::string part1 = rule.substr(0, indexOfEqual);
-    std::string part2 = rule.substr(indexOfEqual + 1);
+    std::string part2 = rule.substr(indexOfEqual + 3);
     std::string lhs = Utils::trim(part1);          
     std::string rhs = Utils::trim(part2);  
     this->nonTerminals.insert(lhs);
@@ -45,6 +47,11 @@ bool SyntaxParser::isTerminalString(string str){
 set<string> SyntaxParser::getNonTerminals(){
     return this->nonTerminals;
 }
+
+map<string,vector<vector<string>>> SyntaxParser::getProductions(){
+    return this->productions;
+} 
+
 
 bool SyntaxParser::isEpsillon(string str){
     return str.compare("\\L")==0;

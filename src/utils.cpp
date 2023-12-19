@@ -47,6 +47,37 @@ std::string Utils::trim(std::string str) {
 }
 
 
+void Utils::printProductions(std::map<std::string, std::vector<std::vector<std::string>>> productions) {
+    for (const auto& pair : productions) {
+        std::cout << pair.first << " -> [";
+
+        // Iterate through the vector of vectors
+        for (auto it = pair.second.begin(); it != pair.second.end(); ++it) {
+            std::cout << "[";
+
+            // Iterate through the inner vector
+            for (auto elem_it = it->begin(); elem_it != it->end(); ++elem_it) {
+                std::cout << *elem_it;
+
+                // Print comma if not the last element in the vector
+                if (std::next(elem_it) != it->end()) {
+                    std::cout << ",";
+                }
+            }
+
+            std::cout << "]";
+
+            // Print comma if not the last vector
+            if (std::next(it) != pair.second.end()) {
+                std::cout << ",";
+            }
+        }
+
+        std::cout << "]" << std::endl;
+    }
+}
+
+
 void Utils::printSet(std::set<int> s , NFA nfa) {
     std::cout << "{";
     for (auto it = s.begin(); it != s.end(); ++it) {

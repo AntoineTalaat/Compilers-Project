@@ -3,7 +3,7 @@
 #include "src/subset_construction.h"
 #include "input_parser.h"
 #include "lexical_analyzer.h"
-
+#include "syntax_parser.h"
 
 using namespace std;
 
@@ -46,13 +46,17 @@ struct DFA initialize_lexical_parser(){
 
 
 int main(){
-    struct DFA dfa = initialize_lexical_parser();
-    string program_input = Utils::readFile(Globals::PROGRAM_INPUT_FILE);
-    string test_program_input = Utils::readFile(Globals::TEST_INPUT_FILE);
-    vector<Token> tokens = LexicalAnalyzer::getTokens(program_input,dfa.startStateID,dfa.deadStateID,dfa.minimalDFA);
-    for ( auto& token : tokens) {
-        std::cout <<  token.type << " ( " << token.lexeme<< " ) " << std::endl;
-    }
-    return 0;
+    // struct DFA dfa = initialize_lexical_parser();
+    // string program_input = Utils::readFile(Globals::PROGRAM_INPUT_FILE);
+    // string test_program_input = Utils::readFile(Globals::TEST_INPUT_FILE);
+    // vector<Token> tokens = LexicalAnalyzer::getTokens(program_input,dfa.startStateID,dfa.deadStateID,dfa.minimalDFA);
+    // for ( auto& token : tokens) {
+    //     std::cout <<  token.type << " ( " << token.lexeme<< " ) " << std::endl;
+    // }
+    // return 0;
 
+    string syntaxRules = Utils::readFile(Globals::SYNTAX_RULES_FILE);
+    SyntaxParser sp(syntaxRules);
+    Utils::printProductions(sp.getProductions());
+    return 0;
 }

@@ -14,12 +14,14 @@ private:
     map<string,vector<vector<string>>> productions;
     bool isTerminalString(string str);
     bool isEpsillon(string str);
+    const std::regex PRODUCTION_RULE_REGEX;
+
 public:
     SyntaxParser(string rulesStr);
     void parseSyntacticRule(string rule);
     vector<vector<string>> parseSyntaxRuleRHS(string rhs);
     set<string> getNonTerminals();
-    map<string,vector<vector<string>>> getProductions;    
+    map<string,vector<vector<string>>> getProductions();    
 };
 
 #endif // SYNTAX_PARSER_H
