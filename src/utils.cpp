@@ -32,18 +32,20 @@ std::vector<std::string> Utils::splitString(const std::string& input, char delim
 }
 
 
-std::string Utils::trim(std::string str){
+std::string Utils::trim(std::string str) {
+    // Trim leading whitespaces and newline characters
     str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](int ch) {
-        return !std::isspace(ch);
+        return !std::isspace(ch) && ch != '\n';
     }));
 
-    // Trim trailing whitespaces
+    // Trim trailing whitespaces and newline characters
     str.erase(std::find_if(str.rbegin(), str.rend(), [](int ch) {
-        return !std::isspace(ch);
+        return !std::isspace(ch) && ch != '\n';
     }).base(), str.end());
 
     return str;
 }
+
 
 void Utils::printSet(std::set<int> s , NFA nfa) {
     std::cout << "{";

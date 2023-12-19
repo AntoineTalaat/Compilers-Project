@@ -11,7 +11,7 @@
 class InputParser
 {
 private:
-    static std::vector<Token *> tokens;
+    static std::vector<Token*> tokens;
     static const std::regex regDefRegex;
     static const std::regex regExpRegex;
     static const std::regex keywordRegex;

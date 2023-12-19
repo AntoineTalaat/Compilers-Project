@@ -1,7 +1,7 @@
 #include "lexical_analyzer.h"
 
-std::vector<Token> LexicalAnalyzer::getTokens(std::string input, int startStateID,int deadStateID,
-                                              std::map<int, State> dfaMap){
+std::vector<Token> LexicalAnalyzer::getTokens(
+        std::string input, int startStateID,int deadStateID,std::map<int, State> dfaMap){
     int currentStateID = startStateID;
     std::vector<Token> acceptedTokens;
     int i=0;
@@ -44,7 +44,7 @@ std::vector<Token> LexicalAnalyzer::getTokens(std::string input, int startStateI
                 lastAcceptedPos=i;
             }
             i++;
-        }
+        }   
     }
     if(lastAcceptedToken!=nullptr)          {
         lastAcceptedToken->lexeme=lexeme;

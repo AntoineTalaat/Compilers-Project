@@ -4,11 +4,20 @@
 #include "input_parser.h"
 #include "lexical_analyzer.h"
 
-using namespace std;
-int main(){
-    string file = "rules.txt";
-//    string file = "D:\\Engineer\\Level 4\\semester 9\\compilers\\project\\Lexical-Analyzer-Generator\\rules.txt";
 
+using namespace std;
+
+struct DFA {
+    int startStateID;
+    int deadStateID;
+    map<int,State> minimalDFA;
+
+    DFA(int startID, int deadID, const map<int,State>& minimal)
+        : startStateID(startID), deadStateID(deadID), minimalDFA(minimal) {}
+};
+
+struct DFA initialize_lexical_parser(){
+    string file = Globals::LEXICAL_RULES_FILE;
     string content = Utils::readFile(file);
     InputParser ip;
     char delimiter = '\n';
@@ -18,10 +27,8 @@ int main(){
     for (int i=0;i<lines.size();i++){
         ip.tokenize(lines[i],i);
     }
-    int i=0;
     std::vector<NFA> allNFAs = ip.allNFAs;
     NFA n = NFAGenerator::getFullNFA(ip.allNFAs) ;
-
     std::cout <<"NFA states size = " << n.getStatesMap().size() << std::endl;
     SubsetConstruction s(n);
     s.setAlphabet(Globals::alphabet);
@@ -33,12 +40,18 @@ int main(){
     int startStateID = s.getStartStateID();
     int deadStateID = s.getDeadStateID();
     std::cout <<"minimal DFA states size = " << minimalDFA.size() << std::endl;
+    struct DFA dfa(startStateID,deadStateID,minimalDFA);
+    return dfa;
+}
 
-    // string input = Utils::readFile("input.txt");
-    string input = Utils::readFile("test.txt");
-    vector<Token> tokens = LexicalAnalyzer::getTokens(input,startStateID,deadStateID,minimalDFA);
+
+int main(){
+    struct DFA dfa = initialize_lexical_parser();
+    string program_input = Utils::readFile(Globals::PROGRAM_INPUT_FILE);
+    string test_program_input = Utils::readFile(Globals::TEST_INPUT_FILE);
+    vector<Token> tokens = LexicalAnalyzer::getTokens(program_input,dfa.startStateID,dfa.deadStateID,dfa.minimalDFA);
     for ( auto& token : tokens) {
-        std::cout <<  token.type << std::endl;
+        std::cout <<  token.type << " ( " << token.lexeme<< " ) " << std::endl;
     }
     return 0;
 
