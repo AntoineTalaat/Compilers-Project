@@ -4,6 +4,7 @@
 #include "input_parser.h"
 #include "lexical_analyzer.h"
 #include "syntax_parser.h"
+#include "parse_tree_builder.h"
 
 using namespace std;
 
@@ -55,8 +56,41 @@ int main(){
     // }
     // return 0;
 
-    string syntaxRules = Utils::readFile(Globals::SYNTAX_RULES_FILE);
-    SyntaxParser sp(syntaxRules);
-    Utils::printProductions(sp.getProductions());
+//    string syntaxRules = Utils::readFile(Globals::SYNTAX_RULES_FILE);
+//    SyntaxParser sp(syntaxRules);
+//    Utils::printProductions(sp.getProductions());
+
+    std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstSet;
+    std::map<std::string,  std::vector<std::string>> followSet;
+    firstSet["E"].push_back(std::make_pair("id", std::vector<std::string>({"T", "E'" })));
+    firstSet["E"].push_back(std::make_pair("(", std::vector<std::string>({"T", "E'" })));
+    firstSet["E'"].push_back(std::make_pair("+", std::vector<std::string>({"+", "T", "E'" })));
+    firstSet["E'"].push_back(std::make_pair("", std::vector<std::string>({})));
+    firstSet["T"].push_back(std::make_pair("id", std::vector<std::string>({"F", "T'" })));
+    firstSet["T"].push_back(std::make_pair("(", std::vector<std::string>({"F", "T'" })));
+    firstSet["T'"].push_back(std::make_pair("*", std::vector<std::string>({"*", "F", "T'"})));
+    firstSet["T'"].push_back(std::make_pair("", std::vector<std::string>({})));
+    firstSet["F"].push_back(std::make_pair("id", std::vector<std::string>({"id"})));
+    firstSet["F"].push_back(std::make_pair("(", std::vector<std::string>({"(", "E", ")"})));
+
+    followSet["E"].push_back("$");
+    followSet["E"].push_back(")");
+    followSet["E'"].push_back("$");
+    followSet["E'"].push_back(")");
+    followSet["T"].push_back("$");
+    followSet["T"].push_back(")");
+    followSet["T"].push_back("+");
+    followSet["T'"].push_back("$");
+    followSet["T'"].push_back(")");
+    followSet["T'"].push_back("+");
+    followSet["F"].push_back("$");
+    followSet["F"].push_back(")");
+    followSet["F"].push_back("+");
+    followSet["F"].push_back("*");
+
+    ParseTreeBuilder parseTreeBuilder(firstSet, followSet);
+    std::map<std::string, std::map<std::string, std::vector<std::string>>> parseTree = parseTreeBuilder.buildParseTree();
+    parseTreeBuilder.printParseTree(parseTree);
+
     return 0;
 }
