@@ -57,6 +57,11 @@ std::map<std::string, std::map<std::string, std::vector<std::string>>> ParseTree
 
             }else{
                 parseTree[nonTerminal][terminal] = production;
+                std::vector<std::string> follow= followSet[nonTerminal]; // follow of E >> id , ( , $
+                for (auto const &followTerminal : follow ) {
+                    parseTree[nonTerminal][followTerminal] =  std::vector<std::string>({"sync" });
+
+                }
 //                std::cout << "terminal is not empty" << std::endl;
 //                std::cout << "nonTerminal = " << nonTerminal << std::endl;
 //                std::cout << "terminal = " << terminal << std::endl;
