@@ -60,10 +60,6 @@ int main(){
     SyntaxParser sp(syntaxRules);
     Utils::printProductions(sp.getProductions());
     FirstFollowBuilder ffb(sp.getProductions(), sp.getNonTerminals());
-    for(string nT: sp.getNonTerminals()) {
-        cout << "non" <<endl;
-        cout << nT << endl;
-    }
     ffb.getFirst();
     ffb.printFirstMap();
     ffb.getFollow(); 

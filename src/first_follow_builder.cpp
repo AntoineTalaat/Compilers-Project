@@ -58,10 +58,6 @@ void FirstFollowBuilder::computeFirst(const std::string nonTerminal) {
     }
 }
 
-// if A -> xBy is a production rule >> everything in FIRST(y) is FOLLOW(B) except E
-// If ( A -> xB is a production rule ) or ( A -> xBy is a production rule and E is in FIRST(y)) >> everything in FOLLOW(A) is in FOLLOW(B).
-
-
 std::map<std::string, std::set<std::string>> FirstFollowBuilder::getFollow() {
     // iterate through each non-terminal and compute its Follow set
     auto it = this->nonTerminals.begin();
@@ -76,24 +72,18 @@ std::map<std::string, std::set<std::string>> FirstFollowBuilder::getFollow() {
     return this->followMap;
 }
 
-void FirstFollowBuilder::computeFollow(const std::string nonTerminal) {
+void FirstFollowBuilder::computeFollow(std::string nonTerminal) {
     // iterate through each production
-    std::cout << "henaaaaa" << std::endl;
-    for (const auto rule : productions) {
-        std::cout << "henaaaaa2222" << std::endl;
+    for (auto rule : productions) {
         for(std::vector<std::string> production : rule.second) {
-            std::cout << "henaaaaa33333" << std::endl;
             for(int i=0; i<production.size(); i++) {
-                std::cout << "henaaaaa4444" << std::endl;
                 if(production[i] == nonTerminal) {
-                    std::cout << "henaaaaa5555" << std::endl;
+                   // law ana fe a5er el production
                     if(i == production.size() - 1) {
                         auto lhsOfRule = rule.first;
-                      //  if(lhsOfRule == nonTerminal)    continue;
+                        if(lhsOfRule == nonTerminal)    continue;
                         computeFollow(lhsOfRule);
-                        std::cout << "henaaaaa12222222" << std::endl;
                         for(auto follow : this->followMap[lhsOfRule]) {
-                            std::cout << "henaaaaa66666" << std::endl;
                             this->followMap[nonTerminal].insert(follow);
                         }
                     }
@@ -101,10 +91,8 @@ void FirstFollowBuilder::computeFollow(const std::string nonTerminal) {
                         this->followMap[nonTerminal].insert(production[i+1]);
                     }
                     else {
-                        std::cout << "henaaaaa7777777" << std::endl;
                         auto lhsOfRule = rule.first;
                         for(int j = i + 1; j<production.size(); j++) {
-                            std::cout << "henaaaaa88888" << std::endl;
                             std::string nextSymbol = production[j];
                             if(isTerminalString(nextSymbol)) {
                                 this->followMap[nonTerminal].insert(nextSymbol);
@@ -112,9 +100,7 @@ void FirstFollowBuilder::computeFollow(const std::string nonTerminal) {
                             }
                             bool nextHasEpsillonFirst = false;
                             auto nextFirstSet = this->firstMap[nextSymbol];
-                            std::cout << "henaaaaa10000000" << std::endl;
                             for(auto firstSymbol : nextFirstSet) {
-                                std::cout << "henaaaaa99999" << std::endl;
                                 if(!isEpsillon(firstSymbol.first)) {
                                     this->followMap[nonTerminal].insert(firstSymbol.first);
                                 }
@@ -127,7 +113,6 @@ void FirstFollowBuilder::computeFollow(const std::string nonTerminal) {
                                 if(lhsOfRule == nonTerminal) break;
                                 computeFollow(lhsOfRule);
                                 for(auto follow : this->followMap[lhsOfRule]) {
-                                    std::cout << "henaaaaa1111111" << std::endl;
                                     this->followMap[nonTerminal].insert(follow);
                                 }
                             }
@@ -136,51 +121,6 @@ void FirstFollowBuilder::computeFollow(const std::string nonTerminal) {
                 }
             }
         }
-        /*
-        const auto& leftHandSide = entry.first;
-        const auto& productionList = entry.second;
-
-        // Iterate through each production of the current non-terminal
-        for (const auto& production : productionList) {
-            auto pos = std::find(production.begin(), production.end(), nonTerminal);
-            if (pos != production.end()) {
-                // If non-terminal is found in the production
-                auto nextPos = pos + 1;
-                while (nextPos != production.end()) {
-                    // Iterate through the symbols after the non-terminal in the production
-                    const auto& nextSymbol = *nextPos;
-
-                    // If the next symbol is a terminal, add it to the Follow set and break
-                    if (isTerminalString(nextSymbol)) {
-                        this->followMap[nonTerminal].insert(nextSymbol);
-                        break;
-                    }
-
-                    // If the next symbol is a non-terminal, add its First set to the Follow set
-                    const auto& symbolFirstSet = getFirst()[nextSymbol];
-                    for (const auto& pair : symbolFirstSet) {
-                        this->followMap[nonTerminal].insert(pair.second.begin(), pair.second.end());
-                    }
-
-                    // If epsilon is in the First set, continue to the next symbol
-                    auto it = *symbolFirstSet.begin();
-                    if (symbolFirstSet.empty() || it.second.empty()) {
-                        break;
-                    }
-
-                    // Move to the next symbol in the production
-                    ++nextPos;
-                }
-
-                // if end of the production, add the follow set of the left-hand side non-terminal to the follow set of the current non-terminal
-                if (nextPos == production.end()) {
-                    computeFollow(leftHandSide);
-                    const auto& leftHandSideFollowSet = this->followMap[leftHandSide];
-                    this->followMap.insert(leftHandSideFollowSet.begin(), leftHandSideFollowSet.end());
-                }
-            }
-        }
-        */
     }
 
 }
@@ -224,7 +164,8 @@ void FirstFollowBuilder::printFollowMap() {
 
         std::cout << nonTerminal << " -> {";
         for (const auto symbol : followSet) {
-            std::cout << symbol << ", ";
+            if(isEpsillon(symbol)) std::cout << "@";
+            std::cout << symbol;// << ", ";
         }
         std::cout << "}\n";
     }
