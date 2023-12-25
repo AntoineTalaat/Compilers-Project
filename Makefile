@@ -15,6 +15,7 @@ SRC_FILES +=src/globals.cpp
 SRC_FILES +=src/SubsetConstruction.cpp
 SRC_FILES +=src/lexical_analyzer.cpp
 SRC_FILES +=src/syntax_parser.cpp
+SRC_FILES +=src/first_follow_builder.cpp
 
 EXECUTABLE = main
 

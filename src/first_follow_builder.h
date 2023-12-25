@@ -10,7 +10,7 @@ class FirstFollowBuilder
 {
 private:
 
-    std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstMap;   
+    std::map<std::string, std::set<std::pair<std::string, std::vector<std::string>>>> firstMap;   
     std::map<std::string, std::set<std::string>> followMap;
     std::set<std::string> nonTerminals;
     std::set<std::string> terminals;
@@ -22,7 +22,7 @@ private:
 
 public:
     FirstFollowBuilder(std::map<std::string, std::vector<std::vector<std::string>>> productions, std::set<std::string> nonTerminals);
-    std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> getFirst();   
+    std::map<std::string, std::set<std::pair<std::string, std::vector<std::string>>>> getFirst();   
     std::map<std::string, std::set<std::string>> getFollow();
     void printFirstMap();
     void printFollowMap();  
