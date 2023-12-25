@@ -13,12 +13,12 @@
 
 class ParseTreeBuilder {
     private:
-        std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstSet;
-        std::map<std::string,  std::vector<std::string>> followSet;
+        std::map<std::string, std::set<std::pair<std::string, std::vector<std::string>>>> firstSet;
+        std::map<std::string, std::set<std::string>> followSet;
 
     public:
-        ParseTreeBuilder(std::map<std::string, std::vector<std::pair<std::string, std::vector<std::string>>>> firstSet,
-                         std::map<std::string,  std::vector<std::string>> followSet);
+        ParseTreeBuilder(std::map<std::string, std::set<std::pair<std::string, std::vector<std::string>>>> firstSet,
+                         std::map<std::string, std::set<std::string>> followSet);
 
         std::map<std::string, std::map<std::string, std::vector<std::string>>> buildParseTree();
         void printParseTree(std::map<std::string, std::map<std::string, std::vector<std::string>>> parseTree);
