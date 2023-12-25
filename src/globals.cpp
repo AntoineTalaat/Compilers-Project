@@ -2,6 +2,7 @@
 #include "globals.h"
 std::map<std::string,NFA> Globals::regularDefinitionNFA=*(new std::map<std::string,NFA>());
 std::set<char> Globals::alphabet = *(new std::set<char>());
+std::string Globals::START_SYMBOL = "";
 
 #ifdef VS_CODE
 const std::string Globals::LEXICAL_RULES_FILE = "lexical_rules.txt";

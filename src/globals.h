@@ -12,11 +12,12 @@ static const char EPSILLON = 0;
 class Globals{
     public:
         static std::map<std::string,NFA> regularDefinitionNFA;
-        static std::set<char> alphabet;  
+        static std::set<char> alphabet;
+        static std::string START_SYMBOL;  
         static const std::string LEXICAL_RULES_FILE;
         static const std::string SYNTAX_RULES_FILE;
         static const std::string PROGRAM_INPUT_FILE;
-        static const std::string TEST_INPUT_FILE;
+        static const std::string TEST_INPUT_FILE;  
 };
 
 #endif  //  GLOBALS_H

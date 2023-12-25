@@ -1,4 +1,5 @@
 #include "syntax_parser.h"
+#include "globals.h"
 const std::regex PRODUCTION_RULE_REGEX(R"(^ *[A-Z_]+ *::= *('[a-z]'|[A-Z_]| |\x5C[L]|\\|)+$)");
 
 
@@ -6,17 +7,21 @@ SyntaxParser::SyntaxParser(string rulesStr){
     rulesStr =  Utils::trim(rulesStr);
     vector<string> rules = Utils::splitString(rulesStr,'#');
     if(rules[0] == "") rules.erase(rules.begin());
-    for (const auto &rule : rules)
-        parseSyntacticRule(rule);
+    bool isStart = true;
+    for (int i=0; i<rules.size(); i++) {
+        parseSyntacticRule(rules[i], isStart);
+        isStart = false;
+    }
 }
 
-void SyntaxParser::parseSyntacticRule(string rule){
+void SyntaxParser::parseSyntacticRule(string rule, bool first = false){
     // assert(std::regex_match(rule, PRODUCTION_RULE_REGEX));
     size_t indexOfEqual = rule.find("::=");
     assert(indexOfEqual != std::string::npos);
     std::string part1 = rule.substr(0, indexOfEqual);
     std::string part2 = rule.substr(indexOfEqual + 3);
-    std::string lhs = Utils::trim(part1);          
+    std::string lhs = Utils::trim(part1);    
+    if(first)   Globals::START_SYMBOL = lhs;      
     std::string rhs = Utils::trim(part2);  
     this->nonTerminals.insert(lhs);
     this->productions[lhs] = parseSyntaxRuleRHS(rhs);

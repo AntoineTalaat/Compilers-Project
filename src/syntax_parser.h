@@ -18,7 +18,7 @@ private:
 
 public:
     SyntaxParser(string rulesStr);
-    void parseSyntacticRule(string rule);
+    void parseSyntacticRule(string rule, bool first);
     vector<vector<string>> parseSyntaxRuleRHS(string rhs);
     set<string> getNonTerminals();
     map<string,vector<vector<string>>> getProductions();    

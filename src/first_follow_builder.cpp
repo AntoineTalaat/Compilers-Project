@@ -1,6 +1,7 @@
 #include "first_follow_builder.h"
 #include <algorithm>
 #include <iostream>
+#include "globals.h"
 
 FirstFollowBuilder::FirstFollowBuilder(std::map<std::string, std::vector<std::vector<std::string>>> productions, std::set<std::string> nonTerminals) {
     this->productions = productions;
@@ -41,17 +42,19 @@ void FirstFollowBuilder::computeFirst(const std::string nonTerminal) {
                 break;
             }
             // non-terminal
-            else if (nonTerminals.count(symbol)) {
-                // skip epsilon in the first set of the non-terminal
-                if (!isEpsillon(symbol)) {
-                    computeFirst(symbol);
-                    const auto symbolFirstSet = this->firstMap[symbol];
-                    for (const auto pair : symbolFirstSet) 
-                        this->firstMap[nonTerminal].insert({pair.first, production});
+            if(nonTerminals.count(symbol)) {
+                // 1. lw ana(symbol) kol ely ablya 3ndhom epsillon fel first yb2a hzwd my first 3la nonterminal first
+                // 2. lw epsillon mwgoda fe kolo yb2a hzwd epsillon 3la nonterminal first
+                computeFirst(symbol);
+                bool symbolHasEpsillonFirst = false;
+                const auto symbolFirstSet = this->firstMap[symbol];
+                for(const auto pair : symbolFirstSet) {
+                    if(isEpsillon(pair.first))  symbolHasEpsillonFirst = true;
+                    else this->firstMap[nonTerminal].insert({pair.first, production});
                 }
-                // if epsilon is in the first set, continue to the next symbol
-                if (!isEpsillon(symbol)) {
-                    break;
+                if(!symbolHasEpsillonFirst) break;
+                if(symbol == production.back()) {
+                    this->firstMap[nonTerminal].insert({"", std::vector<std::string>()});
                 }
             }
         }
@@ -59,15 +62,10 @@ void FirstFollowBuilder::computeFirst(const std::string nonTerminal) {
 }
 
 std::map<std::string, std::set<std::string>> FirstFollowBuilder::getFollow() {
-    // iterate through each non-terminal and compute its Follow set
-    auto it = this->nonTerminals.begin();
-
-    // check if the set is not empty before accessing the first element
-    if (it != this->nonTerminals.end()) 
-        this->followMap[*it].insert("$");
-    for (const auto nonTerminal : this->nonTerminals) {
+    this->followMap[Globals::START_SYMBOL].insert("$");
+    
+    for(auto nonTerminal : this->nonTerminals)
         computeFollow(nonTerminal);
-    }
 
     return this->followMap;
 }
