@@ -15,8 +15,8 @@ private:
     std::set<std::string> nonTerminals;
     std::set<std::string> terminals;
     std::map<std::string, std::vector<std::vector<std::string>>> productions;
-    void computeFirst(const std::string&);
-    void computeFollow(const std::string&);
+    void computeFirst(const std::string);
+    void computeFollow(const std::string);
     bool isTerminalString(std::string str);
     bool isEpsillon(std::string str);
 

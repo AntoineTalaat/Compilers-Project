@@ -5,7 +5,7 @@
 #include "lexical_analyzer.h"
 #include "syntax_parser.h"
 #include "parse_tree_builder.h"
-
+#include "first_follow_builder.h"
 using namespace std;
 
 struct DFA {
@@ -56,10 +56,19 @@ int main(){
     // }
     // return 0;
 
-//    string syntaxRules = Utils::readFile(Globals::SYNTAX_RULES_FILE);
-//    SyntaxParser sp(syntaxRules);
-//    Utils::printProductions(sp.getProductions());
-
+    string syntaxRules = Utils::readFile(Globals::SYNTAX_RULES_FILE);
+    SyntaxParser sp(syntaxRules);
+    Utils::printProductions(sp.getProductions());
+    FirstFollowBuilder ffb(sp.getProductions(), sp.getNonTerminals());
+    for(string nT: sp.getNonTerminals()) {
+        cout << "non" <<endl;
+        cout << nT << endl;
+    }
+    ffb.getFirst();
+    ffb.printFirstMap();
+    ffb.getFollow(); 
+    ffb.printFollowMap();
+/*
     std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstSet;
     std::map<std::string,  std::vector<std::string>> followSet;
     firstSet["E"].push_back(std::make_pair("id", std::vector<std::string>({"T", "E'" })));
@@ -91,6 +100,6 @@ int main(){
     ParseTreeBuilder parseTreeBuilder(firstSet, followSet);
     std::map<std::string, std::map<std::string, std::vector<std::string>>> parseTree = parseTreeBuilder.buildParseTree();
     parseTreeBuilder.printParseTree(parseTree);
-
+*/
     return 0;
 }
