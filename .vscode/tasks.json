@@ -42,6 +42,9 @@
               "${workspaceFolder}\\src\\globals.cpp",
               "${workspaceFolder}\\src\\SubsetConstruction.cpp",
               "${workspaceFolder}\\src\\lexical_analyzer.cpp",
+              "${workspaceFolder}\\src\\syntax_parser.cpp",
+              "${workspaceFolder}\\src\\first_follow_builder.cpp",
+              "${workspaceFolder}\\src\\ll1_processor.cpp",
               "-o",
               "${workspaceFolder}\\main.exe",
               "-I.\\src"
