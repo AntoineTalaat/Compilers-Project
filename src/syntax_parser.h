@@ -21,6 +21,7 @@ public:
     void parseSyntacticRule(string rule, bool first);
     vector<vector<string>> parseSyntaxRuleRHS(string rhs);
     set<string> getNonTerminals();
+    set<string> getTerminals();
     map<string,vector<vector<string>>> getProductions();    
 };
 

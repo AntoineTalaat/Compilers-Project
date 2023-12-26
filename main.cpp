@@ -76,7 +76,7 @@ int main(){
     FirstFollowBuilder ffb(processedProduction, processor.getNonTerminals());
     // cout<< "first follow \n";
    
-    ParseTreeBuilder parseTreeBuilder(ffb.getFirst(), ffb.getFollow());
+    ParseTreeBuilder parseTreeBuilder(ffb.getFirst(), ffb.getFollow() , sp.getTerminals());
     cout<< "First sets \n";
     ffb.printFirstMap();
     // cout<< "map  \n";
@@ -86,6 +86,8 @@ int main(){
     
     std::map<std::string, std::map<std::string, std::vector<std::string>>> parseTree = parseTreeBuilder.buildParseTree();
     parseTreeBuilder.printParseTree(parseTree);
+
+
     LL1Parser ll1parser(parseTree); 
     ll1parser.parse(tokens, Globals::START_SYMBOL);
 

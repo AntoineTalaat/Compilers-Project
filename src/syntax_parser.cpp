@@ -34,8 +34,11 @@ vector<vector<string>> SyntaxParser::parseSyntaxRuleRHS(string rhs){
         vector<string> terminalsOrNonTerminals = Utils::splitString(trimmed,' ');
         vector<string> toBeInserted;
         for(const auto &element : terminalsOrNonTerminals){
+            if(this->isTerminalString(element)) this->terminals.insert(element);
+
             if(!this->isTerminalString(element) && !this->isEpsillon(element))
                 this->nonTerminals.insert(element);
+
             if(this->isEpsillon(element)) toBeInserted.push_back("");
             else toBeInserted.push_back(element);
         }
@@ -50,6 +53,9 @@ bool SyntaxParser::isTerminalString(string str){
 
 set<string> SyntaxParser::getNonTerminals(){
     return this->nonTerminals;
+}
+set<string> SyntaxParser::getTerminals(){
+    return this->terminals;
 }
 
 map<string,vector<vector<string>>> SyntaxParser::getProductions(){
