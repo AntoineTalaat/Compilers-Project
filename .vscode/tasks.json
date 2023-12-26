@@ -45,6 +45,8 @@
               "${workspaceFolder}\\src\\syntax_parser.cpp",
               "${workspaceFolder}\\src\\first_follow_builder.cpp",
               "${workspaceFolder}\\src\\ll1_processor.cpp",
+              "${workspaceFolder}\\src\\LL1Parser.cpp",
+              "${workspaceFolder}\\src\\parse_tree_builder.cpp",
               "-o",
               "${workspaceFolder}\\main.exe",
               "-I.\\src"

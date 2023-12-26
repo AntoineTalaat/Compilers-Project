@@ -17,6 +17,7 @@ private:
     vector<vector<string>> replaceNtInRule(string Ai,vector<vector<string>> AiRHS,string Aj,vector<vector<string>> AjRHS);
 public:
     map<string,vector<vector<string>>> getLL1productions(map<string,vector<vector<string>>> old);
+    set<string> getNonTerminals();
 };
 
 #endif // LL1_PROCESSOR_H

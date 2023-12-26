@@ -42,6 +42,12 @@ map<string,vector<vector<string>>> LL1_Processor::getLL1productions(map<string,v
 
 }
 
+
+set<string> LL1_Processor::getNonTerminals(){
+    return this->nonTerminalsUsed;
+}
+
+
 vector<vector<string>> LL1_Processor::replaceNtInRule(
     string Ai,vector<vector<string>> AiRHS,string Aj,vector<vector<string>> AjRHS){
         int numReplacements = AjRHS.size();

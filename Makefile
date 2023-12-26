@@ -17,6 +17,8 @@ SRC_FILES +=src/lexical_analyzer.cpp
 SRC_FILES +=src/syntax_parser.cpp
 SRC_FILES +=src/first_follow_builder.cpp
 SRC_FILES +=src/ll1_processor.cpp
+SRC_FILES +=src/LL1Parser.cpp
+SRC_FILES +=src/parse_tree_builder.cpp
 
 EXECUTABLE = main
 

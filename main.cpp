@@ -7,6 +7,8 @@
 #include "parse_tree_builder.h"
 #include "first_follow_builder.h"
 #include "ll1_processor.h"
+#include "LL1Parser.h"
+
 using namespace std;
 
 struct DFA {
@@ -48,14 +50,16 @@ struct DFA initialize_lexical_parser(){
 
 
 int main(){
-    // struct DFA dfa = initialize_lexical_parser();
-    // string program_input = Utils::readFile(Globals::PROGRAM_INPUT_FILE);
-    // string test_program_input = Utils::readFile(Globals::TEST_INPUT_FILE);
-    // vector<Token> tokens = LexicalAnalyzer::getTokens(program_input,dfa.startStateID,dfa.deadStateID,dfa.minimalDFA);
+    struct DFA dfa = initialize_lexical_parser();
+    string program_input = Utils::readFile(Globals::PROGRAM_INPUT_FILE);
+    string test_program_input = Utils::readFile(Globals::TEST_INPUT_FILE);
+    vector<Token> tokens = LexicalAnalyzer::getTokens(program_input,dfa.startStateID,dfa.deadStateID,dfa.minimalDFA);
     // for ( auto& token : tokens) {
     //     std::cout <<  token.type << " ( " << token.lexeme<< " ) " << std::endl;
     // }
     // return 0;
+    Token endToken("$","$",112);
+    tokens.push_back(endToken);
 
     string syntaxRules = Utils::readFile(Globals::SYNTAX_RULES_FILE);
     // cout<< "Read file \n";
@@ -67,16 +71,25 @@ int main(){
     LL1_Processor processor;
     cout<< "\nProductions after LL1\n";
     Utils::printProductions(processor.getLL1productions(sp.getProductions()));
-    FirstFollowBuilder ffb((sp.getProductions()), sp.getNonTerminals());
+    FirstFollowBuilder ffb((sp.getProductions()), processor.getNonTerminals());
     // cout<< "first follow \n";
-    ffb.getFirst();
+   
+    ParseTreeBuilder parseTreeBuilder(ffb.getFirst(), ffb.getFollow());
     cout<< "First sets \n";
     ffb.printFirstMap();
     // cout<< "map  \n";
-    ffb.getFollow(); 
     cout<< "Follow sets \n";
     ffb.printFollowMap();
     // cout<< "map  \n";
+    
+    std::map<std::string, std::map<std::string, std::vector<std::string>>> parseTree = parseTreeBuilder.buildParseTree();
+    parseTreeBuilder.printParseTree(parseTree);
+    LL1Parser ll1parser(parseTree); 
+    std::vector<std::string> output = ll1parser.parse(tokens, Globals::START_SYMBOL);
+
+    for (const auto& step : output) {
+        std::cout << step << std::endl;
+    }
 
 /*
     std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstSet;
