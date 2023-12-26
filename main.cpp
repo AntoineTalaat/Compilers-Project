@@ -72,20 +72,20 @@ int main(){
 // IF -> [[‘if’,‘(‘,EXPRESSION,‘)’,‘{‘,STATEMENT,’}’,‘else’,‘{’,STATEMENT,‘}’]]
 // result of replace of :
 // IF -> [[‘if’]]
-    // FirstFollowBuilder ffb(sp.getProductions(), sp.getNonTerminals());
-    // cout<< "first follow \n";
+     FirstFollowBuilder ffb((sp.getProductions()), sp.getNonTerminals());
+     cout<< "first follow \n";
 
-    // ffb.getFirst();
-    // cout<< "first  \n";
+     ffb.getFirst();
+     cout<< "first  \n";
 
-    // ffb.printFirstMap();
-    // cout<< "map  \n";
+     ffb.printFirstMap();
+     cout<< "map  \n";
 
-    // ffb.getFollow(); 
-    // cout<< "follow  \n";
+     ffb.getFollow(); 
+     cout<< "follow  \n";
 
-    // ffb.printFollowMap();
-    // cout<< "map  \n";
+     ffb.printFollowMap();
+     cout<< "map  \n";
 
 /*
     std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstSet;

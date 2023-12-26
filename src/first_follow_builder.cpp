@@ -10,22 +10,24 @@ FirstFollowBuilder::FirstFollowBuilder(std::map<std::string, std::vector<std::ve
     for(const auto nonTerminal : nonTerminals) {
         this->firstMap[nonTerminal] = {};
         this->followMap[nonTerminal] = {};
+        this->isFirstSet[nonTerminal] = false;
         this->isFollowSet[nonTerminal] = false;
     }
 };
 
 std::map<std::string, std::set<std::pair<std::string, std::vector<std::string>>>> FirstFollowBuilder::getFirst() {
     // compute first of each non terminal
-    for(const auto nonTerminal : this->nonTerminals) {
-        computeFirst(nonTerminal);
+    for(auto nonTerminal : this->nonTerminals) {
+        if(!this->isFirstSet[nonTerminal]) computeFirst(nonTerminal);
     }
 
     return this->firstMap;
 }
 
 void FirstFollowBuilder::computeFirst(const std::string nonTerminal) {
+    this->isFirstSet[nonTerminal] = true;
     // iterate through each production of the correspoding current non-terminal productions
-    for(const auto production : productions[nonTerminal]) {
+    for(auto production : productions[nonTerminal]) {
         // iterate through each symbol in the production
         for (const auto symbol : production) {
             // epsillon or terminal
@@ -34,7 +36,7 @@ void FirstFollowBuilder::computeFirst(const std::string nonTerminal) {
                 break;
             }
     
-            else if (isTerminalString(symbol)) {
+            else if(isTerminalString(symbol)) {
                 this->firstMap[nonTerminal].insert({symbol, production});
                 break;
             }
@@ -42,7 +44,7 @@ void FirstFollowBuilder::computeFirst(const std::string nonTerminal) {
             if(nonTerminals.count(symbol)) {
                 // 1. lw ana(symbol) kol ely ablya 3ndhom epsillon fel first yb2a hzwd my first 3la nonterminal first
                 // 2. lw epsillon mwgoda fe kolo yb2a hzwd epsillon 3la nonterminal first
-                computeFirst(symbol);
+                if(!this->isFirstSet[symbol]) computeFirst(symbol);
                 bool symbolHasEpsillonFirst = false;
                 const auto symbolFirstSet = this->firstMap[symbol];
                 for(const auto pair : symbolFirstSet) {
@@ -55,7 +57,7 @@ void FirstFollowBuilder::computeFirst(const std::string nonTerminal) {
                 }
             }
         }
-    }
+    } 
 }
 
 std::map<std::string, std::set<std::string>> FirstFollowBuilder::getFollow() {
