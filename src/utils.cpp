@@ -56,9 +56,9 @@ void Utils::printProductions(std::map<std::string, std::vector<std::vector<std::
             std::cout << "[";
 
             // Iterate through the inner vector
-            for (auto elem_it = it->begin(); elem_it != it->end(); ++elem_it) {
-                std::cout << *elem_it;
-
+            for (auto elem_it = it->begin(); elem_it != it->end(); ++elem_it) {           
+                if(*elem_it == "") std::cout << "@";
+                else std::cout << *elem_it;
                 // Print comma if not the last element in the vector
                 if (std::next(elem_it) != it->end()) {
                     std::cout << ",";
