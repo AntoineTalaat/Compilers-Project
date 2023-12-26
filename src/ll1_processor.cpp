@@ -51,6 +51,11 @@ set<string> LL1_Processor::getNonTerminals(){
 vector<vector<string>> LL1_Processor::replaceNtInRule(
     string Ai,vector<vector<string>> AiRHS,string Aj,vector<vector<string>> AjRHS){
         int numReplacements = AjRHS.size();
+        //   map<string, vector<vector<string>>> temp;
+            // temp[Ai] = AiRHS;
+            // temp[Aj] = AjRHS;
+            // cout<< "Two exchanged productions : \n";
+            // Utils::printProductions(temp);
         vector<vector<string>> output;
         for(int productionInd = 0; productionInd<AiRHS.size(); productionInd++){
                 // search for the Aj location
@@ -67,7 +72,7 @@ vector<vector<string>> LL1_Processor::replaceNtInRule(
                                 for(int symbolAjInd = 0; symbolAjInd<AjRHS[replacementInd].size();symbolAjInd++){
                                     // don't do that if AjRHS[replacementInd][symbolAjInd] and not alone
                                     // not alone is !changed.empty() || symbolAiInd <AiRHS[productionInd].size()-1
-                                    bool alone = changed.empty() && symbolAiInd==AiRHS[productionInd].size()-1;
+                                    bool alone = changed.empty() && symbolAiInd==(AiRHS[productionInd].size()-1);
                                     if(AjRHS[replacementInd][symbolAjInd].compare("")==0 && alone // epsilon alone
                                     || AjRHS[replacementInd][symbolAjInd].compare("")!=0) // not epsillon
                                     changed.push_back(AjRHS[replacementInd][symbolAjInd]);
@@ -83,6 +88,12 @@ vector<vector<string>> LL1_Processor::replaceNtInRule(
                 }
 
         }
+
+    // map<string, vector<vector<string>>> temp2;
+    // temp2[Ai] = output;
+    // cout<< "result of replace of : \n";
+    // Utils::printProductions(temp2);
+    // cout<<endl;
     return output;
 }
 
@@ -103,9 +114,10 @@ bool LL1_Processor::containsLF(vector<vector<string>> rhsProductions){
 map<string,vector<vector<string>>> LL1_Processor::executeLeftFactoring(
     std::string lhs, vector<vector<string>> rhsProductions) {
     
-    map<string, vector<vector<string>>> temp;
-    temp[lhs] = rhsProductions;
-
+    // map<string, vector<vector<string>>> temp;
+    // temp[lhs] = rhsProductions;
+    //         cout<< "LEFT FACTORING:" << lhs << " \n";
+    //         Utils::printProductions(temp);
     map<string,int> symbolOccurances;
     for(int ruleInd=0;ruleInd<rhsProductions.size();ruleInd++){
         symbolOccurances[rhsProductions[ruleInd][0]]++;
@@ -129,6 +141,7 @@ map<string,vector<vector<string>>> LL1_Processor::executeLeftFactoring(
                 for(int symbolInd = 1; symbolInd<rhsProductions[ruleInd].size();symbolInd++){
                     rest.push_back(rhsProductions[ruleInd][symbolInd]);
                 }
+                if(rest.empty()) rest.push_back("");
                 newRuleRHS.push_back(rest);
                 vector<string> modifiedOldProduction;
                 if(!replaced){
@@ -144,6 +157,9 @@ map<string,vector<vector<string>>> LL1_Processor::executeLeftFactoring(
         outputMiniMap[newLHS] = newRuleRHS;
     }
     outputMiniMap[lhs] = oldRuleRhs;
+
+        //  cout<< "AFTER LEFT FACTORING: " << lhs << " \n";
+        //     Utils::printProductions(outputMiniMap);
     return outputMiniMap;
 }
 
@@ -158,6 +174,7 @@ string LL1_Processor::generateNewNonTerminalFrom(string oldNonTerminal){
 
 map<string,vector<vector<string>>> LL1_Processor::eliminateImmediateLR(
     string lhs, vector<vector<string>> rhsProductions){
+
         // Assume lhs non terminal only repeated once 
         int ruleLRCauseInd=-1;
         for(int ruleInd=0;ruleInd<rhsProductions.size();ruleInd++){
@@ -205,6 +222,7 @@ map<string,vector<vector<string>>> LL1_Processor::eliminateImmediateLR(
         newSecondaryRHS.push_back(terminalProduction);
         newSecondaryRHS.push_back(epsillonProduction);
         outputProductions[newlhs]=newSecondaryRHS;
-
+            // cout<< "After LL1 immediate: "<< lhs<<"\n";
+            // Utils::printProductions(outputProductions);
         return outputProductions;
 }

@@ -42,3 +42,42 @@
 # TERM ::= FACTOR | TERM 'mulop' FACTOR
 # FACTOR ::= 'id' | 'num' | '(' EXPRESSION ')'
 # SIGN ::= 'relop'
+
+
+
+A -> B C D 
+B -> b 
+C -> c | eps 
+D -> d | eps 
+
+
+computeFollow(B)
+Follow B contains Follow A
+
+
+
+
+LEFT FACTORING:EXPRESSION
+EXPRESSION -> [[SIMPLE_EXPRESSION],[SIMPLE_EXPRESSION,'relop',SIMPLE_EXPRESSION]]
+AFTER LEFT FACTORING: EXPRESSION
+EXPRESSION -> [[SIMPLE_EXPRESSION,EXPRESSION`]]
+EXPRESSION` -> [[],['relop',SIMPLE_EXPRESSION]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+computeFollow(B)
+get first of C contains epsillon? yes > get first of D constains epsillon
