@@ -14,5 +14,5 @@ const std::string BASE_PATH = "D:\\Engineer\\Level 4\\semester 9\\compilers\\pro
 const std::string Globals::LEXICAL_RULES_FILE = BASE_PATH + "lexical_rules.txt";
 const std::string Globals::SYNTAX_RULES_FILE = BASE_PATH +"syntax_rules.txt";
 const std::string Globals::PROGRAM_INPUT_FILE = BASE_PATH +"input.txt";
-const std::string Globals::TEST_INPUT_FILE = BASE_PATH + "text.txt";
+const std::string Globals::TEST_INPUT_FILE = BASE_PATH + "test.txt";
 #endif

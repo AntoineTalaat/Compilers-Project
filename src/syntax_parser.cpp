@@ -55,7 +55,7 @@ set<string> SyntaxParser::getNonTerminals(){
     return this->nonTerminals;
 }
 set<string> SyntaxParser::getTerminals(){
-    return this->nonTerminals;
+    return this->terminals;
 }
 
 map<string,vector<vector<string>>> SyntaxParser::getProductions(){
