@@ -6,6 +6,7 @@
 #include "syntax_parser.h"
 #include "parse_tree_builder.h"
 #include "first_follow_builder.h"
+#include "ll1_processor.h"
 using namespace std;
 
 struct DFA {
@@ -57,13 +58,35 @@ int main(){
     // return 0;
 
     string syntaxRules = Utils::readFile(Globals::SYNTAX_RULES_FILE);
+    // cout<< "Read file \n";
     SyntaxParser sp(syntaxRules);
-    Utils::printProductions(sp.getProductions());
-    FirstFollowBuilder ffb(sp.getProductions(), sp.getNonTerminals());
-    ffb.getFirst();
-    ffb.printFirstMap();
-    ffb.getFollow(); 
-    ffb.printFollowMap();
+    // cout<< "Passed rules to parser \n";
+
+    // Utils::printProductions(sp.getProductions());
+    cout<< "Printed Productions \n";
+    LL1_Processor processor;
+    // processor.getLL1productions(sp.getProductions());
+    Utils::printProductions(processor.getLL1productions(sp.getProductions()));
+
+// EXPRESSION -> [[SIMPLE_EXPRESSION,EXPRESSION]]
+// IF -> [[‘if’,‘(‘,EXPRESSION,‘)’,‘{‘,STATEMENT,’}’,‘else’,‘{’,STATEMENT,‘}’]]
+// result of replace of :
+// IF -> [[‘if’]]
+    // FirstFollowBuilder ffb(sp.getProductions(), sp.getNonTerminals());
+    // cout<< "first follow \n";
+
+    // ffb.getFirst();
+    // cout<< "first  \n";
+
+    // ffb.printFirstMap();
+    // cout<< "map  \n";
+
+    // ffb.getFollow(); 
+    // cout<< "follow  \n";
+
+    // ffb.printFollowMap();
+    // cout<< "map  \n";
+
 /*
     std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstSet;
     std::map<std::string,  std::vector<std::string>> followSet;

@@ -16,6 +16,7 @@ SRC_FILES +=src/SubsetConstruction.cpp
 SRC_FILES +=src/lexical_analyzer.cpp
 SRC_FILES +=src/syntax_parser.cpp
 SRC_FILES +=src/first_follow_builder.cpp
+SRC_FILES +=src/ll1_processor.cpp
 
 EXECUTABLE = main
 
