@@ -70,8 +70,10 @@ int main(){
     Utils::printProductions(sp.getProductions());
     LL1_Processor processor;
     cout<< "\nProductions after LL1\n";
-    Utils::printProductions(processor.getLL1productions(sp.getProductions()));
-    FirstFollowBuilder ffb((sp.getProductions()), processor.getNonTerminals());
+    map<string,vector<vector<string>>> processedProduction = processor.getLL1productions(sp.getProductions());
+
+    Utils::printProductions(processedProduction);
+    FirstFollowBuilder ffb(processedProduction, processor.getNonTerminals());
     // cout<< "first follow \n";
    
     ParseTreeBuilder parseTreeBuilder(ffb.getFirst(), ffb.getFollow());
