@@ -9,7 +9,6 @@ map<string,vector<vector<string>>> LL1_Processor::getLL1productions(map<string,v
     
     for(int i=0;i<orderedNonTerminals.size();i++){
         string Ai = orderedNonTerminals[i];
-        // cout<< "examining " << Ai <<endl;
         for(int j=0;j<i;j++){
             string Aj = orderedNonTerminals[j];
             bool causeLR = false;
@@ -29,7 +28,6 @@ map<string,vector<vector<string>>> LL1_Processor::getLL1productions(map<string,v
         for (const auto& pair : newProductions) {
             old[pair.first] = pair.second;
         }
-        // cout<< "finished " << Ai<<endl;
     }    
     for(int i=0;i<orderedNonTerminals.size();i++){
         string Ai = orderedNonTerminals[i];
@@ -39,7 +37,6 @@ map<string,vector<vector<string>>> LL1_Processor::getLL1productions(map<string,v
                 old[pair.first] = pair.second;
             }
         }
-        // cout<< "finished " << Ai<<endl;
     }
     return old;
 
@@ -48,24 +45,15 @@ map<string,vector<vector<string>>> LL1_Processor::getLL1productions(map<string,v
 vector<vector<string>> LL1_Processor::replaceNtInRule(
     string Ai,vector<vector<string>> AiRHS,string Aj,vector<vector<string>> AjRHS){
         int numReplacements = AjRHS.size();
-            // map<string, vector<vector<string>>> temp;
-            // temp[Ai] = AiRHS;
-            // temp[Aj] = AjRHS;
-            // cout<< "Two exchanged productions : \n";
-            // Utils::printProductions(temp);
         vector<vector<string>> output;
-
-        //                                              1           
         for(int productionInd = 0; productionInd<AiRHS.size(); productionInd++){
                 // search for the Aj location
                 auto it = find(AiRHS[productionInd].begin(), AiRHS[productionInd].end(), Aj);
                 if (it != AiRHS[productionInd].end()) {
                     // contains Aj
-                    cout<<distance(AiRHS[productionInd].begin(), it)<<endl;
-                    //                                          1
                     for(int replacementInd=0;replacementInd<numReplacements;replacementInd++){
                         vector<string> changed;
-                        std::size_t position = distance(AiRHS[productionInd].begin(), it); //2
+                        std::size_t position = distance(AiRHS[productionInd].begin(), it); 
                         for(int symbolAiInd = 0;symbolAiInd<AiRHS[productionInd].size();symbolAiInd++){
                             if(symbolAiInd!=position){
                                 changed.push_back(AiRHS[productionInd][symbolAiInd]);
@@ -89,11 +77,6 @@ vector<vector<string>> LL1_Processor::replaceNtInRule(
                 }
 
         }
-    // map<string, vector<vector<string>>> temp2;
-    // temp2[Ai] = output;
-    // cout<< "result of replace of : \n";
-    // Utils::printProductions(temp2);
-    // cout<<endl;
     return output;
 }
 
@@ -116,8 +99,7 @@ map<string,vector<vector<string>>> LL1_Processor::executeLeftFactoring(
     
     map<string, vector<vector<string>>> temp;
     temp[lhs] = rhsProductions;
-    // cout<< "Left Factoring of : \n";
-    // Utils::printProductions(temp);
+
     map<string,int> symbolOccurances;
     for(int ruleInd=0;ruleInd<rhsProductions.size();ruleInd++){
         symbolOccurances[rhsProductions[ruleInd][0]]++;
@@ -181,7 +163,7 @@ map<string,vector<vector<string>>> LL1_Processor::eliminateImmediateLR(
         map<string,vector<vector<string>>> outputProductions;
         if(ruleLRCauseInd==-1){ // There is no immediate LR
             outputProductions[lhs] = rhsProductions;
-            cout<<"Found no LR in rule starting with lhs: " << lhs <<endl;
+            // cout<<"Found no LR in rule starting with lhs: " << lhs <<endl;
             return outputProductions;
         }
         // now we know which caused the LR

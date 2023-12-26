@@ -1,7 +1,6 @@
 #include "syntax_parser.h"
 #include "globals.h"
-const std::regex PRODUCTION_RULE_REGEX(R"(^ *[A-Z_]+ *::= *('[a-z]'|[A-Z_]| |\x5C[L]|\\|)+$)");
-
+// const std::regex PRODUCTION_RULE_REGEX(R"(^ *[A-Z_]+ *::= *('[a-z]'|[A-Z_]| |\x5C[L]|\\|)+$)");
 
 SyntaxParser::SyntaxParser(string rulesStr){
     rulesStr =  Utils::trim(rulesStr);

@@ -62,30 +62,21 @@ int main(){
     SyntaxParser sp(syntaxRules);
     // cout<< "Passed rules to parser \n";
 
-    // Utils::printProductions(sp.getProductions());
-    cout<< "Printed Productions \n";
+    cout<< "\nProductions before LL1\n";
+    Utils::printProductions(sp.getProductions());
     LL1_Processor processor;
-    // processor.getLL1productions(sp.getProductions());
+    cout<< "\nProductions after LL1\n";
     Utils::printProductions(processor.getLL1productions(sp.getProductions()));
-
-// EXPRESSION -> [[SIMPLE_EXPRESSION,EXPRESSION]]
-// IF -> [[‘if’,‘(‘,EXPRESSION,‘)’,‘{‘,STATEMENT,’}’,‘else’,‘{’,STATEMENT,‘}’]]
-// result of replace of :
-// IF -> [[‘if’]]
-     FirstFollowBuilder ffb((sp.getProductions()), sp.getNonTerminals());
-     cout<< "first follow \n";
-
-     ffb.getFirst();
-     cout<< "first  \n";
-
-     ffb.printFirstMap();
-     cout<< "map  \n";
-
-     ffb.getFollow(); 
-     cout<< "follow  \n";
-
-     ffb.printFollowMap();
-     cout<< "map  \n";
+    FirstFollowBuilder ffb((sp.getProductions()), sp.getNonTerminals());
+    // cout<< "first follow \n";
+    ffb.getFirst();
+    cout<< "First sets \n";
+    ffb.printFirstMap();
+    // cout<< "map  \n";
+    ffb.getFollow(); 
+    cout<< "Follow sets \n";
+    ffb.printFollowMap();
+    // cout<< "map  \n";
 
 /*
     std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstSet;
