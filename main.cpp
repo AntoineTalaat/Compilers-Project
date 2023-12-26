@@ -87,11 +87,9 @@ int main(){
     std::map<std::string, std::map<std::string, std::vector<std::string>>> parseTree = parseTreeBuilder.buildParseTree();
     parseTreeBuilder.printParseTree(parseTree);
     LL1Parser ll1parser(parseTree); 
-    std::vector<std::string> output = ll1parser.parse(tokens, Globals::START_SYMBOL);
+    ll1parser.parse(tokens, Globals::START_SYMBOL);
 
-    for (const auto& step : output) {
-        std::cout << step << std::endl;
-    }
+ 
 
 /*
     std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstSet;

@@ -4,38 +4,40 @@ LL1Parser::LL1Parser(
     const std::map<std::string, std::map<std::string, std::vector<std::string>>>& parsingTable
 ) : parsingTable(parsingTable) {}
 
-std::vector<std::string> LL1Parser::parse(
+void LL1Parser::parse(
     const std::vector<Token>& tokens,
     const std::string& startSymbol
 ) {
     
     
     std::stack<std::string> stack;
-    std::vector<std::string> output;
-    output.push_back("--------------------------------- Parsing Simulation-------------------------------");
+    // std::vector<std::string> output;
+    std::cout << "--------------------------------- Parsing Simulation-------------------------------" << std::endl;
     // Initialize stack with start symbol
     stack.push("$");
     stack.push(startSymbol);
 
     // Token index
     size_t tokenIndex = 0;
-    output.push_back("Stack: " + stackToString(stack));
-    output.push_back("Input: " + inputToString(tokens, tokenIndex));
+    std::cout << "Stack: " << stackToString(stack) << std::endl;
+    std::cout << "Input: " << inputToString(tokens, tokenIndex) << std::endl;
     // Parsing loop
     while (!stack.empty()) {
         std::string stackTop = stack.top();
-        stack.pop();
+        
 
         // Check if stackTop exists in parsingTable case : (Non-terminal)
         if (parsingTable.find(stackTop) != parsingTable.end()) {
             // Get the current input token
             Token currentToken = (tokenIndex < tokens.size()) ? tokens[tokenIndex] : Token();  // Handle end of input
-
+             if(currentToken.type != "$" && currentToken.type != "sync"){
+                currentToken.type = "\'"+currentToken.type + "\'";
+             }
             // Check if currentToken.type exists in the inner map
             if (parsingTable.at(stackTop).find(currentToken.type) != parsingTable.at(stackTop).end()) {
                 // Get the corresponding production from the parsing table
                 std::vector<std::string> production = parsingTable.at(stackTop).at(currentToken.type);
-
+                 stack.pop();
                 // Case 1: No production for the input token
                 // if (production.empty()) {
                 //     output.push_back("Error: Discard input token - " + currentToken.type);
@@ -44,7 +46,8 @@ std::vector<std::string> LL1Parser::parse(
                 // } else {
                     // Case 2: Production rule has only "sync" in the rhs
                     if (production.size() == 1 && production[0] == "sync") {
-                        output.push_back("Output: Error Missing " + stackTop);
+                        std::cout << "Output: Error Missing " << stackTop << std::endl;
+                       
                         // Pop from the stack and continue
                     } else {
                         // Case 3: Production rule has non-"sync" elements in the rhs
@@ -58,43 +61,54 @@ std::vector<std::string> LL1Parser::parse(
                                 
                             }
                         }
-                        output.push_back("Output: "+ stackTop +" --> "+ prod );
+                        std::cout << "Output: "<< stackTop <<" --> "<< prod << std::endl;
                     }
                 //}
             } else {
                 // Handle the case where currentToken.type is not found in the inner map
-                 output.push_back("Output: Error Discard input token - " + currentToken.type);
+                std::cout << "Output: Error Discard input token - " << currentToken.type << std::endl;
                 // Move to the next input token
                 ++tokenIndex;
+                std::cout << "-----------leeeh----------" << std::endl;
+                std::cout << "Stack: " << stackToString(stack) << std::endl;
+                std::cout << "Input: " << inputToString(tokens, tokenIndex) << std::endl;
+                if(currentToken.type=="$"){
+                    break;
+                }
+                continue;
             }
-        } else if (stackTop == "$") {
+        } else if (stackTop == "$" || tokens[tokenIndex].type=="$") {
             // If the stack is empty except for '$', parsing is successful
-            output.push_back("Output: Parsing successful!");
+            std::cout << "Output: Parsing successful!" << std::endl;
             break;
         } else {
             // case :  ( terminal )
-
+             stack.pop();
             Token currentToken = (tokenIndex < tokens.size()) ? tokens[tokenIndex] : Token();  // Handle end of input
-
+          if(currentToken.type != "$" && currentToken.type != "sync"){
+                currentToken.type = "\'"+currentToken.type + "\'";
+             }
+         
             if (stackTop == currentToken.type) {
                 // Match found, move to the next input token
-                output.push_back("Output : Match " + currentToken.type + " \" " + currentToken.lexeme + " \" ");
+                std::cout << "Output : Match " << currentToken.type << " \" " << currentToken.lexeme << " \" " << std::endl;
                 ++tokenIndex;
             } else {
                 // Error handling: mismatch between stack and input
-                output.push_back("Output: Error Mismatch between stack and input. Expected " + stackTop);
+                std::cout << "Output: Error Mismatch between stack and input. Expected " << stackTop << std::endl;
                 // Pop from the stack and continue
             }
         }
         
         // Print the current step (for demonstration purposes)
-        output.push_back("---------------------");
-        output.push_back("Stack: " + stackToString(stack));
-        output.push_back("Input: " + inputToString(tokens, tokenIndex));
+        std::cout << "---------------------" << std::endl;
+        std::cout << "Stack: " << stackToString(stack) << std::endl;
+        std::cout << "Input: " << inputToString(tokens, tokenIndex) << std::endl;
         
     }
 
-    return output;
+    // return output;
+    // returning an empty vector as the output is printed directly to cout
 }
 
 

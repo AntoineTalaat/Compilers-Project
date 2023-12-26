@@ -13,7 +13,7 @@ public:
         const std::map<std::string, std::map<std::string, std::vector<std::string>>>& parsingTable
     );
 
-    std::vector<std::string> parse(
+    void parse(
         const std::vector<Token>& tokens,
         const std::string& startSymbol
     );
