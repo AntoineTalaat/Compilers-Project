@@ -101,22 +101,24 @@ void Utils::printMap(std::map<int, State> statesMap){
     }
 }
 void Utils::printMapFile(std::map<int, State> statesMap){
-       const std::string fileName = "TransitionTable.txt";
+    const std::string fileName = "TransitionTable.txt";
 
-        // Open the file in append mode to avoid overwriting existing content
-        std::ofstream outputFile(fileName, std::ios_base::app);
+    // Open the file in output mode to overwrite existing content
+    std::ofstream outputFile(fileName, std::ios_base::out);
 
-        if (!outputFile.is_open()) {
-            std::cerr << "Error opening file: " << fileName << std::endl;
-            return;
-        }
-   // std::cout << "States:\n";
+    if (!outputFile.is_open()) {
+        std::cerr << "Error opening file: " << fileName << std::endl;
+        return;
+    }
+
     for (auto& state : statesMap) {
         outputFile << state.first << ": ";
-        outputFile << (state.second.toString())<< std::endl;
+        outputFile << (state.second.toString()) << std::endl;
     }
-     outputFile.close();
+
+    outputFile.close();
 }
+
 
 void Utils::printStringVector(std::vector<std::string> v){
     for (const auto& str : v) {
