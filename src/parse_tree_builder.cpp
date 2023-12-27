@@ -6,6 +6,7 @@
 #include <set>
 #include <fstream>
 #include "parse_tree_builder.h"
+#include "globals.h"
                                                                                       // terminal , nonTerminal
 ParseTreeBuilder::ParseTreeBuilder(std::map<std::string, std::set<std::pair<std::string, std::vector<std::string>>>>
                                                             // nonTerminal (E) , terminals (id , (  , $)
@@ -62,7 +63,7 @@ std::map<std::string, std::map<std::string, std::vector<std::string>>> ParseTree
     }
 
     std::map<std::string, std::map<std::string, std::vector<std::string>>> modified = modifyParseTable(parseTree);
-    convertToCSV(modified, "D:\\Engineer\\Level 4\\semester 9\\compilers\\project\\Lexical-Analyzer-Generator\\ParseTable.csv");
+    convertToCSV(modified, Globals::PARSE_TABLE_CSV_FILE);
 
     return parseTree;
 }

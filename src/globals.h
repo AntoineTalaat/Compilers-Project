@@ -18,6 +18,7 @@ class Globals{
         static const std::string SYNTAX_RULES_FILE;
         static const std::string PROGRAM_INPUT_FILE;
         static const std::string TEST_INPUT_FILE;  
+        static const std::string PARSE_TABLE_CSV_FILE;  
 };
 
 #endif  //  GLOBALS_H
