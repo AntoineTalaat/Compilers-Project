@@ -89,8 +89,8 @@ int main(){
     parseTreeBuilder.printParseTree(parseTree);
 
 
-  //  LL1Parser ll1parser(parseTree); 
-  //  ll1parser.parse(tokens, Globals::START_SYMBOL);
+    LL1Parser ll1parser(parseTree); 
+    ll1parser.parse(tokens, Globals::START_SYMBOL);
 
  
 

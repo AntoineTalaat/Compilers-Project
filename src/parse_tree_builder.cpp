@@ -57,7 +57,10 @@ std::map<std::string, std::map<std::string, std::vector<std::string>>> ParseTree
             }
         }else{
             for (auto const &followTerminal : follow ) {
-                parseTree[nonTerminal][followTerminal] = std::vector<std::string>({"sync" });
+                if (parseTree.find(nonTerminal) == parseTree.end() ||
+                    parseTree[nonTerminal].find(followTerminal) == parseTree[nonTerminal].end()) {
+                    parseTree[nonTerminal][followTerminal] = std::vector<std::string>({"sync"});
+                }
             }
         }
     }
