@@ -11,7 +11,7 @@ void LL1Parser::parse(
     
     
     std::stack<std::string> stack;
-    // std::vector<std::string> output;
+
     std::cout << "--------------------------------- Parsing Simulation-------------------------------" << std::endl;
     // Initialize stack with start symbol
     stack.push("$");
@@ -38,19 +38,15 @@ void LL1Parser::parse(
                 // Get the corresponding production from the parsing table
                 std::vector<std::string> production = parsingTable.at(stackTop).at(currentToken.type);
                  stack.pop();
-                // Case 1: No production for the input token
-                // if (production.empty()) {
-                //     output.push_back("Error: Discard input token - " + currentToken.type);
-                //     // Move to the next input token
-                //     ++tokenIndex;
-                // } else {
-                    // Case 2: Production rule has only "sync" in the rhs
+               
+     
+                    // Case 1: Production rule has only "sync" in the rhs
                     if (production.size() == 1 && production[0] == "sync") {
                         std::cout << "Output: Error Missing " << stackTop << std::endl;
                        
                         // Pop from the stack and continue
                     } else {
-                        // Case 3: Production rule has non-"sync" elements in the rhs
+                        // Case 2: Production rule has non-"sync" elements in the rhs
                         // Push the production onto the stack in reverse order
                         std::string prod =  "";
 
@@ -63,8 +59,9 @@ void LL1Parser::parse(
                         }
                         std::cout << "Output: "<< stackTop <<" --> "<< prod << std::endl;
                     }
-                //}
+              
             } else {
+                 // Case 3: No production for the input token
                 // Handle the case where currentToken.type is not found in the inner map
                 std::cout << "Output: Error Discard input token - " << currentToken.type << std::endl;
                 // Move to the next input token
@@ -88,12 +85,14 @@ void LL1Parser::parse(
           if(currentToken.type != "$" && currentToken.type != "sync"){
                 currentToken.type = "\'"+currentToken.type + "\'";
              }
-         
+             
+            // case 1: Match 
             if (stackTop == currentToken.type) {
                 // Match found, move to the next input token
                 std::cout << "Output : Match " << currentToken.type << " \" " << currentToken.lexeme << " \" " << std::endl;
                 ++tokenIndex;
             } else {
+                //case 2: mismatch 
                 // Error handling: mismatch between stack and input
                 std::cout << "Output: Error Mismatch between stack and input. Expected " << stackTop << std::endl;
                 // Pop from the stack and continue
@@ -107,8 +106,7 @@ void LL1Parser::parse(
         
     }
 
-    // return output;
-    // returning an empty vector as the output is printed directly to cout
+
 }
 
 
