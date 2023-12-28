@@ -54,10 +54,7 @@ int main(){
     string program_input = Utils::readFile(Globals::PROGRAM_INPUT_FILE);
     string test_program_input = Utils::readFile(Globals::TEST_INPUT_FILE);
     vector<Token> tokens = LexicalAnalyzer::getTokens(program_input,dfa.startStateID,dfa.deadStateID,dfa.minimalDFA);
-    // for ( auto& token : tokens) {
-    //     std::cout <<  token.type << " ( " << token.lexeme<< " ) " << std::endl;
-    // }
-    // return 0;
+    Utils::printMapFile(dfa.minimalDFA);  
     Token endToken("$","$",112);
     tokens.push_back(endToken);
 
@@ -92,40 +89,8 @@ int main(){
     LL1Parser ll1parser(parseTree); 
     ll1parser.parse(tokens, Globals::START_SYMBOL);
 
- 
+    ll1parser.saveToCSV("SimulationParsing.csv");
 
-/*
-    std::map<std::string, std::vector <std::pair<std::string, std::vector<std::string>>>> firstSet;
-    std::map<std::string,  std::vector<std::string>> followSet;
-    firstSet["E"].push_back(std::make_pair("id", std::vector<std::string>({"T", "E'" })));
-    firstSet["E"].push_back(std::make_pair("(", std::vector<std::string>({"T", "E'" })));
-    firstSet["E'"].push_back(std::make_pair("+", std::vector<std::string>({"+", "T", "E'" })));
-    firstSet["E'"].push_back(std::make_pair("", std::vector<std::string>({})));
-    firstSet["T"].push_back(std::make_pair("id", std::vector<std::string>({"F", "T'" })));
-    firstSet["T"].push_back(std::make_pair("(", std::vector<std::string>({"F", "T'" })));
-    firstSet["T'"].push_back(std::make_pair("*", std::vector<std::string>({"*", "F", "T'"})));
-    firstSet["T'"].push_back(std::make_pair("", std::vector<std::string>({})));
-    firstSet["F"].push_back(std::make_pair("id", std::vector<std::string>({"id"})));
-    firstSet["F"].push_back(std::make_pair("(", std::vector<std::string>({"(", "E", ")"})));
 
-    followSet["E"].push_back("$");
-    followSet["E"].push_back(")");
-    followSet["E'"].push_back("$");
-    followSet["E'"].push_back(")");
-    followSet["T"].push_back("$");
-    followSet["T"].push_back(")");
-    followSet["T"].push_back("+");
-    followSet["T'"].push_back("$");
-    followSet["T'"].push_back(")");
-    followSet["T'"].push_back("+");
-    followSet["F"].push_back("$");
-    followSet["F"].push_back(")");
-    followSet["F"].push_back("+");
-    followSet["F"].push_back("*");
-
-    ParseTreeBuilder parseTreeBuilder(firstSet, followSet);
-    std::map<std::string, std::map<std::string, std::vector<std::string>>> parseTree = parseTreeBuilder.buildParseTree();
-    parseTreeBuilder.printParseTree(parseTree);
-*/
     return 0;
 }

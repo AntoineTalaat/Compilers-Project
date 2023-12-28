@@ -19,13 +19,24 @@ void LL1Parser::parse(
 
     // Token index
     size_t tokenIndex = 0;
+    
     std::cout << "Stack: " << stackToString(stack) << std::endl;
     std::cout << "Input: " << inputToString(tokens, tokenIndex) << std::endl;
+   
+
+
+    std::vector<std::string> row;
+    row.push_back(stackToString(stack));
+    row.push_back(inputToString(tokens, tokenIndex));
+    // row1.push_back(stackToString(stack));
+    // row1.push_back(inputToString(tokens, tokenIndex));
+        // Add other relevant information from your output
+    
     // Parsing loop
     while (!stack.empty()) {
         std::string stackTop = stack.top();
-        
-
+        std::string output="";
+       
         // Check if stackTop exists in parsingTable case : (Non-terminal)
         if (parsingTable.find(stackTop) != parsingTable.end()) {
             // Get the current input token
@@ -42,7 +53,8 @@ void LL1Parser::parse(
      
                     // Case 1: Production rule has only "sync" in the rhs
                     if (production.size() == 1 && production[0] == "sync") {
-                        std::cout << "Output: Error Missing " << stackTop << std::endl;
+                        output = " Error Missing " + stackTop;
+                        std::cout << "Output: " << output << std::endl;
                        
                         // Pop from the stack and continue
                     } else {
@@ -57,26 +69,43 @@ void LL1Parser::parse(
                                 
                             }
                         }
-                        std::cout << "Output: "<< stackTop <<" --> "<< prod << std::endl;
+                        output = stackTop +" --> "+ prod ;
+                        std::cout << "Output: "<< output << std::endl;
                     }
               
             } else {
                  // Case 3: No production for the input token
                 // Handle the case where currentToken.type is not found in the inner map
-                std::cout << "Output: Error Discard input token - " << currentToken.type << std::endl;
+                output = "Error Discard input token - " + currentToken.type;
+                std::cout << "Output: " << output << std::endl;
                 // Move to the next input token
                 ++tokenIndex;
-                std::cout << "-----------leeeh----------" << std::endl;
+
+                 row.push_back(output);
+                 csvOutput.push_back(row);  
+                 row.clear();
+     
+          
+           
+                row.push_back(stackToString(stack));
+                row.push_back(inputToString(tokens, tokenIndex));
+                 
+                         
+                std::cout << "---------------------" << std::endl;
                 std::cout << "Stack: " << stackToString(stack) << std::endl;
                 std::cout << "Input: " << inputToString(tokens, tokenIndex) << std::endl;
                 if(currentToken.type=="$"){
+                    
                     break;
                 }
                 continue;
             }
         } else if (stackTop == "$" || tokens[tokenIndex].type=="$") {
             // If the stack is empty except for '$', parsing is successful
-            std::cout << "Output: Parsing successful!" << std::endl;
+            output = "Parsing successful!";
+            std::cout << "Output: " <<output<< std::endl;
+            row.push_back(output);
+            csvOutput.push_back(row);
             break;
         } else {
             // case :  ( terminal )
@@ -89,21 +118,32 @@ void LL1Parser::parse(
             // case 1: Match 
             if (stackTop == currentToken.type) {
                 // Match found, move to the next input token
-                std::cout << "Output : Match " << currentToken.type << " \" " << currentToken.lexeme << " \" " << std::endl;
+                output = " Match " + currentToken.type + " \" " + currentToken.lexeme + " \" " ;
+                std::cout << "Output : "  << output <<  std::endl;
                 ++tokenIndex;
             } else {
                 //case 2: mismatch 
                 // Error handling: mismatch between stack and input
-                std::cout << "Output: Error Mismatch between stack and input. Expected " << stackTop << std::endl;
+                output = " Error Mismatch between stack and input. Expected " + stackTop ;
+                std::cout << "Output : " << output << std::endl;
                 // Pop from the stack and continue
             }
         }
-        
+
         // Print the current step (for demonstration purposes)
+
         std::cout << "---------------------" << std::endl;
         std::cout << "Stack: " << stackToString(stack) << std::endl;
         std::cout << "Input: " << inputToString(tokens, tokenIndex) << std::endl;
-        
+        row.push_back(output);
+        csvOutput.push_back(row);
+        row.clear();
+
+      
+        row.push_back(stackToString(stack));
+        row.push_back(inputToString(tokens, tokenIndex));
+       
+
     }
 
 
@@ -125,7 +165,7 @@ std::string LL1Parser::stackToString(const std::stack<std::string>& stack) {
         result += *it + " ";
     }
 
-    return result + "| ";
+    return result ;
 }
 
 
@@ -134,5 +174,28 @@ std::string LL1Parser::inputToString(const std::vector<Token>& tokens, size_t in
     for (size_t i = index; i < tokens.size(); ++i) {
         result += tokens[i].type + " ";
     }
-    return result + "| ";
+    return result ;
+}
+
+
+void LL1Parser::saveToCSV(const std::string& filename) {
+    // Open the file
+    std::ofstream outputFile(filename);
+
+    // Write header
+    outputFile << "Stack,Input,Output\n";
+
+    // Write data
+    for (const auto& row : csvOutput) {
+        for (size_t i = 0; i < row.size(); ++i) {
+            outputFile << "\"" << row[i] << "\"";
+            if (i < row.size() - 1) {
+                outputFile << ",";
+            }
+        }
+        outputFile << "\n";
+    }
+
+    // Close the file
+    outputFile.close();
 }

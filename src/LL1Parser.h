@@ -17,13 +17,14 @@ public:
         const std::vector<Token>& tokens,
         const std::string& startSymbol
     );
+    void saveToCSV(const std::string& filename);
 
 private:
     const std::map<std::string, std::map<std::string, std::vector<std::string>>> parsingTable;
 
     std::string stackToString(const std::stack<std::string>& stack);
     std::string inputToString(const std::vector<Token>& tokens, size_t index);
-    // std::string productionToString(const std::vector<std::string>& production);
+    std::vector<std::vector<std::string>> csvOutput;
 };
 
 #endif // LL1_PARSER_H

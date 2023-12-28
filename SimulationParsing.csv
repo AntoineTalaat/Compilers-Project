@@ -1,0 +1,67 @@
+Stack,Input,Output
+$ METHOD_BODY ,int id ; id assign num ; while ( id relop num ) { id assign id addop num ; } $ ,METHOD_BODY --> STATEMENT_LIST
+$ STATEMENT_LIST ,int id ; id assign num ; while ( id relop num ) { id assign id addop num ; } $ ,STATEMENT_LIST --> STATEMENTSTATEMENT_LIST`
+$ STATEMENT_LIST` STATEMENT ,int id ; id assign num ; while ( id relop num ) { id assign id addop num ; } $ ,STATEMENT --> DECLARATION
+$ STATEMENT_LIST` DECLARATION ,int id ; id assign num ; while ( id relop num ) { id assign id addop num ; } $ ,DECLARATION --> PRIMITIVE_TYPE'id'';'
+$ STATEMENT_LIST` ';' 'id' PRIMITIVE_TYPE ,int id ; id assign num ; while ( id relop num ) { id assign id addop num ; } $ ,PRIMITIVE_TYPE --> 'int'
+$ STATEMENT_LIST` ';' 'id' 'int' ,int id ; id assign num ; while ( id relop num ) { id assign id addop num ; } $ ," Match 'int'  int "" """
+$ STATEMENT_LIST` ';' 'id' ,id ; id assign num ; while ( id relop num ) { id assign id addop num ; } $ ," Match 'id'  sum "" """
+$ STATEMENT_LIST` ';' ,; id assign num ; while ( id relop num ) { id assign id addop num ; } $ ," Match ';'  ; "" """
+$ STATEMENT_LIST` ,id assign num ; while ( id relop num ) { id assign id addop num ; } $ ,STATEMENT_LIST` --> STATEMENTSTATEMENT_LIST`
+$ STATEMENT_LIST` STATEMENT ,id assign num ; while ( id relop num ) { id assign id addop num ; } $ ,STATEMENT --> ASSIGNMENT
+$ STATEMENT_LIST` ASSIGNMENT ,id assign num ; while ( id relop num ) { id assign id addop num ; } $ ,ASSIGNMENT --> 'id''assign'EXPRESSION';'
+$ STATEMENT_LIST` ';' EXPRESSION 'assign' 'id' ,id assign num ; while ( id relop num ) { id assign id addop num ; } $ ," Match 'id'  sum "" """
+$ STATEMENT_LIST` ';' EXPRESSION 'assign' ,assign num ; while ( id relop num ) { id assign id addop num ; } $ ," Match 'assign'  = "" """
+$ STATEMENT_LIST` ';' EXPRESSION ,num ; while ( id relop num ) { id assign id addop num ; } $ ,EXPRESSION --> SIMPLE_EXPRESSIONEXPRESSION`
+$ STATEMENT_LIST` ';' EXPRESSION` SIMPLE_EXPRESSION ,num ; while ( id relop num ) { id assign id addop num ; } $ ,SIMPLE_EXPRESSION --> TERMSIMPLE_EXPRESSION`
+$ STATEMENT_LIST` ';' EXPRESSION` SIMPLE_EXPRESSION` TERM ,num ; while ( id relop num ) { id assign id addop num ; } $ ,TERM --> FACTORTERM`
+$ STATEMENT_LIST` ';' EXPRESSION` SIMPLE_EXPRESSION` TERM` FACTOR ,num ; while ( id relop num ) { id assign id addop num ; } $ ,FACTOR --> 'num'
+$ STATEMENT_LIST` ';' EXPRESSION` SIMPLE_EXPRESSION` TERM` 'num' ,num ; while ( id relop num ) { id assign id addop num ; } $ ," Match 'num'  5 "" """
+$ STATEMENT_LIST` ';' EXPRESSION` SIMPLE_EXPRESSION` TERM` ,; while ( id relop num ) { id assign id addop num ; } $ ,TERM` --> 
+$ STATEMENT_LIST` ';' EXPRESSION` SIMPLE_EXPRESSION` ,; while ( id relop num ) { id assign id addop num ; } $ ,SIMPLE_EXPRESSION` --> 
+$ STATEMENT_LIST` ';' EXPRESSION` ,; while ( id relop num ) { id assign id addop num ; } $ ,EXPRESSION` --> 
+$ STATEMENT_LIST` ';' ,; while ( id relop num ) { id assign id addop num ; } $ ," Match ';'  ; "" """
+$ STATEMENT_LIST` ,while ( id relop num ) { id assign id addop num ; } $ ,STATEMENT_LIST` --> STATEMENTSTATEMENT_LIST`
+$ STATEMENT_LIST` STATEMENT ,while ( id relop num ) { id assign id addop num ; } $ ,STATEMENT --> WHILE
+$ STATEMENT_LIST` WHILE ,while ( id relop num ) { id assign id addop num ; } $ ,WHILE --> 'while''('EXPRESSION')''{'STATEMENT'}'
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION '(' 'while' ,while ( id relop num ) { id assign id addop num ; } $ ," Match 'while'  while "" """
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION '(' ,( id relop num ) { id assign id addop num ; } $ ," Match '('  ( "" """
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION ,id relop num ) { id assign id addop num ; } $ ,EXPRESSION --> SIMPLE_EXPRESSIONEXPRESSION`
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION` SIMPLE_EXPRESSION ,id relop num ) { id assign id addop num ; } $ ,SIMPLE_EXPRESSION --> TERMSIMPLE_EXPRESSION`
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION` SIMPLE_EXPRESSION` TERM ,id relop num ) { id assign id addop num ; } $ ,TERM --> FACTORTERM`
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION` SIMPLE_EXPRESSION` TERM` FACTOR ,id relop num ) { id assign id addop num ; } $ ,FACTOR --> 'id'
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION` SIMPLE_EXPRESSION` TERM` 'id' ,id relop num ) { id assign id addop num ; } $ ," Match 'id'  pass "" """
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION` SIMPLE_EXPRESSION` TERM` ,relop num ) { id assign id addop num ; } $ ,TERM` --> 
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION` SIMPLE_EXPRESSION` ,relop num ) { id assign id addop num ; } $ ,SIMPLE_EXPRESSION` --> 
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' EXPRESSION` ,relop num ) { id assign id addop num ; } $ ,EXPRESSION` --> 'relop'SIMPLE_EXPRESSION
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' SIMPLE_EXPRESSION 'relop' ,relop num ) { id assign id addop num ; } $ ," Match 'relop'  != "" """
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' SIMPLE_EXPRESSION ,num ) { id assign id addop num ; } $ ,SIMPLE_EXPRESSION --> TERMSIMPLE_EXPRESSION`
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' SIMPLE_EXPRESSION` TERM ,num ) { id assign id addop num ; } $ ,TERM --> FACTORTERM`
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' SIMPLE_EXPRESSION` TERM` FACTOR ,num ) { id assign id addop num ; } $ ,FACTOR --> 'num'
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' SIMPLE_EXPRESSION` TERM` 'num' ,num ) { id assign id addop num ; } $ ," Match 'num'  10 "" """
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' SIMPLE_EXPRESSION` TERM` ,) { id assign id addop num ; } $ ,TERM` --> 
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' SIMPLE_EXPRESSION` ,) { id assign id addop num ; } $ ,SIMPLE_EXPRESSION` --> 
+$ STATEMENT_LIST` '}' STATEMENT '{' ')' ,) { id assign id addop num ; } $ ," Match ')'  ) "" """
+$ STATEMENT_LIST` '}' STATEMENT '{' ,{ id assign id addop num ; } $ ," Match '{'  { "" """
+$ STATEMENT_LIST` '}' STATEMENT ,id assign id addop num ; } $ ,STATEMENT --> ASSIGNMENT
+$ STATEMENT_LIST` '}' ASSIGNMENT ,id assign id addop num ; } $ ,ASSIGNMENT --> 'id''assign'EXPRESSION';'
+$ STATEMENT_LIST` '}' ';' EXPRESSION 'assign' 'id' ,id assign id addop num ; } $ ," Match 'id'  pass "" """
+$ STATEMENT_LIST` '}' ';' EXPRESSION 'assign' ,assign id addop num ; } $ ," Match 'assign'  = "" """
+$ STATEMENT_LIST` '}' ';' EXPRESSION ,id addop num ; } $ ,EXPRESSION --> SIMPLE_EXPRESSIONEXPRESSION`
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION ,id addop num ; } $ ,SIMPLE_EXPRESSION --> TERMSIMPLE_EXPRESSION`
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` TERM ,id addop num ; } $ ,TERM --> FACTORTERM`
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` TERM` FACTOR ,id addop num ; } $ ,FACTOR --> 'id'
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` TERM` 'id' ,id addop num ; } $ ," Match 'id'  pass "" """
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` TERM` ,addop num ; } $ ,TERM` --> 
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` ,addop num ; } $ ,SIMPLE_EXPRESSION` --> 'addop'TERMSIMPLE_EXPRESSION`
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` TERM 'addop' ,addop num ; } $ ," Match 'addop'  + "" """
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` TERM ,num ; } $ ,TERM --> FACTORTERM`
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` TERM` FACTOR ,num ; } $ ,FACTOR --> 'num'
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` TERM` 'num' ,num ; } $ ," Match 'num'  1 "" """
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` TERM` ,; } $ ,TERM` --> 
+$ STATEMENT_LIST` '}' ';' EXPRESSION` SIMPLE_EXPRESSION` ,; } $ ,SIMPLE_EXPRESSION` --> 
+$ STATEMENT_LIST` '}' ';' EXPRESSION` ,; } $ ,EXPRESSION` --> 
+$ STATEMENT_LIST` '}' ';' ,; } $ ," Match ';'  ; "" """
+$ STATEMENT_LIST` '}' ,} $ ," Match '}'  } "" """
+$ STATEMENT_LIST` ,$ ,STATEMENT_LIST` --> 
+$ ,$ ,Parsing successful!
