@@ -118,7 +118,7 @@ void LL1Parser::parse(
             // case 1: Match 
             if (stackTop == currentToken.type) {
                 // Match found, move to the next input token
-                output = " Match " + currentToken.type + " \" " + currentToken.lexeme + " \" " ;
+                output = " Match " + currentToken.type + "  ( " + currentToken.lexeme + " )" ;
                 std::cout << "Output : "  << output <<  std::endl;
                 ++tokenIndex;
             } else {
